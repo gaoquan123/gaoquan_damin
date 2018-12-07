@@ -51,6 +51,16 @@ export let bizType  = function(value){
         return '供应链/小微'
     }
 }
+export let bizTypeCN = function(value) {
+    if(value == '供应链') {
+        return 'BIZ'
+    } else if(value == '小微') {
+        return 'PERSONNEL'
+    } else {
+        return 'BIZ/PERSONNEL'
+    }
+}
+
 // 支持还款方式等额本息
 export let payWay  = function(value){
     if(value== 'MATCHING_PRINCIPAL_AND_INTEREST'){

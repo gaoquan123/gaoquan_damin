@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import Login from '@/components/Login/Login'
 import AllAssetsList from '@/components/AllAssetsList/Allassetslist'
 import NewSubject from '@/components/AllAssetsList/NewSubject'
+import AssetsEdit from '@/components/AllAssetsList/AssetsEdit'
 
 
 import Subjects from '@/components/Subjects/Subjects'
@@ -26,6 +27,11 @@ const router = new Router({
             path: '/admin/allassetslist',
             name: 'AllAssetsList',
             component: AllAssetsList,
+          },
+          {
+            path: '/admin/allassetslist/assetsedit',
+            name: 'AssetsEdit',
+            component: AssetsEdit
           },
           {
             path: '/admin/allassetslist/newsubject',
