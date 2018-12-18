@@ -4,12 +4,9 @@ import Router from 'vue-router'
 import Login from '@/components/Login/Login'
 import AllAssetsList from '@/components/AllAssetsList/Allassetslist'
 import NewSubject from '@/components/AllAssetsList/NewSubject'
-<<<<<<< HEAD
 import AddChannel from '@/components/AllAssetsList/AddChannel'
-=======
 import AssetsBIZEdit from '@/components/AllAssetsList/AssetsBIZEdit'
 import AssetsPERSONEdit from '@/components/AllAssetsList/AssetsPERSONEdit'
->>>>>>> a7e2e85cfa1fee3d4b0896ed69ffd2a59951b54d
 
 
 import Subjects from '@/components/Subjects/Subjects'
