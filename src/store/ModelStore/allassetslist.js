@@ -56,7 +56,6 @@ const actions = {
             }).catch(function (error) {
                 // this.$message('系统错误');
             });
-
      },
      //渠道管理查询数据列表
      SearchChannel({commit},playload){

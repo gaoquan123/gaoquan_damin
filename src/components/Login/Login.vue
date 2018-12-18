@@ -1,5 +1,23 @@
 <template>
         <div class="admin_bac">
+            <vue-particles
+                color="#fff"
+                :particleOpacity="1"
+                :particlesNumber="80"
+                shapeType="circle"
+                :particleSize="4"
+                linesColor="#dedede"
+                :linesWidth="1"
+                :lineLinked="true"
+                :lineOpacity="0.4"
+                :linesDistance="150"
+                :moveSpeed="3"
+                :hoverEffect="true"
+                hoverMode="grab"
+                :clickEffect="true"
+                clickMode="push"
+            >
+            </vue-particles>
                 <div class="admin_login">
                     <h3>
                         嘉实P2P后台管理系统
@@ -27,6 +45,7 @@
         </div>
 
 </template>
+
 <script>
   import {mapActions} from 'vuex'
 export default {
@@ -80,6 +99,7 @@ export default {
                 }
         });
         },
+  
       
         // 刷新验证码
         newCapt(){
@@ -87,30 +107,45 @@ export default {
         }
     },
     created () {
-    }
+    },
+    components: {
+   
+
+   }
+
 }
 
     
 </script>
 <style lang="less" scoped>
+
 .admin_bac{
-    background: #2b5888;
+    background: -webkit-linear-gradient(-150deg, #999, #2952c6); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(-150deg,  #999, #2952c6); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(-150deg,  #999, #2952c6); /* Firefox 3.6 - 15 */
+    background: linear-gradient(-150deg,  #999, #2952c6); /* 标准的语法（必须放在最后） */
     width: 100%;
     height: 100%;
     position: fixed;
     top: 0px;
     left: 0px;
 }
+    @keyframes auto {
+    0% { transform: translateY(-300px); }
+    100% { transform: translateY(200px); }
+    }
     .admin_login{
+        opacity: 0.9;
         position: fixed;
         top: 50%;
         left: 50%;
         width: 360px;
         height: 350px;
-        margin-top: -175px;
+        top: 0px;
         margin-left: -180px;
+        animation: auto 1s alternate forwards;
         background: #fff;
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.33);
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.33);
         h3{
             font-size: 18px;
             margin:10px;

@@ -7,9 +7,9 @@
                         router
                         :defaultActive = "activeIndex"
                         class="el-menu-vertical-demo"
-                        background-color="#545c64"
-                        text-color="#fff"
-                        active-text-color="#ffd04b">
+                        background-color="#fff"
+                        text-color="#000"
+                        active-text-color="#4f9dff">
                         <el-menu-item index="1" route="/admin/allassetslist">
                             <i class="el-icon-menu"></i>
                             <span slot="title">资产管理</span>
@@ -69,10 +69,11 @@
 </script>
 <style lang="less" scoped>
 .navMenuBox{
-        background-color: rgb(84, 92, 100);
+        background-color: #fff;
         width: 180px;
         position: relative;
-        height:900px;
+        height:100vh;
+        margin-top: 20px;
     .leftnavMenu{
         width: 100%;
         height: 100%;

@@ -7,6 +7,8 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 import validatorPlugin from "./PublicMethods/validatorPlugin"
+import VueParticles from 'vue-particles'
+
 
 import Vuex from 'vuex'
 import $ from 'jquery'
@@ -20,6 +22,8 @@ Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.use(validatorPlugin)
 Vue.use(Vuex)
+Vue.use(VueParticles)
+
 Vue.prototype.$axios = axios
 
 // 添加请求拦截器
