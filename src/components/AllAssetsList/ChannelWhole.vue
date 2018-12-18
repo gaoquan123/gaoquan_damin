@@ -5,7 +5,9 @@
                 <template slot="prepend">渠道名称</template>
             </el-input>
          <el-button class="m-l-10" type="primary" icon="el-icon-search" @click="SearchBtn()">查询</el-button>
+         <router-link  to="/admin/allassetslist/addhannel">
          <el-button class="" type="success" icon="el-icon-plus">添加渠道</el-button>
+         </router-link>
         </div>
          <div class="cl p-t-50">
              <el-table :data="ChannelWholeList"  border style="width: 100%">
@@ -52,7 +54,7 @@
         </el-pagination>
 
         <!-- 进件规则弹框 -->
-       
+
             <el-dialog title="渠道进件规则维护" :visible.sync="dialogFormVisible">
                     <el-form :model="relueForm" :rules="rules" status-icon  ref="relueForm" id="form1" label-width="100px">
 
@@ -91,10 +93,10 @@
 
 
                      <el-form-item  class="fl" label="支持期限区间" label-width="220px" prop="incomeSectionStart">
-                        <el-input type="number" style="width:130px;" v-model="relueForm.incomeSectionStart" placeholder="请输入内容"></el-input> 
+                        <el-input type="number" style="width:130px;" v-model="relueForm.incomeSectionStart" placeholder="请输入内容"></el-input>
                      </el-form-item>
                      <el-form-item  class="fl Mnone"  prop="incomeSectionStart" >
-                          - 
+                          -
                         <el-input type="number" style="width:130px;"  v-model="relueForm.incomeSectionEnd" placeholder="请输入内容"></el-input>
                      </el-form-item>
 
@@ -133,7 +135,7 @@
                     incomeSectionEnd:'',
                     overdueRateLimit:'',
                     payWay:''
-                   
+
                 },
                 // 表单验证
                 rules:{
@@ -160,7 +162,7 @@
                          {required: true,message: '至少选择一项',trigger: 'change'},
 
                     ],
-                    
+
                 }
             }
         },
@@ -169,7 +171,7 @@
             tableRowClassName({row, rowIndex}) {
                 if (rowIndex % 2 == 1) {
                 return 'warning-row';
-                } 
+                }
                 return '';
             },
             // 查询
@@ -198,7 +200,7 @@
                      this.input2  =  res.data.title;
                      this.relueForm.id = res.data.id;
                  })
-                
+
             },
             // 规则表单提交保存
             SubmitRule(relueForm){
@@ -227,7 +229,7 @@
                                 type: 'error'
                             });
                     }
-                  
+
                 })
 
             }
@@ -242,7 +244,7 @@
                this.$store.dispatch('SearchChannel',this.GetData)
         },
         components: {
-            
+
         },
     }
 </script>
@@ -275,7 +277,7 @@
     }
     .dialog-footer{
         text-align: center;
-       
+
     }
     .dialog-footer button{
         width: 120px;

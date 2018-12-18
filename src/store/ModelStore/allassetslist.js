@@ -45,7 +45,8 @@ const mutations = {
             })
         }
         state.channelList = data;
-    }
+    },
+    // 
 }
 const actions = {
     // 资产管理搜索数据列表
@@ -67,7 +68,6 @@ const actions = {
 
          })
      }
- 
 }
 
 export default{
