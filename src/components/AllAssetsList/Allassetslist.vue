@@ -26,7 +26,7 @@ import ChannelWhole from './ChannelWhole'
     },
     methods: {
       handleClick(tab, event) {
-        
+
       },
     },
     components:{
@@ -56,5 +56,5 @@ import ChannelWhole from './ChannelWhole'
         text-align: center;
         margin-bottom: 50px;
     }
-  
+
 </style>
