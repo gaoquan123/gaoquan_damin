@@ -569,6 +569,8 @@
     margin-left: 0;
   }
 
+  }
+
 
   .biz {
     width: 700px;
@@ -576,6 +578,8 @@
 
   .el-checkbox:nth-of-type(5), .el-checkbox:nth-of-type(9), .el-checkbox:nth-of-type(13) {
     margin-left: 0;
+  }
+
   }
 
   button{
