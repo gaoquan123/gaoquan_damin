@@ -1,16 +1,18 @@
 import Vue from 'vue'
-
 import Router from 'vue-router'
+// 一级路由
 import Login from '@/components/Login/Login'
 import AllAssetsList from '@/components/AllAssetsList/Allassetslist'
 import NewSubject from '@/components/AllAssetsList/NewSubject'
 import AddChannel from '@/components/AllAssetsList/AddChannel'
 import AssetsBIZEdit from '@/components/AllAssetsList/AssetsBIZEdit'
 import AssetsPERSONEdit from '@/components/AllAssetsList/AssetsPERSONEdit'
-
-
 import Subjects from '@/components/Subjects/Subjects'
 import Usermanage from '@/components/Usermanage/Usermanage'
+
+
+// 二级路由
+
 
 
 
@@ -32,12 +34,12 @@ const router = new Router({
           },
           {
             path: '/admin/allassetslist/assetsbizedit',
-            name: 'AssetsEdit',
+            name: 'AssetsBIZEdit',
             component: AssetsBIZEdit
           },
           {
             path: '/admin/allassetslist/assetspersonedit',
-            name: 'AssetsEdit',
+            name: 'AssetsPERSONEdit',
             component: AssetsPERSONEdit
           },
           {
@@ -54,7 +56,7 @@ const router = new Router({
           {
             path: '/admin/subjects',
             name: 'Subjects',
-            component: Subjects
+            component: Subjects,
           },
           {
             path: '/admin/usermanage',

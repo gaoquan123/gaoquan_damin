@@ -2,7 +2,7 @@
     <div class="newsubject">
         <h1 class="front-22 m-t-30 color">编辑资产</h1>
         <div class="Newform m-t-50">
-            <el-form ref="form" :model="ruleForm" label-width="150px">
+            <el-form ref="ruleForm" :model="ruleForm" label-width="150px">
                 <el-form-item label="资产所属人">
                     <el-input disabled v-model="ruleForm.assetsUser"></el-input>
                 </el-form-item>
@@ -74,225 +74,8 @@
                         </el-date-picker>
                 </el-form-item>
 
-                <el-form-item label="资产期限">
-                    <el-input  placeholder="请输入内容" v-model="ruleForm.assetsInterval">
-                        <template slot="append">天</template>
-                    </el-input>
-                </el-form-item>
-
-                <el-form-item label="宽限期">
-                    <el-input  placeholder="请输入内容" v-model="ruleForm.assetsAbleOverDays">
-                        <template slot="append">天</template>
-                    </el-input>
-                </el-form-item>
-                <!-- 如果是供应链 -->
-
-
-                <!-- 如果是小微 -->
-                <el-form-item label="资产期数">
-                    <el-input  placeholder="请输入内容" v-model="ruleForm.assetsPeriods">
-                        <template slot="append">月</template>
-                    </el-input>
-                </el-form-item>
-                <!-- 如果是小微 -->
-
-                <el-form-item label="资产年华利率">
-                    <el-input  placeholder="请输入内容" v-model="ruleForm.assetsRate">
-                        <template slot="append">％</template>
-                    </el-input>
-                </el-form-item>
-
-                <el-form-item label="风险等级" prop="region">
-                    <el-select placeholder="请选择风险等级" v-model="ruleForm.assetsRiskLevel">
-                        <el-option label="高风险" value="1"></el-option>
-                        <el-option label="较高风险" value="1"></el-option>
-                        <el-option label="中等风险" value="1"></el-option>
-                        <el-option label="低级风险" value="1"></el-option>
-                        <el-option label="极低风险" value="1"></el-option>
-                    </el-select>
-                </el-form-item>
-
-                <el-form-item label="风险限额">
-                    <el-input  placeholder="请输入内容" v-model="ruleForm.assetsRiskQuota">
-                        <template slot="append">元</template>
-                    </el-input>
-                </el-form-item>
-
-                <el-form-item label="资产模式">
-					<el-radio-group v-model="ruleForm.assetsModel">
-						<!-- <el-radio label="TRANSFER"  border size="medium">债转</el-radio> -->
-						<el-radio label="DIRECT"  border size="medium">直投</el-radio>
-						<el-radio label="COLLECT" border size="medium">受托支付</el-radio>
-					</el-radio-group>
-				</el-form-item>
-
-                <el-form-item label="所属渠道" prop="region">
-                    <el-select placeholder="请选择所属渠道" v-model="ruleForm.assetsChannel">
-                        <el-option label="高风险" value="1"></el-option>
-                    </el-select>
-                </el-form-item>
-
-                <el-form-item label="借款人主体性质" >
-					<el-radio-group v-model="ruleForm.borrowerMainCharacter">
-						<el-radio label="natural"  border size="medium">自然人</el-radio>
-						<el-radio label="legal" border size="medium">法人</el-radio>
-						<el-radio label="other" border size="medium">其它组织</el-radio>
-					</el-radio-group>
-				</el-form-item>
-
-                <el-form-item label="借款人工作性质" prop="region">
-                    <el-select placeholder="请选择借款人工作性质" v-model="ruleForm.borrowerWorkNature">
-                        <el-option label="公司白领" value="1"></el-option>
-                        <el-option label="商人" value="2"></el-option>
-                        <el-option label="工人" value="3"></el-option>
-                        <el-option label="农民" value="4"></el-option>
-                        <el-option label="学生" value="5"></el-option>
-                        <el-option label="自由职业" value="6"></el-option>
-                    </el-select>
-                </el-form-item>
-
-                <el-form-item label="借款人所属行业" prop="region">
-                    <el-select placeholder="请选择借借款人所属行业" v-model="ruleForm.borrowerIndustry">
-                        <el-option label="农、林、牧、渔业" value="A"></el-option>
-                        <el-option label="采矿业" value="B"></el-option>
-                        <el-option label="制造业" value="C"></el-option>
-                        <el-option label="电力、热力、燃气及水生产和供应业" value="D"></el-option>
-                        <el-option label="建筑业" value="E"></el-option>
-                        <el-option label="批发和零售业" value="F"></el-option>
-                        <el-option label="交通运输、仓储和邮政业" value="G"></el-option>
-                        <el-option label="住宿和餐饮业" value="H"></el-option>
-                        <el-option label="信息传输、软件和信息技术服务业" value="I"></el-option>
-                        <el-option label="金融业" value="J"></el-option>
-                        <el-option label="房地产业" value="K"></el-option>
-                        <el-option label="租赁和商务服务业" value="L"></el-option>
-                        <el-option label="科学研究和技术服务业" value="M"></el-option>
-                        <el-option label="水利、环境和公共设施管理业" value="N"></el-option>
-                        <el-option label="居民服务、修理和其他服务业" value="O"></el-option>
-                        <el-option label="教育" value="P"></el-option>
-                        <el-option label="卫生和社会工作" value="Q"></el-option>
-                        <el-option label="文化、体育和娱乐业" value="R"></el-option>
-                        <el-option label="公共管理、社会保障和社会组织" value="S"></el-option>
-                        <el-option label="国际组织" value="T"></el-option>
-                        <el-option label="其他" value="U"></el-option>
-                    </el-select>
-                </el-form-item>
-
-                <el-form-item label="月均收入">
-                    <el-select placeholder="请选择月均收入" v-model="ruleForm.disposableIncome">
-                        <el-option label="2000元以下" value="1"></el-option>
-                        <el-option label="2001-5000" value="2"></el-option>
-                        <el-option label="5001-10000" value="3"></el-option>
-                        <el-option label="10001-20000" value="4"></el-option>
-                        <el-option label="20001-50000" value="11"></el-option>
-                        <el-option label="50001-100000" value="12"></el-option>
-                        <el-option label="100000以上" value="13"></el-option>
-
-                        <el-option label="5万以下" value="6"></el-option>
-                        <el-option label="5万-20万" value="7"></el-option>
-                        <el-option label="20万-50万" value="8"></el-option>
-                        <el-option label="50-100万" value="9"></el-option>
-                        <el-option label="100万以上" value="10"></el-option>
-                    </el-select>
-                </el-form-item>
-
-                <el-form-item label="负债情况">
-                    <el-input type="textarea" v-model="ruleForm.liabilitiesCondition"></el-input>
-                </el-form-item>
-
-                <el-form-item label="其他P2P平台借款" prop="required">
-                    <el-input type="textarea" v-model="ruleForm.otherPlatformBorrow"></el-input>
-                </el-form-item>
-
-                <el-form-item label="征信情况" prop="required">
-                    <el-input type="textarea" v-model="ruleForm.creditCondition"></el-input>
-                </el-form-item>
-
-                <el-form-item label="平台逾期次数" prop="required">
-                    <el-input  placeholder="请输入内容" v-model="ruleForm.platformOverdueTimes">
-                        <template slot="append">次</template>
-                    </el-input>
-                </el-form-item>
-
-                <el-form-item label="平台逾期总金额" prop="required">
-                    <el-input  placeholder="请输入内容" v-model="ruleForm.platformOverdueAmount">
-                        <template slot="append">元</template>
-                    </el-input>
-                </el-form-item>
-
-                <el-form-item label="资产描述">
-                    <el-input type="textarea" v-model="ruleForm.assetsDescription"></el-input>
-                </el-form-item>
-
-                <el-form-item label="借款用途" prop="required">
-                    <el-input type="textarea" v-model="ruleForm.loanUsage"></el-input>
-                </el-form-item>
-
-                <el-form-item label="还款来源" prop="required">
-                    <el-input type="textarea" v-model="ruleForm.repaymentSource"></el-input>
-                </el-form-item>
-
-                <el-form-item label="还款保障" prop="required">
-                    <el-input type="textarea" v-model="ruleForm.paySafeguard"></el-input>
-                </el-form-item>
-
-                 <!-- 如果是小微 -->
-                <el-form-item label="风控措施" prop="required">
-                    <el-input type="textarea" v-model="ruleForm.riskControl"></el-input>
-                </el-form-item>
-                 <!-- 如果是小微 -->
-
-                <el-form-item label="项目风险提醒" prop="required">
-                    <el-input type="textarea" v-model="ruleForm.riskAlert"></el-input>
-                </el-form-item>
-
-                <el-form-item label="增信措施" prop="required">
-                    <el-input type="textarea" v-model="ruleForm.addTrustMeasures"></el-input>
-                </el-form-item>
-
-                <el-form-item label="已验收资料" prop="accepteData_personnel">
-                    <el-checkbox-group v-model="ruleForm.accepteData_personnel">
-                        <el-checkbox label="身份证" name="accepteData_personnel" value="15"></el-checkbox>
-                        <el-checkbox label="户口本" name="accepteData_personnel" value="16"></el-checkbox>
-                        <el-checkbox label="婚姻状况证明" name="accepteData_personnel" value="17"></el-checkbox>
-                        <el-checkbox label="征信报告" name="accepteData_personnel" value="18"></el-checkbox>
-                        <br>
-                         <el-checkbox label="银行流水" name="accepteData_personnel" value="19"></el-checkbox>
-                        <el-checkbox label="反担保特权属证明" name="accepteData_personnel" value="20"></el-checkbox>
-                        <el-checkbox label="个人收入证明" name="accepteData_personnel" value="21"></el-checkbox>
-                        <el-checkbox label="被执行人情况查询" name="accepteData_personnel" value="22"></el-checkbox>
-                        <br>
-                         <el-checkbox label="担保措施登手续" name="accepteData_personnel" value="23"></el-checkbox>
-                        <el-checkbox label="合作机构代偿" name="accepteData_personnel" value="24"></el-checkbox>
-                    </el-checkbox-group>
-                </el-form-item>
-
-                <el-form-item label="已验收资料" prop="accepteData_enterprise">
-                    <el-checkbox-group v-model="ruleForm.accepteData_enterprise">
-                        <el-checkbox label="法人及实际控制人征信报告" name="accepteData_enterprise" value="1"></el-checkbox>
-                        <el-checkbox label="法人及实际控制人身份证" name="accepteData_enterprise" value="2"></el-checkbox>
-                        <el-checkbox label="企业营业执照" name="accepteData_enterprise" value="3"></el-checkbox>
-                        <el-checkbox label="企业征信报告" name="accepteData_enterprise" value="4"></el-checkbox>
-                        <br />
-                         <el-checkbox label="反担保股东会决议" name="accepteData_enterprise" value="5"></el-checkbox>
-                        <el-checkbox label="被执行情况查询" name="accepteData_enterprise" value="6"></el-checkbox>
-                        <el-checkbox label="上年度财务报表" name="accepteData_enterprise" value="7"></el-checkbox>
-                        <el-checkbox label="近三个月财务报表" name="accepteData_enterprise" value="8"></el-checkbox>
-                        <br />
-                        <el-checkbox label="主结算账户近6个月流水" name="accepteData_enterprise" value="9"></el-checkbox>
-                        <el-checkbox label="贸易合同及交易发票" name="accepteData_enterprise" value="10"></el-checkbox>
-                        <el-checkbox label="物流单据/出入库单" name="accepteData_enterprise" value="11"></el-checkbox>
-                        <el-checkbox label="实地走访" name="accepteData_enterprise" value="12"></el-checkbox>
-                        <br />
-                         <el-checkbox label="商票背书转让" name="accepteData_enterprise" value="13"></el-checkbox>
-                        <el-checkbox label="中登网债权登记" name="accepteData_enterprise" value="14"></el-checkbox>
-                        <el-checkbox label="担保措施登记手续" name="accepteData_enterprise" value="23"></el-checkbox>
-                        <el-checkbox label="物流单据/合作机构代偿" name="accepteData_enterprise" value="24"></el-checkbox>
-                    </el-checkbox-group>
-                </el-form-item>
-
-
                 <el-form-item>
-                    <el-button type="primary">保存</el-button>
+                    <el-button type="primary" @click="onSubmit('ruleForm')">保存</el-button>
                     <el-button>取消</el-button>
                 </el-form-item>
             </el-form>
@@ -353,21 +136,28 @@ export default {
             assetsEnd: [
                 { type: 'date', required: true, message: '请选择资产到期日', trigger: 'blur' }
             ],
-            required: [
-                { required: true, message: '内容不能为空', trigger: 'blur' }
-            ],
-            accepteData_personnel: [
-                { type: 'array', required: true, message: '请至少选择一个验收资料', trigger: 'change' }
-            ],
-            accepteData_enterprise: [
-                { type: 'array', required: true, message: '请至少选择一个验收资料', trigger: 'change' }
-            ]
+            // required: [
+            //     { required: true, message: '内容不能为空', trigger: 'blur' }
+            // ],
+            // accepteData_personnel: [
+            //     { type: 'array', required: true, message: '请至少选择一个验收资料', trigger: 'change' }
+            // ],
+            // accepteData_enterprise: [
+            //     { type: 'array', required: true, message: '请至少选择一个验收资料', trigger: 'change' }
+            // ]
         }
     };
   },
   methods: {
-    onSubmit() {
-      console.log("submit!");
+    onSubmit(formName) {
+      this.$refs[formName].validate((valid) => {
+          console.log(valid)
+          if(valid) {
+              console.log('submit')
+          } else {
+              console.log('error submit !!')
+          }
+      })
     },
     reloadsUserInfo() {
       // 右边个人信息菜单显示

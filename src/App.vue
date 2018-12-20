@@ -9,6 +9,7 @@
                     <router-view/>
             </div>
      </div>
+     <div class="haha"></div>
   </div>
 </template>
 
@@ -26,18 +27,21 @@ export default {
 
 <style>
 .content_right{
-    width:-webkit-calc(100% - 200px); 
-    width:-moz-calc(100% - 200px); 
-    width:calc(100% - 200px);
+    width:-webkit-calc(100% - 240px);
+    width:-moz-calc(100% - 240px);
+    width:calc(100% - 240px);
     left: 180px;
     position: absolute;
     background: #fff;
     margin-top: 20px;
     margin-left: 20px;
     padding:20px;
+    box-sizing: border-box;
+
 }
-
-
+.el-loading-parent--hidden {
+  overflow: visible!important;
+}
 
 .w5{width: 5%;}
 .w10{width: 10%;}
@@ -143,7 +147,7 @@ export default {
     color: #909399;
     border: 1px solid #dcdfe6;
     border-radius: 4px 0px 0px 4px;
-    padding: 9px 10px;
+    padding: 11px 10px;
     margin-right: -6px;
 }
 </style>
