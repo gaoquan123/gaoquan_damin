@@ -27,8 +27,8 @@ export default {
 
 <style>
 .content_right{
-    width:-webkit-calc(100% - 240px); 
-    width:-moz-calc(100% - 240px); 
+    width:-webkit-calc(100% - 240px);
+    width:-moz-calc(100% - 240px);
     width:calc(100% - 240px);
     left: 180px;
     position: absolute;
@@ -39,7 +39,9 @@ export default {
     box-sizing: border-box;
 
 }
-
+.el-loading-parent--hidden {
+  overflow: visible!important;
+}
 
 .w5{width: 5%;}
 .w10{width: 10%;}
