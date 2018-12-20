@@ -1,12 +1,13 @@
 <template>
     <div class="m-t-40">
+        <!-- 未上架 -->
          <el-table  :data="listItemTab" fit  
-          element-loading-text="拼命加载中"
+         :row-class-name="tableRowClassName"
           border style="width: 100%" >
-			<el-table-column prop="title" label="项目名称"  > </el-table-column>
+			<el-table-column prop="title" label="项目名称"  width="200px;" > </el-table-column>
 			<el-table-column prop="catalog" label="产品类型"  > </el-table-column>
 			<el-table-column prop="autoShelfAt" label="自动上架时间"  > </el-table-column>
-			<el-table-column prop="annualRate" label="年华利率"  > </el-table-column>
+			<el-table-column prop="annualRate" label="年化利率"  > </el-table-column>
 			<el-table-column prop="amount" label="借款金额"  > </el-table-column>
 			<el-table-column prop="currentInvestmentAmount" label="当前出借金额"  > </el-table-column>
 			<el-table-column prop="status" label="状态"  > </el-table-column>
@@ -14,19 +15,12 @@
 			<el-table-column prop="laModel" label="代收付信息"  > </el-table-column>
             	<el-table-column label="操作" width="250">
 				<template slot-scope="scope">
-					<a>上架</a>
-					<a>修改</a>
-					<a>取消</a>
+                     <el-button type="primary" plain round  size="mini">上架</el-button>
+                     <el-button type="success" plain round  size="mini">修改</el-button>
+                     <el-button type="danger" plain round  size="mini">取消</el-button>
 				</template>
 			</el-table-column>
         </el-table>
-        <!-- <el-pagination
-            class="m-t-40 m-b-40"
-            background
-            layout="prev, pager, next"
-            @current-change="handleCurrentChange"
-            :total="this.$store.state.subjects.GetSubjectInfoItem.totalCount">
-        </el-pagination> -->
     </div>
 </template>
 <script>
@@ -60,10 +54,12 @@ import {catalogText,formatDate,payWay,ModelType,dealElement} from '../../../Publ
             }
         },
         methods: {
-            // handleCurrentChange(currentPage){
-            //   this.queryForm.page = currentPage;
-            //   this.$store.dispatch("GetSubjectAllTab",{"type":dealElement(this.queryForm)})
-            // }
+          	tableRowClassName({ row, rowIndex }) {
+                if (rowIndex % 2 == 1) {
+                    return "warning-row";
+                }
+                return "";
+                },
         },
         
         
@@ -71,24 +67,25 @@ import {catalogText,formatDate,payWay,ModelType,dealElement} from '../../../Publ
     }
 </script>
 <style lang="less" scoped>
-.dialog-footer{
-	text-align: center;
-}
 /deep/.el-table td{
-      text-align: center !important;
+        text-align: center !important;
         text-align: -webkit-center !important;
+    div{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 }
 /deep/.is-leaf{
       text-align: center !important;
      text-align: -webkit-center !important;
 }
-.cell a{
-    color: #337ab7;
-    text-decoration: underline;
+/deep/.warning-row {
+  background-color: #eee !important;
 }
 
-/deep/ .el-loading-mask{
-        background-color: rgba(255,255,255,.5);
+/deep/.success-row {
+  background-color: #f0f9eb !important;
 }
 </style>
 

@@ -1,29 +1,27 @@
 <template>
     <div class="m-t-40">
-        <!-- 回款中 -->
-        <el-row class="m-b-40">
-              <el-button>开启自动回款</el-button>
-            <el-button type="success">申请回款</el-button>
-            <el-button type="info">申请代偿</el-button>
-            <el-button type="warning">申请提前还款</el-button>
-            <el-button type="danger">同意申请</el-button>
-            <el-button type="primary">驳回申请</el-button>
-            <el-button type="danger">驳回提前还款申请</el-button>
+        <!-- 已还款代偿 -->
+            <el-row class="m-b-40">
+            <el-button>开启自动回款</el-button>
+            <el-button type="success">同意代偿回款</el-button>
+            <el-button type="info">驳回代偿申请</el-button>
+            <el-button type="warning">借款人代偿款申请</el-button>
+            <el-button type="danger">同意借款人还代偿款申请</el-button>
+            <el-button type="primary">驳回借款人还款申请</el-button>
         </el-row>
          <el-table  fit  
             :data = "listItem"
             :row-class-name="tableRowClassName"
             border style="width: 100%" >
+            <el-table-column type="selection" > </el-table-column>
 			<el-table-column prop="subjectTitle" label="项目名称"  width="200px;"> </el-table-column>
 			<el-table-column prop="catalog" label="产品类型"  > </el-table-column>
 			<el-table-column prop="amount" label="出借金额"  > </el-table-column>
 			<el-table-column prop="annualRate" label="利率"  > </el-table-column>
 			<el-table-column prop="userName" label="借款人"  width="150px;" > </el-table-column>
-			<el-table-column prop="userAuthorization" label="还款预授权状态"  > </el-table-column>
 			<el-table-column prop="effectDate" label="生效日期"  > </el-table-column>
-			<el-table-column prop="testStatus" label="状态"  > </el-table-column>
 			<el-table-column prop="instalType" label="还款方式" > </el-table-column>
-			<el-table-column prop="nextRepaymentDate" label="下一期还款日期	" > </el-table-column>
+			<el-table-column prop="nextRepaymentDate" label="下期还款日期	" > </el-table-column>
 			<el-table-column prop="nextStatusText" label="回款状态" > </el-table-column>
 			<el-table-column prop="transferable" label="转让标" > </el-table-column>
             <el-table-column  label="操作" width="200px;" >
@@ -31,9 +29,6 @@
                     <a>查看合同</a>
                     <a>详情</a>
                     <a>编辑</a>
-                    <br>
-                    <a>还款计划</a>
-                    <a>预约还款</a>
                 </template>
             </el-table-column>
         </el-table>
@@ -48,15 +43,14 @@ import {catalogText,formatDate,payWay,ModelType,dealElement} from '../../../Publ
                   let result  = this.$store.state.subjects.ContractsQueryItem.items;
                   result.map((item)=>{
                         item.catalog = catalogText(item.catalog);
-                        item.amount = item.amount.amount+"元";
                         item.annualRate = (item.annualRate*100).toFixed(2)+'%';
-                        item.userAuthorization =  item.userAuthorization ? "未完成" : "已完成";
+                        item.amount = item.amount.amount+"元";
                         item.effectDate = formatDate(item.effectDate);
-                        item.testStatus = '还款中'
                         item.instalType = payWay(item.instalType);
                         item.nextRepaymentDate = formatDate(item.nextRepaymentDate)
-                        item.nextStatusText = "人工";
+                        item.nextStatusText = "已代偿-未结清";
                         item.transferable =  item.transferable ? "否" : "是";
+                        item.userAuthorization =  item.userAuthorization ? "未完成" : "已完成";
                  })
                   return result
               }

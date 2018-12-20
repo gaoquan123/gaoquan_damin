@@ -12,7 +12,7 @@
                     <template slot="prepend">资产名字</template>
                 </el-input>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="8" class="displayType">
                 <span class="ipt fl">资产类型</span>
                 <el-select v-model="form.catalog" filterable placeholder="请选择资产类型">
                     <el-option
@@ -37,7 +37,7 @@
                     <template slot="prepend">所属渠道商</template>
                 </el-input>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="8" class="displayType">
                 <span class="ipt fl">还款方式</span>
                 <el-select v-model="form.instalType" filterable placeholder="请选择资产类型">
                     <el-option
@@ -51,7 +51,7 @@
         </el-row>
 
 
-          <el-row :gutter="20" class="m-t-20">
+          <el-row :gutter="20" class="m-t-20 displayType" >
              <el-col :span="8">
                 <el-input placeholder="请输入内容" class="w80"  v-model="form.borrowStartAmount">
                     <template v-if='this.active=="NEW"' slot="prepend">最低借款金额</template>
@@ -66,10 +66,14 @@
 
                 </el-input>
             </el-col>
+
+            <el-col :span="8" v-if='active =="COMPENSATORY_REQUESTING"'>
+               <el-button  type="primary">自动代偿记录导出</el-button>
+            </el-col>
         </el-row>
 
         <el-row :gutter="20" class="m-t-20">
-            <el-col :span="8">
+            <el-col :span="8" class="displayType">
                 <el-input placeholder="请输入内容" class="w80"  v-model="form.username">
                     <template slot="prepend">借款人用户名</template>
                 </el-input>
@@ -77,7 +81,7 @@
 
             <el-col :span="8">
                     <div class="block">
-                      <span class="ipt fl">创建时间</span>
+                      <span class="ipt fl">起始时间</span>
                          <el-date-picker
                             v-model="dateArr"
                             type="daterange"
@@ -88,14 +92,36 @@
                     </div>
             </el-col>
 
+            <el-col style="line-height:50px;" :span="8" v-if='active =="COMPENSATORY_REQUESTING"'>
+                    <el-switch
+                        v-model="value3"
+                        active-text="开启自动代偿"
+                        inactive-text="关闭自动代偿">
+                    </el-switch>
+            </el-col>
+            
+            <el-col :span="8" v-if='active == "REPAYMENT_DETAILS"'>
+               <el-button  type="success">导出标的信息</el-button>
+               <el-button  type="info">等额本息标的还款详情</el-button>
+            </el-col>
+
         </el-row>
        <el-button @click="searchBtn()"  class="w20 m-t-40" type="primary">搜索<i class="el-icon-search el-icon--right"></i></el-button>
-       <NewTable v-if='active == "NEW"'></NewTable>
-       <FundingTable v-if='active == "FUNDING"'></FundingTable>
-       <FundedTable v-if='active == "FUNDED"'></FundedTable>
-       <PassTable v-if='active == "PASS"'></PassTable>
-       <DoneTable v-if='active == "DONE"'></DoneTable>
-       <PendingTable v-if='active == "PENDING"'></PendingTable>
+        <NewTable v-if='active == "NEW"'></NewTable>
+        <FundingTable v-if='active == "FUNDING"'></FundingTable>
+        <FundedTable v-if='active == "FUNDED"'></FundedTable>
+        <PassTable v-if='active == "PASS"'></PassTable>
+        <DoneTable v-if='active == "DONE"'></DoneTable>
+        <PendingTable v-if='active == "PENDING"'></PendingTable>
+        <UnshelveTable v-if='active == "UN_SHELVE"'></UnshelveTable>
+        <AbortTable v-if='active == "ABORT"'></AbortTable>
+        <PendingYqTable v-if='active == "PENDING2"'></PendingYqTable>
+        <CompenTable v-if='active == "COMPENSATORY_REQUESTING"'></CompenTable>
+        <CompenDoneTable v-if='active == "COMPENSATORY_DONE"'></CompenDoneTable>
+        <ZjTable v-if='active == "PASS_PENDING"'></ZjTable>
+        <DetailsTable v-if='active=="REPAYMENT_DETAILS"'></DetailsTable>
+
+
           <el-pagination
             class="m-t-40 m-b-40"
             background
@@ -106,18 +132,30 @@
     </div>
 </template>
 <script>
-import {formatDate,dealElement} from '../../PublicMethods/MethodsJs'
-import NewTable from './subjectTablePage/NewTable'            //未上架
-import FundingTable from './subjectTablePage/FundingTable'    //募集中
-import FundedTable from './subjectTablePage/FundedTable'      //满标待放款
-import PassTable from './subjectTablePage/PassTable'          //流标
-import DoneTable from './subjectTablePage/DoneTable'          //回款中
-import PendingTable from './subjectTablePage/PendingTable'    //回款完成
+    import {formatDate,dealElement} from '../../PublicMethods/MethodsJs'
+    import NewTable from './subjectTablePage/NewTable'            //未上架
+    import FundingTable from './subjectTablePage/FundingTable'    //募集中
+    import FundedTable from './subjectTablePage/FundedTable'      //满标待放款
+    import PassTable from './subjectTablePage/PassTable'          //流标
+    import DoneTable from './subjectTablePage/DoneTable'          //回款中
+    import PendingTable from './subjectTablePage/PendingTable'    //回款完成
+    import UnshelveTable from './subjectTablePage/UnshelveTable'   //已下架
+    import AbortTable from './subjectTablePage/AbortTable'        //已撤销
+    import PendingYqTable from './subjectTablePage/PendingYqTable' //逾期中
+    import CompenTable from './subjectTablePage/CompenTable'     //代偿中
+    import CompenDoneTable from './subjectTablePage/CompenDoneTable'     //已还款代偿
+    import ZjTable from './subjectTablePage/ZjTable'     //中间状态
+    import DetailsTable from './subjectTablePage/DetailsTable'     //还款详情
 
 export default {
     props:['active'],
+     components: {
+        DoneTable,NewTable,FundedTable,FundingTable,PassTable,PendingTable,UnshelveTable,
+        AbortTable,PendingYqTable,CompenTable,CompenDoneTable,ZjTable,DetailsTable
+    },
     data(){
         return{
+            value3:true,
             options: [
                 {value: '',label: '全部类型'},
                 {value: 'JIASHI_V1',label: '固收赢'}, 
@@ -187,9 +225,7 @@ export default {
               this.$store.dispatch("GetSubjectAllTab",{"type":dealElement(this.form)})
             }
     },
-    components: {
-        DoneTable,NewTable,FundedTable,FundingTable,PassTable,PendingTable
-    },
+   
     created(){
         this.defaultFun();
     },
@@ -197,6 +233,11 @@ export default {
     watch: {
         active(newname,oldname){
             this.defaultFun();
+            if(newname == "REPAYMENT_DETAILS"){
+                $(".displayType").hide();
+            }else{
+                $(".displayType").show();
+            }
         },
             deep: true,
             immediate: true

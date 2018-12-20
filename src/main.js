@@ -78,7 +78,7 @@ axios.interceptors.response.use(
     },
     error => {
         if (error.response) {
-            if(error.response.status <=400 && error.response.status >500){
+            if(error.response.status ==401){
                 alert("您的登录已过期，请重新登录")
                 router.replace({path: '/admin/login'})
             }
