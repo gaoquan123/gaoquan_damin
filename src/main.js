@@ -68,7 +68,7 @@ axios.interceptors.request.use(
         alert("请刷新重试")
         return Promise.reject(error)
 
-      
+
     });
 //http response 拦截器
 axios.interceptors.response.use(
@@ -78,7 +78,7 @@ axios.interceptors.response.use(
     },
     error => {
         if (error.response) {
-            if(error.response.status ==401){
+            if(error.response.status ==401 ){
                 alert("您的登录已过期，请重新登录")
                 router.replace({path: '/admin/login'})
             }
@@ -94,7 +94,7 @@ new Vue({
   router,store,validatorPlugin,
   components: { App },
 //   created() {
- 
+
 //   },
   template: '<App/>'
 })

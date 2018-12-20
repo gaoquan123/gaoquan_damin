@@ -232,8 +232,11 @@
 
                 })
 
+            },
+            //编辑
+            editBtn(id){
+              this.$router.push({name: 'AddChannel', query: { id : id}})
             }
-
         },
         computed: {
             ChannelWholeList(){
