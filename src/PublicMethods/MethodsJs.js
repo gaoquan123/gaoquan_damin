@@ -71,6 +71,43 @@ export let payWay  = function(value){
         return '一次性还本付息/等额本息'
     }else if(value =='MATCHING_PRINCIPAL_AND_INTEREST,A_DEBT_SERVICE_DUE'){
         return '一次性还本付息/等额本息'
+    }else if(value =='ONCE_PRINCIPAL_AND_INTEREST'){
+        return '到期还本付息'
+    }else{
+        return '-'
+    }
+}
+
+//产品类型
+export let catalogText  = function(value){
+    if(value== 'JIASHI_V1'){
+        return '固收赢'
+    }else if(value == 'JIASHI_V2'){
+        return '利息赢'
+    }else if(value == 'JIASHI_V3'){
+        return '新手标'
+    }else if(value =='JIASHI_V4'){
+        return '地产标'
+    }else if(value =='JIASHI_V5'){
+        return '转让标'
+    }else if(value =='JIASHI_V6'){
+        return '众收赢'
+    }else if(value =='JIASHI_V7'){
+        return '众乐乐'
+    }else if(value =='JIASHI_V8'){
+        return '个人借款标的'
+    }else if(value =='JIASHI_V9'){
+        return '个人理财质押'
+    }else if(value =='JIASHI_V11'){
+        return '个人信用标的'
+    }else if(value =='JIASHI_V13'){
+        return '企业借款标的'
+    }else if(value =='JIASHI_V14'){
+        return '双月嘉'
+    }else if(value =='JIASHI_V15'){
+        return '月月盈'
+    }else if(value =='JIASHI_V16'){
+        return '新手标'
     }else{
         return '-'
     }

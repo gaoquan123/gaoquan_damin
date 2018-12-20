@@ -1,8 +1,7 @@
 import $axios from 'axios'
+
 const state = {
     GetSubjectInfoItem:{}, 
-    getRepaymentDetailsItem:{}, 
-    ContractsQueryItem:{}
 }
 const getters = {
 
@@ -13,27 +12,45 @@ const mutations = {
         state.GetSubjectInfoItem = data;
     },
      // 还款详情
-    getRepaymentDetails(state,data){
-        state.getRepaymentDetailsItem = data;
-    },
-      // 回款中，回款完成，逾期中，代偿中，已还代偿，
-    ContractsQuery(state,data){
-        state.ContractsQueryItem = data;
-    }
+    // getRepaymentDetails(state,data){
+    //     state.getRepaymentDetailsItem = data;
+    // },
+    //   // 回款中，回款完成，逾期中，代偿中，已还代偿，
+    // ContractsQuery(state,data){
+    //     state.ContractsQueryItem = data;
+    // }
 }
 const actions = {
     GetSubjectAllTab({commit},paload){
-        $axios.get(paload.url,{params:paload.type})
-        .then((res)=>{
-            let active = paload.type.status;
+            let str = 'catalog=JIASHI_V1&catalog=JIASHI_V2&catalog=JIASHI_V3&catalog=JIASHI_V6&catalog=JIASHI_V7&catalog=JIASHI_V8&catalog=JIASHI_V9&catalog=JIASHI_V11&catalog=JIASHI_V13&catalog=JIASHI_V14&catalog=JIASHI_V15&catalog=JIASHI_V16';
+            let url ;
+            let active =  paload.type.status;
+            console.log(paload.type)
             if(active == "NEW" || active == "FUNDING" || active == "FUNDED" || active == "PASS" || active == "UN_SHELVE" || active == "ABORT"|| active == "PASS_PENDING"){
-                commit("GetSubjectInfo",res.data)
+                //未上架，募集中，满标待放款，流标，已下架，已撤销，中间状态，
+                if(paload.type.catalog){
+                    url = '/admin/api/subjects/getSubjectInfo';
+                }else{
+                    url = '/admin/api/subjects/getSubjectInfo?'+str;
+                }
             }else if(active == "REPAYMENT_DETAILS"){
-                commit("getRepaymentDetails",res.data)
+                 // 还款详情
+                    url = '/admin/api/subjects/getRepaymentDetails';
             }else{
-                commit("ContractsQuery",res.data)
+                 // 回款中，回款完成，逾期中，代偿中，已还代偿，
+                if(active == "PENDING2"){
+                    paload.type.status = "PENDING";
+                }
+                  if(paload.type.catalog){
+                     url =  '/admin/api/contracts/ContractsQuery';
+                  }else{
+                     url = '/admin/api/contracts/ContractsQuery?'+str;
+                  }
             }
-        })
+            $axios.get(url,{params:paload.type}).then((res)=>{
+                commit("GetSubjectInfo",res.data)
+             })
+      
     }
 }
 

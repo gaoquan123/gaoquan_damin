@@ -54,13 +54,16 @@
           <el-row :gutter="20" class="m-t-20">
              <el-col :span="8">
                 <el-input placeholder="请输入内容" class="w80"  v-model="form.borrowStartAmount">
-                    <template slot="prepend">最低出借</template>
+                    <template v-if='this.active=="NEW"' slot="prepend">最低借款金额</template>
+                    <template v-else slot="prepend">最低出借金额</template>
                 </el-input>
             </el-col>
 
               <el-col :span="8">
                  <el-input placeholder="请输入内容" class="w80"  v-model="form.borrowEndAmount">
-                    <template slot="prepend">最高出借</template>
+                    <template v-if='this.active=="NEW"'  slot="prepend">最高借款金额</template>
+                    <template v-else  slot="prepend">最高出借金额</template>
+
                 </el-input>
             </el-col>
         </el-row>
@@ -86,12 +89,31 @@
             </el-col>
 
         </el-row>
-     <el-button @click="searchBtn()"  class="w20 m-t-20" type="primary">搜索<i class="el-icon-search el-icon--right"></i></el-button>
-
+       <el-button @click="searchBtn()"  class="w20 m-t-40" type="primary">搜索<i class="el-icon-search el-icon--right"></i></el-button>
+       <NewTable v-if='active == "NEW"'></NewTable>
+       <FundingTable v-if='active == "FUNDING"'></FundingTable>
+       <FundedTable v-if='active == "FUNDED"'></FundedTable>
+       <PassTable v-if='active == "PASS"'></PassTable>
+       <DoneTable v-if='active == "DONE"'></DoneTable>
+       <PendingTable v-if='active == "PENDING"'></PendingTable>
+          <el-pagination
+            class="m-t-40 m-b-40"
+            background
+            layout="prev, pager, next"
+            @current-change="handleCurrentChange"
+            :total="this.$store.state.subjects.GetSubjectInfoItem.totalCount">
+        </el-pagination>
     </div>
 </template>
 <script>
 import {formatDate,dealElement} from '../../PublicMethods/MethodsJs'
+import NewTable from './subjectTablePage/NewTable'            //未上架
+import FundingTable from './subjectTablePage/FundingTable'    //募集中
+import FundedTable from './subjectTablePage/FundedTable'      //满标待放款
+import PassTable from './subjectTablePage/PassTable'          //流标
+import DoneTable from './subjectTablePage/DoneTable'          //回款中
+import PendingTable from './subjectTablePage/PendingTable'    //回款完成
+
 export default {
     props:['active'],
     data(){
@@ -134,47 +156,50 @@ export default {
 
         }
     },
+   
     methods: {
+        //查询按钮
         searchBtn(){
             this.form.status = this.active;
             if(this.dateArr){
                 this.form.startDay =   formatDate(this.dateArr[0]);
                 this.form.endDay =   formatDate(this.dateArr[1]);
             }
-            let str = 'catalog=JIASHI_V1&catalog=JIASHI_V2&catalog=JIASHI_V3&catalog=JIASHI_V6&catalog=JIASHI_V7&catalog=JIASHI_V8&catalog=JIASHI_V9&catalog=JIASHI_V11&catalog=JIASHI_V13&catalog=JIASHI_V14&catalog=JIASHI_V15&catalog=JIASHI_V16';
-            var url;
-            if(this.active == "NEW" || this.active == "FUNDING" || this.active == "FUNDED" || this.active == "PASS" || this.active == "UN_SHELVE" || this.active == "ABORT"|| this.active == "PASS_PENDING"){
-                //未上架，募集中，满标待放款，流标，已下架，已撤销，中间状态，
-                if(this.form.catalog){
-                    url = '/admin/api/subjects/getSubjectInfo';
+            this.form.page = 1;
+            this.$store.dispatch("GetSubjectAllTab",{"type":dealElement(this.form)})
+        },
+        //tab栏切换初始化数据
+        defaultFun(){
+            this.form.status = this.active;
+            this.form.page = 1;
+            Object.keys(this.form).forEach((key,val)=>{
+                if(key =='page' || key == 'orderByFlag' || key == 'queryFlag' || key == 'status'){
+                    return
                 }else{
-                    url = '/admin/api/subjects/getSubjectInfo?'+str;
+                     this.form[key] = "";
                 }
-            }else if(this.active == "REPAYMENT_DETAILS"){
-                 // 还款详情
-                    url = '/admin/api/subjects/getRepaymentDetails';
-            }else{
-                 // 回款中，回款完成，逾期中，代偿中，已还代偿，
-                if(this.active == "PENDING2"){
-                    this.form.status = "PENDING";
-                }
-                  if(this.form.catalog){
-                     url =  '/admin/api/contracts/ContractsQuery';
-                  }else{
-                     url = '/admin/api/contracts/ContractsQuery?'+str;
-                  }
+            })
+            this.$store.dispatch("GetSubjectAllTab",{"type":dealElement(this.form)})
+        },
+        // 分页
+         handleCurrentChange(currentPage){
+              this.form.page = currentPage;
+              this.$store.dispatch("GetSubjectAllTab",{"type":dealElement(this.form)})
             }
-          
-            this.$store.dispatch("GetSubjectAllTab",{"type":dealElement(this.form),"url":url})
-            // this.$store.dispatch("LoanAssetList",dealElement(this.FromData));
-            //未上架排序与字段
-        }
     },
     components: {
+        DoneTable,NewTable,FundedTable,FundingTable,PassTable,PendingTable
     },
     created(){
-        this.searchBtn();
-        console.log("@2")
+        this.defaultFun();
+    },
+    //初始化数据
+    watch: {
+        active(newname,oldname){
+            this.defaultFun();
+        },
+            deep: true,
+            immediate: true
     }
 }
 </script>
@@ -182,4 +207,7 @@ export default {
     .subject_QueryBox{
         margin-top: 25px;
     }
+    /deep/.is-background{
+    text-align: center;
+}
 </style>

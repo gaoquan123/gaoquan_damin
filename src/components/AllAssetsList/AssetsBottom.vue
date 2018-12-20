@@ -115,7 +115,7 @@
 <script>
 import { bizType, bizTypeCN, dealElement } from 'PublicMethods/MethodsJs'
 export default {
-	propus: [ "FromData" ],
+	props: [ "FromData" ],
 	data() {
 		return {
 			currentPage: 1, //初始页

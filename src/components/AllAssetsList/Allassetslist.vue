@@ -35,8 +35,8 @@ import ChannelWhole from './ChannelWhole'
   };
 </script>
 <style lang="less" scoped>
-    /deep/ .is-top{
-        font-size: 18px;
+   /deep/.el-tabs__item{
+        font-size: 18px !important;
     }
     /deep/ .el-date-editor .el-range-separator{
         padding:0;

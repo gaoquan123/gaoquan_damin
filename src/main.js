@@ -13,10 +13,21 @@ import VueParticles from 'vue-particles'
 import Vuex from 'vuex'
 import $ from 'jquery'
 
-
+// 超时时间
 import store from './store/index'
 axios.defaults.headers.common['csrf-token'] = sessionStorage.getItem('token');
 
+let loading;
+function startLoading() {    //使用Element loading-start 方法
+    loading = ElementUI.Loading.service({
+        lock: true,
+        text: '加载中……',
+        background: 'rgba(0, 0, 0, 0.2)'
+    })
+}
+function endLoading() {    //使用Element loading-close 方法
+    loading.close()
+}
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
@@ -26,32 +37,55 @@ Vue.use(VueParticles)
 
 Vue.prototype.$axios = axios
 
-// 添加请求拦截器
-axios.interceptors.request.use(config => {
-    //判断是否存在token，如果存在将每个页面header都添加token
-    if( sessionStorage.getItem('token')){
-        config.headers.common['csrf-token']= sessionStorage.getItem('token');
+
+let needLoadingRequestCount = 0
+export function showFullScreenLoading() {
+    if (needLoadingRequestCount === 0) {
+        startLoading()
     }
-    return config;
-    }, error => {
-    // 对请求错误做些什么
-       return Promise.reject(error);
-    });
-    // // http response 拦截器
-    axios.interceptors.response.use(
-        response => {
-                return response;
-        },
+    needLoadingRequestCount++
+}
+
+export function tryHideFullScreenLoading() {
+    if (needLoadingRequestCount <= 0) return
+    needLoadingRequestCount--
+    if (needLoadingRequestCount === 0) {
+        endLoading()
+    }
+}
+
+
+//http request 拦截器
+axios.interceptors.request.use(
+    config => {
+        if( sessionStorage.getItem('token')){
+                config.headers.common['csrf-token']= sessionStorage.getItem('token');
+        }
+        showFullScreenLoading()
+        return config;
+    },
     error => {
-    if (error.response) {
-        alert("您的登录已过期，请重新登录")
-        sessionStorage.removeItem('token')
-        router.replace({path: '/admin/login',})
- 
-    }
-    return Promise.reject(error.response.data)
+        alert("请刷新重试")
+        return Promise.reject(error)
+
+      
     });
-    
+//http response 拦截器
+axios.interceptors.response.use(
+    response => {
+        tryHideFullScreenLoading()
+        return response;
+    },
+    error => {
+        if (error.response) {
+            if(error.response.status <=400 && error.response.status >500){
+                alert("您的登录已过期，请重新登录")
+                router.replace({path: '/admin/login'})
+            }
+            tryHideFullScreenLoading();
+        }
+        return Promise.reject(error.response.data)   // 返回接口返回的错误信息
+    });
 
 
 /* eslint-disable no-new */
