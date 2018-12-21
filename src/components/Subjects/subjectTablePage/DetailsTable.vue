@@ -90,5 +90,11 @@ import {catalogText,formatDate,payWay,ModelType,dealElement} from '../../../Publ
 /deep/.success-row {
   background-color: #f0f9eb !important;
 }
+.cell{
+    a{
+        color: #4f9dff;
+        text-decoration: underline;
+    }
+}
 </style>
 

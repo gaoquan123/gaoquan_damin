@@ -121,13 +121,13 @@
         <ZjTable v-if='active == "PASS_PENDING"'></ZjTable>
         <DetailsTable v-if='active=="REPAYMENT_DETAILS"'></DetailsTable>
 
-
           <el-pagination
+            v-if="paginationShow"
             class="m-t-40 m-b-40"
             background
             layout="prev, pager, next"
             @current-change="handleCurrentChange"
-            :total="this.$store.state.subjects.GetSubjectInfoItem.totalCount">
+            :total="pageTotal">
         </el-pagination>
     </div>
 </template>
@@ -155,6 +155,7 @@ export default {
     },
     data(){
         return{
+            paginationShow:true,
             value3:true,
             options: [
                 {value: '',label: '全部类型'},
@@ -194,7 +195,17 @@ export default {
 
         }
     },
-   
+    computed: {
+       pageTotal(){
+           if(this.active == "NEW" || this.active == "FUNDING" || this.active == "FUNDED" || this.active == "PASS" || this.active == "UN_SHELVE" || this.active == "ABORT"|| this.active == "PASS_PENDING"){
+                return this.$store.state.subjects.GetSubjectInfoItem.totalCount
+            }else if(this.active == "REPAYMENT_DETAILS"){
+                return this.$store.state.subjects.getRepaymentDetailsItem.totalCount
+            }else{
+                return this.$store.state.subjects.ContractsQueryItem.totalCount
+            }
+       }  
+    },
     methods: {
         //查询按钮
         searchBtn(){
@@ -223,7 +234,7 @@ export default {
          handleCurrentChange(currentPage){
               this.form.page = currentPage;
               this.$store.dispatch("GetSubjectAllTab",{"type":dealElement(this.form)})
-            }
+        }
     },
    
     created(){
@@ -233,6 +244,10 @@ export default {
     watch: {
         active(newname,oldname){
             this.defaultFun();
+                this.paginationShow = false;
+                this.$nextTick(function() {
+                    this.paginationShow = true;
+            });
             if(newname == "REPAYMENT_DETAILS"){
                 $(".displayType").hide();
             }else{
