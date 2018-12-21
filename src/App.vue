@@ -42,6 +42,9 @@ export default {
 .el-loading-parent--hidden {
   overflow: visible!important;
 }
+.el-popup-parent--hidden {
+    overflow: unset!important;
+}   
 
 .w5{width: 5%;}
 .w10{width: 10%;}
