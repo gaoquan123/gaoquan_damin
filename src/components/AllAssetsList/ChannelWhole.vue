@@ -39,7 +39,8 @@
                     <template slot-scope="scope">
                         <a @click="editBtn(scope.row.id)">编辑</a>
                         <a @click="ruleBtn(scope.row.id)">进件规则</a>
-                        <a @click="blockUpBtn()">停用</a>
+                        <a @click="blockUpBtn(scope.row.id,scope.row.status)" v-if="scope.row.status==0">停用</a>
+                        <a @click="blockUpBtn(scope.row.id,scope.row.status)" v-else-if="scope.row.status==1">启用</a>
                     </template>
                 </el-table-column>
             </el-table>
@@ -236,6 +237,37 @@
             //编辑
             editBtn(id){
               this.$router.push({name: 'AddChannel', query: { id : id}})
+            },
+            //停用
+            blockUpBtn(id,status){
+                const params={
+                    id:id,
+                    oldStatus: status,
+                }
+                if(status==0){
+                  params.status=1
+                }else if(status==1){
+                  params.status=0
+                }
+              this.$axios.get('/admin/api/assetsChannel/updateStatus',{
+                  params:params
+              })
+                .then((res)=>{
+                  const h = this.$createElement;
+                  this.$notify({
+                    title: '标题名称',
+                    message: h('i', '停用/启用渠道成功')
+                  });
+                  //停用后重新请求数据
+                  this.$store.dispatch('SearchChannel',this.GetData)
+              }).catch((err)=>{
+                const h = this.$createElement;
+                this.$notify({
+                  title: '标题名称',
+                  message: h('i', '停用/启用渠道失败')
+                });
+              })
+
             }
         },
         computed: {

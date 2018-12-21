@@ -23,6 +23,7 @@
         </el-form-item>
         <el-form-item label="渠道负责人" prop="manager">
           <el-input v-model="ruleForm.manager" placeholder="渠道负责人"></el-input>
+          <el-checkbox v-model="managerUpdateChecked" name="managerUpdateFlag" label="1" v-if="!!this.id">更新本渠道项下历史资产的项目负责人</el-checkbox>
         </el-form-item>
         <div class="online-content" v-if="online">
           <div class="property-set-content">
@@ -254,6 +255,8 @@
         showEnterprise: false,
         msg:'新增渠道',
         id:'',
+        //更新渠道负责人是否勾选
+        managerUpdateChecked:false,
         isAccepteData_personnel: ['isAccepteData_personnel', 'isAccepteData_enterprise'],
         submitData:{},
         rules: {
@@ -341,7 +344,6 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
             if (valid) {
-              alert('submit!');
               if (this.ruleForm.lineType == 'OFF_LINE') {
                 this.submitData={
                   channelCode:this.ruleForm.channelCode,
@@ -374,6 +376,9 @@
               }
               if(this.id){
                 this.submitData.id=this.id
+                if(this.managerUpdateChecked){
+                  this.submitData.managerUpdateFlag=1
+                }
                 this.$axios({
                   url: '/admin/api/assetsChannel/updateAssetsChannel',
                   method: 'post',
@@ -382,12 +387,14 @@
                     'Content-Type': 'application/json'
                   }
                 }).then( (response)=> {
-                  alert("创建渠道成功");
-                  console.log(response);
+                  this.$message({
+                    message: '创建渠道成功',
+                    type: 'success'
+                  });
                   this.$router.push('/admin/allassetslist')
                 }).catch( (error)=> {
+                  this.$message.error('创建渠道失败');
                   alert("创建渠道失败");
-                  console.log(error);
                 });
               }else{
                 this.$axios({
@@ -547,7 +554,6 @@
   .property-set-content {
     background: #eee;
     padding-top: 20px;
-    margin-right: 200px;
     border-radius: 5px;
     margin-bottom: 20px;
   }
