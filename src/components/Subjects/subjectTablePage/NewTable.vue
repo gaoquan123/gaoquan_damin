@@ -1,7 +1,7 @@
 <template>
     <div class="m-t-40">
         <!-- 未上架 -->
-         <el-table  :data="listItemTab" fit  
+         <el-table  :data="listItemTab" fit
          :row-class-name="tableRowClassName"
           border style="width: 100%" >
 			<el-table-column prop="title" label="项目名称"  width="200px;" > </el-table-column>
@@ -15,9 +15,9 @@
 			<el-table-column prop="laModel" label="代收付信息"  > </el-table-column>
             	<el-table-column label="操作" width="250">
 				<template slot-scope="scope">
-                     <el-button type="primary" plain round  size="mini">上架</el-button>
+                     <el-button type="primary" plain round  size="mini" @click="subjectConfirm(scope.row)">上架</el-button>
                      <el-button type="success" plain round  size="mini">修改</el-button>
-                     <el-button type="danger" plain round  size="mini">取消</el-button>
+                     <el-button type="danger" plain round  size="mini" @click="subjectCancel(scope.row)">撤销</el-button>
 				</template>
 			</el-table-column>
         </el-table>
@@ -60,10 +60,54 @@ import {catalogText,formatDate,payWay,ModelType,dealElement} from '../../../Publ
                 }
                 return "";
                 },
-        },
-        
-        
-         
+            subjectConfirm(row) {
+            this.$confirm(`是否确定上架标的:${row.title}`, '确认', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              this.$axios({
+                url: `/api/users/${row.userId}/subjects/${row.id}/shelf`,
+                data:{},
+                method: 'post',
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              }).then( (response)=> {
+                this.$message({
+                  type: 'success',
+                  message: '上架成功!'
+                });
+                this.$store.state.subjects.GetSubjectInfoItem.totalCount
+              }).catch( (error)=> {
+                this.$message.error('上架失败');
+              });
+            }).catch(() => {
+              this.$message({
+                type: 'info',
+                message: '已取消上架'
+              });
+            });
+          },
+            subjectCancel(row) {
+              this.$axios({
+                url: `/api/users/${row.userId}/subjects/${row.id}/abort`,
+                data:{},
+                method: 'post',
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              }).then( (response)=> {
+                this.$message({
+                  type: 'success',
+                  message: '撤销成功!'
+                });
+                this.$store.state.subjects.GetSubjectInfoItem.totalCount
+              }).catch( (error)=> {
+                this.$message.error('撤销失败');
+              });
+          }
+        }
     }
 </script>
 <style lang="less" scoped>

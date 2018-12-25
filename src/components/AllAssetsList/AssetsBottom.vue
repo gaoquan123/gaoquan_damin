@@ -32,7 +32,7 @@
 				<template slot-scope="scope">
 					<a v-if="scope.row.currentStockTable <= 0" @click="open()">创建标的</a>
 					<router-link  v-else :to="{path:'/admin/allassetslist/newsubject',query:{userId:scope.row.userId,assetId:scope.row.id}}">创建标的</router-link>
-					<a>标的信息</a>
+					<router-link :to="{path: '/admin/allassetslist/subjectinfo', query:{userId:scope.row.userId,assetId:scope.row.id}}">标的信息</router-link>
 					<router-link :to="{path: '/admin/allassetslist/assetspersonedit', query:{userId:scope.row.userId,assetId:scope.row.id}}">编辑</router-link>
 					<br>
 					<a @click="editStock(scope.row.id)">修改库存</a>
@@ -41,7 +41,7 @@
 				</template>
 			</el-table-column>
         </el-table>
-		
+
         <el-dialog title="编辑资产库存" :visible.sync="dialogFormVisible">
 			<el-form :model="relueForm" :rules="rules" status-icon  ref="relueForm" id="form1" label-width="100px">
 				<el-form-item label="资产类型" label-width="220px">
