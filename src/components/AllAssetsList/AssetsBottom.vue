@@ -151,12 +151,11 @@ export default {
 		},
 		// 剩余资产为0
 		open() {
-		this.$alert("该资产剩余规模为0，无法创建", "提示", {
-			confirmButtonText: "确定"
-		});
+			this.$alert("该资产剩余规模为0，无法创建", "提示", {
+				confirmButtonText: "确定"
+			});
 		},
 		editStock(subjectId) {
-			this.dialogFormVisible = true
 			Object.keys(this.relueForm).forEach((key, val) => {
 				if(key == 'changeRemaindAmount') {
 					this.relueForm[key] = 0
@@ -165,6 +164,7 @@ export default {
 				}
 			})
 			this.$axios.get('/api/loanAssets/' + subjectId).then((data) => {
+				this.dialogFormVisible = true
 				let result = data.data
 				this.relueForm.id = result.id
 				this.relueForm.title = result.title

@@ -357,7 +357,6 @@ export default {
   },
   created() {
     this.request();
-    console.log(dealElement(this.FromData), "333");
     this.$store.dispatch("LoanAssetList", dealElement(this.FromData));
   },
   components: {
