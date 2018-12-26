@@ -44,7 +44,10 @@ export default {
 }
 .el-popup-parent--hidden {
     overflow: unset!important;
-}   
+}
+.el-dialog__wrapper{
+  overflow: visible!important;
+}
 
 .w5{width: 5%;}
 .w10{width: 10%;}

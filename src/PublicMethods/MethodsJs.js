@@ -7,7 +7,7 @@ export let formatDate  =  function(time){
     };
     return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate());
 }
-// 对象空去除 
+// 对象空去除
 export let dealElement = function(obj){
     var param = {};
     if ( obj === null || obj === undefined || obj === "" ) return param;
@@ -28,7 +28,7 @@ export let ModelType  =  function(value){
         return '代收付'
     }
 }
-   
+
 //资产状态
 export let StateAsset  = function(value){
     if(value="EXISTENCE"){
@@ -112,4 +112,72 @@ export let catalogText  = function(value){
         return '-'
     }
 }
+
+// 利率转化百分比
+export let percent  = function(value){
+  return (value*100).toFixed(2)+'%';
+}
+// 钱币格式比
+export const  fmoney=function(s, n) {
+      n = n > 0 && n <= 20 ? n : 2;
+      s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+      var l = s.split(".")[0].split("").reverse(),
+        r = s.split(".")[1];
+      var t = "";
+      for (var i = 0; i < l.length; i++) {
+        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+      }
+      return t.split("").reverse().join("") + "." + r;
+}
+//自动上架时间
+export const  countDown=function(time, onlineCountDown) {
+  if(onlineCountDown=='Y'){
+    var date = new Date(time);
+    var pad = function (number) {
+      var numStr = number.toString();
+      return ('00' + numStr).substring(numStr.length);
+    };
+    return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate());
+  }else{
+    return '-'
+  }
+}
+//标的状态
+export const  subjectStatus=function(contractStatus,status) {
+  const statusDisplay = {
+    NEW: '未上架',
+    FUNDING: '募集中',
+    FUNDED: '满标待放款',
+    PORTION_FUNDED: '部分满标待放款',
+    PASS: '已流标',
+    SIGNED: '生成合同/放款',
+    UN_SHELVE: '已下架',
+    ABORT: '已撤销',
+    PENDING: '还款中',
+    DONE: '已回款'
+  };
+  if(status=='SIGNED'){
+    return statusDisplay[contractStatus];
+  }
+    return statusDisplay[status];
+}
+//剩余额度
+export const  surplus=function(amount,currentInvestmentAmount,status,contractStatus) {
+if(status=='NEW'||status=='NEW'){
+  return '-'
+}
+if(status=='FUNDED'||contractStatus=='PENDING'||contractStatus=='DONE'){
+  return 0.00
+}
+if(status=='PASS'){
+  return amount
+}
+  if(status=='PORTION_FUNDED'){
+    return amount-currentInvestmentAmount
+  }
+
+
+}
+
+
 
