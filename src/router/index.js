@@ -10,9 +10,14 @@ import AssetsBIZEdit from '@/components/AllAssetsList/asset/AssetsBIZEdit'
 import AssetsPERSONEdit from '@/components/AllAssetsList/asset/AssetsPERSONEdit'
 import Subjects from '@/components/Subjects/Subjects'
 import Usermanage from '@/components/Usermanage/Usermanage'
+import PowerAdmin from '@/components/PowerAdmin/PowerAdmin'
+import SuperAdmin from '@/components/PowerAdmin/SuperAdmin/SuperAdmin'
+
+
 
 
 // 二级路由
+import Details from '@/components/AllAssetsList/details/details'
 
 
 
@@ -54,6 +59,11 @@ const router = new Router({
             component: SubjectInfo
           },
           {
+            path: '/admin/allassetslist/details',
+            name: 'details',
+            component: Details
+          },
+          {
             path: '/admin/allassetslist/addhannel',
             name: 'AddChannel',
             component: AddChannel
@@ -69,11 +79,20 @@ const router = new Router({
             name: 'Usermanage',
             component: Usermanage
           },
-
+          {
+            path: '/admin/poweradmin',
+            name: 'PowerAdmin',
+            component: PowerAdmin
+          },
+          {
+            path: '/admin/poweradmin/superadmin',
+            name: 'SuperAdmin',
+            component: SuperAdmin
+          },
       ]
 })
 router.beforeEach((to, from, next) => {
-    var userInfo = sessionStorage.getItem('token');//获取浏览器缓存的用户信息
+    var userInfo = Cookies.get('_csrf');//获取浏览器缓存的用户信息
     if(userInfo){ //如果有就直接到首页
         next();
     } else {

@@ -79,7 +79,7 @@
                 </el-input>
             </el-col>
 
-            <el-col :span="8">
+            <el-col :span="12">
                     <div class="block">
                       <span class="ipt fl">起始时间</span>
                          <el-date-picker

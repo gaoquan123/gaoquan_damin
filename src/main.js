@@ -15,7 +15,7 @@ import $ from 'jquery'
 
 // 超时时间
 import store from './store/index'
-axios.defaults.headers.common['csrf-token'] = sessionStorage.getItem('token');
+axios.defaults.headers.common['csrf-token'] = Cookies.get('_csrf');
 
 let loading;
 function startLoading() {    //使用Element loading-start 方法

@@ -5,14 +5,24 @@ export let formatDate  =  function(time){
       var numStr = number.toString();
       return ('00' + numStr).substring(numStr.length);
     };
-    return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate());
+  return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate());
+}
+// 时间转换到秒
+export const formatToSec  =  function(time){
+  if(!time) return
+  const date = new Date(time);
+  const pad = function (number) {
+    const numStr = number.toString();
+    return ('00' + numStr).substring(numStr.length);
+  };
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours()+1)}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
 }
 // 对象空去除
 export let dealElement = function(obj){
     var param = {};
-    if ( obj === null || obj === undefined || obj === "" ) return param;
+    if ( obj === null || obj === undefined || obj === "" || obj === false ) return param;
     for ( var key in obj ){
-        if ( obj[key] !== null && obj[key] !== undefined && obj[key] !== "" ){
+        if ( obj[key] !== null && obj[key] !== undefined && obj[key] !== "" && obj[key] !== false ){
             param[key] = obj[key];
         }
     }
@@ -115,19 +125,22 @@ export let catalogText  = function(value){
 
 // 利率转化百分比
 export let percent  = function(value){
+  if(value!=undefined||value!=null)
   return (value*100).toFixed(2)+'%';
 }
 // 钱币格式比
 export const  fmoney=function(s, n) {
-      n = n > 0 && n <= 20 ? n : 2;
-      s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
-      var l = s.split(".")[0].split("").reverse(),
-        r = s.split(".")[1];
-      var t = "";
-      for (var i = 0; i < l.length; i++) {
-        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
-      }
-      return t.split("").reverse().join("") + "." + r;
+  if(s!=undefined||s!=null){
+    n = n > 0 && n <= 20 ? n : 2;
+    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+    var l = s.split(".")[0].split("").reverse(),
+      r = s.split(".")[1];
+    var t = "";
+    for (var i = 0; i < l.length; i++) {
+      t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+    }
+    return t.split("").reverse().join("") + "." + r;
+  }
 }
 //自动上架时间
 export const  countDown=function(time, onlineCountDown) {
@@ -142,7 +155,7 @@ export const  countDown=function(time, onlineCountDown) {
     return '-'
   }
 }
-//标的状态
+//标的状态标的信息页
 export const  subjectStatus=function(contractStatus,status) {
   const statusDisplay = {
     NEW: '未上架',
@@ -163,7 +176,7 @@ export const  subjectStatus=function(contractStatus,status) {
 }
 //剩余额度
 export const  surplus=function(amount,currentInvestmentAmount,status,contractStatus) {
-if(status=='NEW'||status=='NEW'){
+if(status=='NEW'||status=='FUNDING'){
   return '-'
 }
 if(status=='FUNDED'||contractStatus=='PENDING'||contractStatus=='DONE'){
@@ -175,9 +188,83 @@ if(status=='PASS'){
   if(status=='PORTION_FUNDED'){
     return amount-currentInvestmentAmount
   }
-
-
 }
+//资产日期
+export const  assetDate=function(val) {
+  if(val==''){
+    return '-'
+  }
+  else{
+    function add0(m){return m<10?'0'+m:m }
+    const time = new Date(val);
+    const year = time.getFullYear();
+    const month = time.getMonth()+1;
+    const date = time.getDate();
+    return `${year}-${add0(month)}-${add0(date)}`;
+  }
+}
+//优惠品类
+export const  useCouponText=function(val) {
+  const statusDisplay = {
+    rebate: '返现券',
+    voucher: '代金券',
+    pomegranate:'石榴币',
+    nothing:'无'
+  };
+  return statusDisplay[val]
+}
+//使用代金券方式
+export const  voucherType=function(val) {
+  if(!val){
+    return '-'
+  }
+  const statusDisplay = {
+    SIMPLE: '普通',
+    EQUAL_STEP: '等比增加',
+    NOT_EQUAL_STEP:'非等比增加',
+  };
+  return statusDisplay[val]
+}
+//详情页状态
+export const  detailsStatus=function(status) {
+  var statusDisplay = {
+    NEW: '未上架',
+    FUNDING: '募集中',
+    FUNDED: '满标待放款',
+    PORTION_FUNDED: '部分满标待放款',
+    PASS: '已流标',
+    SIGNED: '生成合同/放款',
+    UN_SHELVE: '已下架',
+    ABORT: '已撤销'
+  };
+  return statusDisplay[status];
+}
+//促销方式
+export const promotionStyle=function(status) {
+  if(!status){
+    return '-'
+  }
+  var statusDisplay = {
+    seckill: '秒杀',
+    raise: '加息',
+    supply: '特供',
+    limit: '限量',
+    custom: '自定义',
+  };
+  return statusDisplay[status];
+}
+//资产模式
+export const loanAssetModel=function(status){
+  var statusDisplay = {
+    COLLECT: '代收付',
+    TRANSFER: '债转',
+    DIRECT: '直投',
+  };
+  return statusDisplay[status];
+}
+
+
+
 
 
 

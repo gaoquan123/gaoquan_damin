@@ -24,8 +24,8 @@ export default {
                         type: 'success',
                         message: '退出成功!'
                     });
-                        this.$store.commit({type:'del_token'})
-                    // window.localStorage.removeItem('username');
+                    Cookies.remove('_csrf');
+                    Cookies.remove('token');
                     this.$router.push({path:'/admin/login'})
                 }).catch(() => {
                     this.$message({

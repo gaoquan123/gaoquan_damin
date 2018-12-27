@@ -8,8 +8,8 @@
       <span><strong>资产剩余规模：</strong>{{remaindAmount|fmoney}}</span>
     </p>
     <p class="asset-date">
-      <span><strong>资产起始日：</strong>-</span>
-      <span><strong>资产终止日： </strong>-</span>
+      <span><strong>资产起始日：</strong>{{startTime|assetDate}}</span>
+      <span><strong>资产终止日： </strong>{{endTime|assetDate}}</span>
     </p>
     <el-table  :data="listItem" fit border style="width: 100%">
       <el-table-column prop="id" label=" 标的ID"  > </el-table-column>
@@ -44,7 +44,7 @@
           {{scope.row.currentInvestmentAmount.amount|fmoney}}
         </template>
       </el-table-column>
-      <el-table-column label="剩余额度">
+      <el-table-column label="剩余额度(元)">
         <template slot-scope="scope">
           {{scope.row.amount.amount|surplus(scope.row.currentInvestmentAmount.amount,scope.row.status,scope.row.contractStatus)}}
         </template>
@@ -62,7 +62,7 @@
       <el-table-column prop="ownerName" label="所有人"></el-table-column>
       <el-table-column label="操作" width="250">
         <template slot-scope="scope">
-          <el-button type="primary" plain round  size="mini" @click="subjectConfirm(scope.row)">详情</el-button>
+          <el-button type="primary" plain round  size="mini" @click="toDetails(scope.row)">详情</el-button>
           <el-button type="success" plain round  size="mini">复制</el-button>
           <el-button type="danger" plain round  size="mini" @click="subjectCancel(scope.row)">编辑</el-button>
         </template>
@@ -70,20 +70,26 @@
     </el-table>
     <el-pagination
       background
+      @current-change="currentChange"
+      :current-page.sync="page"
       layout="prev, pager, next"
-      :total="200">
+      :total="total">
     </el-pagination>
   </div>
 </template>
 <script>
-  import {catalogText,formatDate,percent,fmoney,countDown,subjectStatus,surplus} from '../../PublicMethods/MethodsJs'
+  import {catalogText,formatDate,percent,fmoney,countDown,subjectStatus,surplus,assetDate} from '../../PublicMethods/MethodsJs'
   export default {
     data() {
       return {
         listItem: [],
         title:'',
         totalAmount:'',
-        remaindAmount:''
+        remaindAmount:'',
+        startTime:'',
+        endTime:'',
+        page:1,
+        total:1
       }
     },
     methods: {
@@ -93,19 +99,28 @@
           params:  {
             loanAssetId: loanAssetId,
             pageLimit: 10,
-            page: 1,
+            page: this.page,
               }
         }).then((res)=>{
             this.listItem=res.data.items;
             this.title=res.data.loanAsset.title;
             this.totalAmount=res.data.loanAsset.totalAmount.amount;
             this.remaindAmount=res.data.loanAsset.remaindAmount.amount;
+            this.startTime=res.data.loanAsset.startTime;
+            this.endTime=res.data.loanAsset.endTime;
           }).catch((err)=>{
 
           })
+      },
+      currentChange(page){
+        this.page=page;
+        this.getSubjectList()
+      },
+      toDetails(row){
+        this.$router.push({path:'/admin/allassetslist/details',query:{id:row.id,userId:row.userId}})
       }
     },
-    mounted(){
+    created(){
       this.getSubjectList()
     },
     filters: {
@@ -115,10 +130,10 @@
       fmoney,
       countDown,
       subjectStatus,
-      surplus
+      surplus,
+      assetDate
     }
   }
-
 </script>
 <style lang="less" scoped>
   h3 {
