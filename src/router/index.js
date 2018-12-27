@@ -6,8 +6,8 @@ import AllAssetsList from '@/components/AllAssetsList/Allassetslist'
 import NewSubject from '@/components/AllAssetsList/NewSubject'
 import SubjectInfo from '@/components/AllAssetsList/SubjectInfo'
 import AddChannel from '@/components/AllAssetsList/AddChannel'
-import AssetsBIZEdit from '@/components/AllAssetsList/AssetsBIZEdit'
-import AssetsPERSONEdit from '@/components/AllAssetsList/AssetsPERSONEdit'
+import AssetsBIZEdit from '@/components/AllAssetsList/asset/AssetsBIZEdit'
+import AssetsPERSONEdit from '@/components/AllAssetsList/asset/AssetsPERSONEdit'
 import Subjects from '@/components/Subjects/Subjects'
 import Usermanage from '@/components/Usermanage/Usermanage'
 import PowerAdmin from '@/components/PowerAdmin/PowerAdmin'
@@ -17,6 +17,7 @@ import SuperAdmin from '@/components/PowerAdmin/SuperAdmin/SuperAdmin'
 
 
 // 二级路由
+import Details from '@/components/AllAssetsList/details/details'
 
 
 
@@ -56,6 +57,11 @@ const router = new Router({
             path: '/admin/allassetslist/subjectinfo',
             name: 'SubjectInfo',
             component: SubjectInfo
+          },
+          {
+            path: '/admin/allassetslist/details',
+            name: 'details',
+            component: Details
           },
           {
             path: '/admin/allassetslist/addhannel',
