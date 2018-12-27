@@ -53,7 +53,7 @@
 
                 </div>
                 <div class="fl">
-                        <el-input class="fl" style="width:250px;" placeholder="请输入内容" v-model="FromData.startRemaindAmount">
+                        <el-input class="fl" style="width:236px;" placeholder="请输入内容" v-model="FromData.startRemaindAmount">
                         <template slot="prepend">剩余资产规模</template>
                         </el-input>
                     <div class="fl ">
@@ -386,5 +386,8 @@ export default {
 .el-pagination {
   text-align: center;
   margin-bottom: 50px;
+}
+.el-button{
+    padding: 12px 12px;
 }
 </style>

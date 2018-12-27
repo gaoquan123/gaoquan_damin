@@ -10,9 +10,9 @@ export let formatDate  =  function(time){
 // 对象空去除
 export let dealElement = function(obj){
     var param = {};
-    if ( obj === null || obj === undefined || obj === "" ) return param;
+    if ( obj === null || obj === undefined || obj === "" || obj === false ) return param;
     for ( var key in obj ){
-        if ( obj[key] !== null && obj[key] !== undefined && obj[key] !== "" ){
+        if ( obj[key] !== null && obj[key] !== undefined && obj[key] !== "" && obj[key] !== false ){
             param[key] = obj[key];
         }
     }
