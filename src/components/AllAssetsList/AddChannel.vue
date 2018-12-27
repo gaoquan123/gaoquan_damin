@@ -406,7 +406,6 @@
                   }
                 }).then( (response)=> {
                   alert("创建渠道成功");
-                  console.log(response);
                   this.$router.push('/admin/allassetslist')
                 }).catch( (error)=> {
                   alert("创建渠道失败");

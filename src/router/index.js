@@ -13,6 +13,7 @@ import Usermanage from '@/components/Usermanage/Usermanage'
 
 
 // 二级路由
+import Details from '@/components/AllAssetsList/details/details'
 
 
 
@@ -52,6 +53,11 @@ const router = new Router({
             path: '/admin/allassetslist/subjectinfo',
             name: 'SubjectInfo',
             component: SubjectInfo
+          },
+          {
+            path: '/admin/allassetslist/details',
+            name: 'details',
+            component: Details
           },
           {
             path: '/admin/allassetslist/addhannel',
