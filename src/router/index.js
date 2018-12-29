@@ -6,8 +6,8 @@ import AllAssetsList from '@/components/AllAssetsList/Allassetslist'
 import NewSubject from '@/components/AllAssetsList/NewSubject'
 import SubjectInfo from '@/components/AllAssetsList/SubjectInfo'
 import AddChannel from '@/components/AllAssetsList/AddChannel'
-import AssetsBIZEdit from '@/components/AllAssetsList/asset/AssetsBIZEdit'
-import AssetsPERSONEdit from '@/components/AllAssetsList/asset/AssetsPERSONEdit'
+import AssetsCreate from '@/components/AllAssetsList/asset/AssetsCreate'
+import AssetsEdit from '@/components/AllAssetsList/asset/Assetsdit'
 import Subjects from '@/components/Subjects/Subjects'
 import Usermanage from '@/components/Usermanage/Usermanage'
 import PowerAdmin from '@/components/PowerAdmin/PowerAdmin'
@@ -39,14 +39,14 @@ const router = new Router({
             component: AllAssetsList,
           },
           {
-            path: '/admin/allassetslist/assetsbizedit',
-            name: 'AssetsBIZEdit',
-            component: AssetsBIZEdit
+            path: '/admin/allassetslist/assetscreate',
+            name: 'AssetsCreate',
+            component: AssetsCreate
           },
           {
-            path: '/admin/allassetslist/assetspersonedit',
-            name: 'AssetsPERSONEdit',
-            component: AssetsPERSONEdit
+            path: '/admin/allassetslist/assetsedit',
+            name: 'AssetsEdit',
+            component: AssetsEdit
           },
           {
             path: '/admin/allassetslist/newsubject',
