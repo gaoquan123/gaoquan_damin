@@ -19,7 +19,7 @@
                         <el-checkbox   @change="checkedAllassetslist" v-model="arrObj0.allassetslist">资产管理</el-checkbox>
                     </td>
                     <td  class="center_left" >
-                        <el-checkbox   v-model="arrObj0.allassetslistTab1">资产管理</el-checkbox>
+                        <el-checkbox  @change="checkedAllassetsTab1"  v-model="arrObj0.allassetslistTab1">资产管理</el-checkbox>
                     </td>
                     <td class="SP20">
                           <el-row :gutter="20">
@@ -63,7 +63,7 @@
                 </tr>
                 <tr>
                     <td  class="center_left" >
-                        <el-checkbox v-model="arrObj0.allassetslistTab2">渠道管理</el-checkbox>
+                        <el-checkbox @change="checkedAllassetsTab2" v-model="arrObj0.allassetslistTab2">渠道管理</el-checkbox>
                     </td>
                     <td class="SP20">
                         <el-row :gutter="20">
@@ -91,7 +91,7 @@
                           <el-checkbox   @change="checkedSubject"  v-model="arrObj.subjects">标的管理</el-checkbox>
                     </td>
                     <td class="center_left" >
-                            <el-checkbox  v-model="arrObj.subjectsTab1">未上架</el-checkbox>
+                            <el-checkbox @change="checkedSubect1"  v-model="arrObj.subjectsTab1">未上架</el-checkbox>
                     </td>
                     <td class="SP20">
                         <el-row :gutter="20" >
@@ -109,7 +109,7 @@
                 </tr>
                 <tr>
                     <td class="center_left" >
-                        <el-checkbox  v-model="arrObj.subjectsTab2">募集中</el-checkbox>
+                        <el-checkbox @change="checkedSubject2"  v-model="arrObj.subjectsTab2">募集中</el-checkbox>
                     </td>
                     <td class="SP20">
                         <el-row :gutter="20">
@@ -136,7 +136,7 @@
                 </tr>
 
                 <tr>
-                     <td class="center_left" ><el-checkbox  v-model="arrObj.subjectsTab5">回款中</el-checkbox></td>
+                     <td class="center_left" @change="checkedSubject5" ><el-checkbox  v-model="arrObj.subjectsTab5">回款中</el-checkbox></td>
                      <td class="SP20">
                             <el-row :gutter="20">
                                     <el-col :span="6">
@@ -183,7 +183,7 @@
                      </td>
                 </tr>
                 <tr>
-                    <td class="center_left" ><el-checkbox  v-model="arrObj.subjectsTab6">回款完成</el-checkbox></td>
+                    <td class="center_left" ><el-checkbox @change="checkedSubject6"  v-model="arrObj.subjectsTab6">回款完成</el-checkbox></td>
                     <td class="SP20">
                         <el-row :gutter="20">
                                 <el-col :span="6">
@@ -212,7 +212,7 @@
                 </tr>
 
                 <tr>
-                    <td class="center_left" ><el-checkbox  v-model="arrObj.subjectsTab9">逾期中</el-checkbox></td>
+                    <td class="center_left" ><el-checkbox @change="checkedSubject9"  v-model="arrObj.subjectsTab9">逾期中</el-checkbox></td>
                     <td class="SP20">
                         <el-row :gutter="20">
                                 <el-col :span="6">
@@ -229,7 +229,7 @@
                 </tr>
 
                 <tr>
-                    <td class="center_left" ><el-checkbox  v-model="arrObj.subjectsTab10">代偿中</el-checkbox></td>
+                    <td class="center_left" ><el-checkbox @change="checkedSubject10"  v-model="arrObj.subjectsTab10">代偿中</el-checkbox></td>
                     <td class="SP20">
                         <el-row :gutter="20">
                                 <el-col :span="6">
@@ -271,7 +271,7 @@
                 </tr>
 
                 <tr>
-                    <td class="center_left" ><el-checkbox  v-model="arrObj.subjectsTab11">已还款代偿</el-checkbox></td>
+                    <td class="center_left" ><el-checkbox @change="checkedSubject11"  v-model="arrObj.subjectsTab11">已还款代偿</el-checkbox></td>
                     <td class="SP20">
                         <el-row :gutter="20">
                                 <el-col :span="6">
@@ -315,7 +315,7 @@
                 </tr>
 
                 <tr>
-                    <td class="center_left" ><el-checkbox  v-model="arrObj.subjectsTab13">还款详情</el-checkbox></td>
+                    <td class="center_left" ><el-checkbox @change="checkedSubject11"  v-model="arrObj.subjectsTab13">还款详情</el-checkbox></td>
                     <td class="SP20">
                         <el-row :gutter="20">
                                 <el-col :span="6">
@@ -341,7 +341,7 @@
         </table>
 
             <el-row class="m-b-50 center">
-                <el-button type="primary" style="width:300px;">更新权限</el-button>
+                <el-button @click="submitChecked" type="primary" style="width:300px;">更新权限</el-button>
             </el-row>
 
 
@@ -356,6 +356,7 @@ export default {
             checked:true,
             userId:this.$route.query.id,
             resulte:{},
+            // 资产管理
             arrObj0:{
                 allassetslist:'',
                 allassetslistTab1:'',
@@ -375,6 +376,7 @@ export default {
                 allassetslistTab2btn3:'',
                 allassetslistTab2btn4:'',
             },
+            // 标的管理
             arrObj:{ 
                 subjects:'',
                 subjectsTab1:'',
@@ -454,18 +456,26 @@ export default {
               this.resulte = res.data;
           })
         },
+        // 权限更新按钮
         submitChecked(){
-            // var obj = dealElement(this.arrObj)
-            // var arr = []
-            // for (let i in obj) {
-            //     arr.push(i);
-            // }
-            // console.log(arr);
+            let obj = dealElement(this.arrObj)
+            let obj0 = dealElement(this.arrObj0)
+            let Objects =  Object.assign(obj, obj0);
+            var arr = []
+            for (let i in Objects) {
+                arr.push(i);
+            }
+            this.$axios.post('/admin/ums/admins/'+this.$route.query.id+'/roles',{roles:arr}).then((res)=>{
+                console.log(res,"11")
+            })
+            .catch((err)=>{
+                console.log(err,"22")
+            })
         },
         // 资产管理模块全选
         checkedAllassetslist(){
            this.arrObj0.allassetslist = !this.arrObj0.allassetslist;
-           if(this.arrObj0.allassetslist == false){
+           if(!this.arrObj0.allassetslist){
                for (let i in this.arrObj0) {
                    this.arrObj0[i] = false;
                }
@@ -478,10 +488,37 @@ export default {
                 this.arrObj0[i] = !this.arrObj0[i];
             }
         },  
+        // 资产管理子页面
+        checkedAllassetsTab1(){
+                let strArrTab1 =this.arrObj0;
+                if(strArrTab1.allassetslistTab1){
+                    for (let i in strArrTab1) {
+                    if(i.length >= 21 && i.indexOf('Tab1') >= 0 ){
+                        strArrTab1[i] = true;
+                      }
+                    } 
+                    strArrTab1.allassetslistTab1  = true
+                }else{
+                    for (let i in strArrTab1) {
+                        if(i.length >= 21 && i.indexOf('Tab1') >= 0 ){
+                            strArrTab1[i] = false;
+                        }
+                    } 
+                    strArrTab1.allassetslistTab1  = false
+                }
+        },
+        // 资产管理子页面渠道管理
+        checkedAllassetsTab2(){
+            const strArrTab2 = this.arrObj0;
+            strArrTab2.allassetslistTab2?
+            [strArrTab2.allassetslistTab2btn1,strArrTab2.allassetslistTab2btn2,strArrTab2.allassetslistTab2btn3,strArrTab2.allassetslistTab2btn4] = [true,true,true,true]:
+            [strArrTab2.allassetslistTab2btn1,strArrTab2.allassetslistTab2btn2,strArrTab2.allassetslistTab2btn3,strArrTab2.allassetslistTab2btn4] = [false,false,false,false]
+
+        },
         // 标的管理模块全选
         checkedSubject(){
             this.arrObj.subjects = !this.arrObj.subjects;
-              if(this.arrObj.subjects == false){
+              if(!this.arrObj.subjects){
                for (let i in this.arrObj) {
                    this.arrObj[i] = false;
                }
@@ -493,7 +530,101 @@ export default {
             for (let i in this.arrObj) {
                 this.arrObj[i] = !this.arrObj[i];
             }
-        }
+        },
+        // 标的管理子页面未上架
+        checkedSubect1(){
+         const subject1 = this.arrObj;
+         subject1.subjectsTab1?
+         [subject1.subjectsTab1btn1,subject1.subjectsTab1btn2,subject1.subjectsTab1btn3] = [true,true,true]:
+         [subject1.subjectsTab1btn1,subject1.subjectsTab1btn2,subject1.subjectsTab1btn3] = [false,false,false]
+        },
+         // 标的管理子页面募集中
+         checkedSubject2(){
+          const subject2 = this.arrObj;
+          subject2.subjectsTab2?
+          [subject2.subjectsTab2btn1, subject2.subjectsTab2btn2, subject2.subjectsTab2btn3] = [true,true,true]:
+          [subject2.subjectsTab2btn1, subject2.subjectsTab2btn2, subject2.subjectsTab2btn3] = [false,false,false]
+         },
+         // 标的管理子页面回款中
+         checkedSubject5(){
+            let subject5 =this.arrObj;
+            if(subject5.subjectsTab5){
+                for (let i in subject5) {
+                if(i.length >= 16 && i.indexOf('Tab5') >= 0 ){
+                      subject5[i] = true;
+                    }
+                } 
+                subject5.subjectsTab5  = true
+            }else{
+                for (let i in subject5) {
+                    if(i.length >= 16 && i.indexOf('Tab5') >= 0 ){
+                        subject5[i] = false;
+                    }
+                } 
+                subject5.subjectsTab5  = false
+            }
+         },
+        // 标的管理子页面回款完成
+        checkedSubject6(){
+          const subject6 = this.arrObj;
+          subject6.subjectsTab6 ? 
+          [subject6.subjectsTab6btn1,subject6.subjectsTab6btn2,subject6.subjectsTab6btn3,subject6.subjectsTab6btn4]=[true,true,true,true]:
+          [subject6.subjectsTab6btn1,subject6.subjectsTab6btn2,subject6.subjectsTab6btn3,subject6.subjectsTab6btn4]=[false,false,false,false]
+        },
+        // 标的管理子页面预期中
+        checkedSubject9(){
+            const subject9 = this.arrObj;
+            subject9.subjectsTab9?
+            [subject9.subjectsTab9btn1,subject9.subjectsTab9btn2,subject9.subjectsTab9btn3]= [true,true,true]: 
+            [subject9.subjectsTab9btn1,subject9.subjectsTab9btn2,subject9.subjectsTab9btn3]=[false,false,false]
+        },
+        // 标的管理子页面代偿中
+        checkedSubject10(){
+            let subject10 = this.arrObj;
+            if(subject10.subjectsTab10){
+                for (let i in subject10) {
+                if(i.length >= 16 && i.indexOf('Tab10') >= 0 ){
+                      subject10[i] = true;
+                    }
+                } 
+                subject10.subjectsTab10  = true
+            }else{
+                for (let i in subject10) {
+                    if(i.length >= 16 && i.indexOf('Tab10') >= 0 ){
+                        subject10[i] = false;
+                    }
+                } 
+                subject10.subjectsTab10  = false
+            }
+        },
+        // 标的管理子页面已还款代偿
+        checkedSubject11(){
+            let subject11 = this.arrObj;
+            if(subject11.subjectsTab11){
+                for (let i in subject11) {
+                if(i.length >= 16 && i.indexOf('Tab11') >= 0 ){
+                      subject11[i] = true;
+                    }
+                } 
+                subject11.subjectsTab11  = true
+            }else{
+                for (let i in subject11) {
+                    if(i.length >= 16 && i.indexOf('Tab11') >= 0 ){
+                        subject11[i] = false;
+                    }
+                } 
+                subject11.subjectsTab11  = false
+            }
+        },
+        // 标的管理子页面 还款状态
+        checkedSubject11(){
+            const subject13 = this.arrObj;
+             subject13.subjectsTab13?
+             [subject13.subjectsTab13btn1,subject13.subjectsTab13btn2,subject13.subjectsTab13btn3] =[true,true,true]:
+             [subject13.subjectsTab13btn1,subject13.subjectsTab13btn2,subject13.subjectsTab13btn3] = [false,false,false]
+        },
+
+       
     },
     watch:{
          // 资产管理模块方法
@@ -501,7 +632,7 @@ export default {
             handler(newName,oldName){
                 let obj = dealElement(newName);
                 const strArr =Object.keys(obj);
-                if(strArr.length > 1){
+                if(strArr.length >= 1){
                     newName.allassetslist = true;
                 }else{
                     newName.allassetslist = false;
@@ -510,14 +641,13 @@ export default {
                 if( obj.allassetslistTab1btn1 || obj.allassetslistTab1btn2 ||obj.allassetslistTab1btn3 ||
                     obj.allassetslistTab1btn4 || obj.allassetslistTab1btn5 ||obj.allassetslistTab1btn6 ||
                     obj.allassetslistTab1btn7 || obj.allassetslistTab1btn8 ||obj.allassetslistTab1btn9 ||
-                    obj.allassetslistTab1btn10|| obj.allassetslistTab1){
+                    obj.allassetslistTab1btn10 ){
                     newName.allassetslistTab1 = true;
                 }
                 //渠道管理
-                if(obj.allassetslistTab2|| obj.allassetslistTab2btn1 || obj.allassetslistTab2btn2 || obj.allassetslistTab2btn3 || obj.allassetslistTab2btn4){
+                if(obj.allassetslistTab2btn1 || obj.allassetslistTab2btn2 || obj.allassetslistTab2btn3 || obj.allassetslistTab2btn4){
                      newName.allassetslistTab2 = true;
                 }
-                
              
             },
             deep: true,
@@ -527,54 +657,54 @@ export default {
             handler(newName,oldName){
                  let objChannel = dealElement(newName);
                  const strArrChannel = Object.keys(objChannel);
-                   if(strArrChannel.length > 0){
+                   if(strArrChannel.length >= 1){
                        newName.subjects = true;
                   }else{
                        newName.subjects = false;
                   }
                 //  未上架
-                if(objChannel.subjectsTab1|| objChannel.subjectsTab1btn1 || objChannel.subjectsTab1btn2 ||  objChannel.subjectsTab1btn3){
+                if(objChannel.subjectsTab1btn1 || objChannel.subjectsTab1btn2 ||  objChannel.subjectsTab1btn3){
                     newName.subjectsTab1 = true;
                 }
                 // 募集中
-                if(objChannel.subjectsTab2|| objChannel.subjectsTab2btn1 || objChannel.subjectsTab2btn2 ||  objChannel.subjectsTab2btn3){
+                if(objChannel.subjectsTab2btn1 || objChannel.subjectsTab2btn2 ||  objChannel.subjectsTab2btn3){
                     newName.subjectsTab2 = true;
                 }
-                // 回款中
+                // // 回款中
                 if(
                     objChannel.subjectsTab5btn1 || objChannel.subjectsTab5btn2 || objChannel.subjectsTab5btn3 || objChannel.subjectsTab5btn4 ||
                     objChannel.subjectsTab5btn5 || objChannel.subjectsTab5btn6 || objChannel.subjectsTab5btn7 || objChannel.subjectsTab5btn8 ||
-                    objChannel.subjectsTab5btn9 || objChannel.subjectsTab5btn10 || objChannel.subjectsTab5btn11 || objChannel.subjectsTab5btn12 ||
-                    objChannel.subjectsTab5){
+                    objChannel.subjectsTab5btn9 || objChannel.subjectsTab5btn10 || objChannel.subjectsTab5btn11 || objChannel.subjectsTab5btn12 
+                    ){
                     newName.subjectsTab5 = true;
                 }
-                //回款完成
-                if(objChannel.subjectsTab6btn1 ||  objChannel.subjectsTab6btn2 ||  objChannel.subjectsTab6btn3 ||  objChannel.subjectsTab6btn4 || objChannel.subjectsTab6){
+                // //回款完成
+                if(objChannel.subjectsTab6btn1 ||  objChannel.subjectsTab6btn2 ||  objChannel.subjectsTab6btn3 ||  objChannel.subjectsTab6btn4 ){
                     newName.subjectsTab6 = true;
                 }
-                //预期中
-                if(objChannel.subjectsTab9btn1 ||  objChannel.subjectsTab9btn2 ||  objChannel.subjectsTab9btn3  || objChannel.subjectsTab9){
+                // //预期中
+                if(objChannel.subjectsTab9btn1 ||  objChannel.subjectsTab9btn2 ||  objChannel.subjectsTab9btn3 ){
                     newName.subjectsTab9 = true;
                 }
-                // 代偿中
+                // // 代偿中
                 if(
                     objChannel.subjectsTab10btn1 ||  objChannel.subjectsTab10btn2 ||  objChannel.subjectsTab10btn3 ||  objChannel.subjectsTab10btn4 ||   
                     objChannel.subjectsTab10btn5 ||  objChannel.subjectsTab10btn6 ||  objChannel.subjectsTab10btn7 ||  objChannel.subjectsTab10btn8 ||   
-                    objChannel.subjectsTab10btn9 ||  objChannel.subjectsTab10btn10 ||  objChannel.subjectsTab10
+                    objChannel.subjectsTab10btn9 ||  objChannel.subjectsTab10btn10 
                 ){
                     newName.subjectsTab10 = true;
                 }
-                // 已还款代偿
+                // // 已还款代偿
                 if(
                     objChannel.subjectsTab11btn1 ||   objChannel.subjectsTab11btn2 ||  objChannel.subjectsTab11btn3 ||  objChannel.subjectsTab11btn4 ||      
                     objChannel.subjectsTab11btn5 ||   objChannel.subjectsTab11btn6 ||  objChannel.subjectsTab11btn7 ||  objChannel.subjectsTab11btn8 ||      
-                    objChannel.subjectsTab11btn9 ||   objChannel.subjectsTab11    
+                    objChannel.subjectsTab11btn9 
                 ){
                     newName.subjectsTab11 = true;
                 }
-                // 还款详情
+                // // 还款详情
                 if(
-                    objChannel.subjectsTab13btn1 ||  objChannel.subjectsTab13btn2 || objChannel.subjectsTab13btn3 || objChannel.subjectsTab13   
+                    objChannel.subjectsTab13btn1 ||  objChannel.subjectsTab13btn2 || objChannel.subjectsTab13btn3 
                 ){
                     newName.subjectsTab13 = true;
                 }
@@ -586,7 +716,8 @@ export default {
         }
     },
     created() {
-        this.userInfo()
+        this.userInfo();
+        console.log(this.$store)
     },
    
 }
