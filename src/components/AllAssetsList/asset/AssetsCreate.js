@@ -1,4 +1,3 @@
-import { formatDate } from 'PublicMethods/MethodsJs'
 export default {
     data() {
         // 年化利率验证
@@ -80,6 +79,7 @@ export default {
             ruleStatus: {
                 timeLimitType: false, // 固定基数
                 limitDaysDisabled: true, // 资产期限是否禁用
+                timeLimitTypeDisabled: true, // 资产期限
                 assetsAbleOverDays: false, // 宽限期
                 startTime: true,
                 endTime: true,
@@ -216,6 +216,9 @@ export default {
                     { max: 300, message: '增信措施不能超过300个字符', trigger: 'blur' }
                 ],
                 accepteData: [
+                    { type: 'array', required: true, message: '请至少选择一个验收资料', trigger: 'change' }
+                ],
+                accepteData_enterprise: [
                     { type: 'array', required: true, message: '请至少选择一个验收资料', trigger: 'change' }
                 ]
             },
@@ -522,6 +525,7 @@ export default {
                 this.ruleStatus.borrowerWorkNature = data.borrowerMainCharacter != 'natural' ? false : true
                 this.ruleStatus.riskManageStep = data.bizPersonnelType == 'BIZ' ? false : true
                 this.ruleStatus.strength = data.bizPersonnelType == 'PERSONNEL' ? false : true
+
             })
         },
         // 所属渠道
@@ -542,44 +546,30 @@ export default {
         },
         onSubmit(formName) {
             this.$refs[formName].validate((valid) => {
+                console.log(valid)
+                console.log(this.ruleForm)
                 if(!valid) {
                     return false
                 }
-                console.log(this.ruleForm)
-                let submitData = this.ruleForm
-                
-                let channels = this.channels
-                for(let i = 0; i < channels.length; i++) {
-                    if(channels[i].id == submitData.channelId) {
-                        submitData.channelTitle = channels[i].title
-                    }
-                }
 
-                submitData.accepteData = submitData.accepteData.join(',')
-                submitData.startTime = formatDate(submitData.startTime)
-                submitData.endTime = formatDate(submitData.endTime)
-                
-                this.$axios.put('/api/loanAssets/' + this.$route.query.assetId, submitData).then(result => {
-                    let data = result.data
-                    if(data == '') {
+                this.$axios.put('/api/loanAssets/' + this.$route.query.assetId, this.getSubmitData()).then(result => {
+                    if(data == undefined) {
                         this.$notify({
                             title: '成功',
                             message: '修改资产成功',
                             type: 'success'
                         })
-                        this.$router.push('/admin/allassetslist')
                     } else if(data.status == 'error') {
                         this.$notify.error({
                             title: "错误",
                             message: data.message
                         })
-                        // this.init()
-                        console.log(this.ruleForm)
                     }
                 }).catch(err => {
+                    console.log(err)
                     this.$notify.error({
                         title: '错误',
-                        message: '修改资产失败:' + err.message
+                        message: '修改资产失败:' + err.responseJSON.message
                     })
                 })
             })
@@ -596,6 +586,12 @@ export default {
                 console.log(xhr)
             })
         },
+        accMul(arg1,arg2) {
+            let m = 0, s1 = arg1.toString(), s2 = arg2.toString();
+            try{ m += s1.split(".")[1].length }catch(e){}
+            try{ m += s2.split(".")[1].length }catch(e){}
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+        },
         // 借款人主体性质 改变时
         borrowerMainChange() {
             if(this.ruleForm.borrowerMainCharacter == 'natural') {
@@ -608,9 +604,53 @@ export default {
             }
             this.ruleForm.disposableIncome = ''
         },
+        // 还款方式 改变时
+        payWayChange() {
+            if(this.ruleForm.payWay == 'MATCHING_PRINCIPAL_AND_INTEREST') {
+                // 显示 固定期数
+                this.ruleStatus.timeLimitType = true
+                // 显示资产期数
+                this.ruleStatus.assetsPeriods = true
+                this.ruleStatus.limitDays = false
+                // 资产起始日
+                this.ruleStatus.startTime = false
+                this.ruleStatus.endTime = false
+
+                this.ruleForm.timeLimitType = 'FPN'
+                this.ruleStatus.limitDaysDisabled = true
+            } else {
+                // 隐藏 固定期数
+                this.ruleStatus.timeLimitType = false
+                // 显示资产期数
+                this.ruleStatus.assetsPeriods = false
+                this.ruleStatus.limitDays = true
+                // 资产起始日
+                this.ruleStatus.startTime = true
+                this.ruleStatus.endTime = true
+
+                this.ruleForm.timeLimitType = 'DATE'
+                this.ruleStatus.limitDaysDisabled = false
+            }
+        },
+        // 资产期限 改变时
+        timeLimitTypeChange() {
+            let type = this.ruleForm.timeLimitType
+            if(type == 'DATE') {
+                this.ruleStatus.startTime = true
+                this.ruleStatus.endTime = true
+                this.ruleStatus.assetsInterDisabled = true
+            } else if(type == 'DAYS') {
+                this.ruleStatus.startTime = false
+                this.ruleStatus.endTime = false
+                this.ruleStatus.assetsInterDisabled = false
+            }
+        },
         // 渠道改变时
-        channelIdChange() {
-            this.ruleForm.accepteData = []
+        channelIdChange(title) {
+            this.ruleForm.accepteData_personnel = []
+            this.ruleForm.accepteData_enterprise = []
+
+            this.ruleForm.channelTitle = title // 所属渠道名称
             let channels = this.channels
             let channelId = this.ruleForm.channelId
             for(let i = 0; i < channels.length; i++) {
@@ -627,7 +667,13 @@ export default {
                     if(channels[i].acceptedData) {
                         result = channels[i].acceptedData.split(',')
                     }
-                    this.ruleForm.accepteData = result
+                    // true为 个金已验收资料
+                    if(this.ruleStatus.accepteDataType) {
+                        this.ruleForm.accepteData_personnel = result
+                    } else {
+                        // false为 对公已验收资料
+                        this.ruleForm.accepteData_enterprise = result
+                    }
                 }
             }
         }

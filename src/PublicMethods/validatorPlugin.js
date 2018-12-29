@@ -21,7 +21,7 @@ const Validator = {
   }
    
   // 对Validator的实例重新封装成一个plugin ,方便 Vue.use(xxxx)
-  export default {
+export default {
     install: function(Vue, Option) {
       Object.defineProperty(Vue.prototype, "$valid", { value: Validator });
     }
