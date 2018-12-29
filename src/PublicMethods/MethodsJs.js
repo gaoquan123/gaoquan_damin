@@ -2,7 +2,7 @@
 export let formatDate  =  function(time){
     var date = new Date(time);
     var pad = function (number) {
-      var numStr = number.toString();
+    var numStr = number.toString();
       return ('00' + numStr).substring(numStr.length);
     };
   return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate());
