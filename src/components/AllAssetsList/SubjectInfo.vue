@@ -56,7 +56,7 @@
       </el-table-column>
       <el-table-column prop="createdAt" label="创建时间"  >
         <template slot-scope="scope">
-          {{scope.row.createdAt|formatDate}}
+          {{scope.row.createdAt|formatToSec}}
         </template>
       </el-table-column>
       <el-table-column prop="ownerName" label="所有人"></el-table-column>
@@ -78,7 +78,7 @@
   </div>
 </template>
 <script>
-  import {catalogText,formatDate,percent,fmoney,countDown,subjectStatus,surplus,assetDate} from '../../PublicMethods/MethodsJs'
+  import {catalogText,formatDate,percent,fmoney,countDown,subjectStatus,surplus,assetDate,formatToSec} from '../../PublicMethods/MethodsJs'
   export default {
     data() {
       return {
@@ -131,7 +131,8 @@
       countDown,
       subjectStatus,
       surplus,
-      assetDate
+      assetDate,
+      formatToSec
     }
   }
 </script>

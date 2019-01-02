@@ -239,6 +239,19 @@ export const  detailsStatus=function(status) {
   };
   return statusDisplay[status];
 }
+export const statusHistory= function (status) {
+  var statusDisplay = {
+    NEW: '创建标的',
+    PASS: '已流标',
+    FUNDING: '上架',
+    FUNDED: '满标',
+    FAILED: '流标',
+    SIGNED: '生成合同/放款',
+    UN_SHELVE: '下架',
+    ABORT: '撤销'
+  }
+    return statusDisplay[status];
+  };
 //促销方式
 export const promotionStyle=function(status) {
   if(!status){
@@ -262,7 +275,56 @@ export const loanAssetModel=function(status){
   };
   return statusDisplay[status];
 }
+/*
+截取字段开始到结束的内容
+str:原始字符
+key:开始截取的位置
+* */
+export const getUri=function(str, key){
+  var index = str.indexOf(key);
+  var result = str.substr(index,str.length);
+  return result
+}
+/*
+详情页尾差
+* */
+export const  amountForItem=function(instalment, type){
+  const arTotal = instalment['accountReceivables'].map(function (ar) {
+    return ar.items.filter(function (item) {
+      return item.type === type;
+    }).map(function (item) {
+      return item.amount.amount;
+    }).reduce(function (previous, current) {
+      return previous + current;
+    }, 0);
+  }).reduce(function (previous, current) {
+    return previous + current;
+  }, 0);
 
+  const apTotal = instalment['accountPayables'].map(function (ap) {
+    return ap.items.filter(function (item) {
+      return item.type === type;
+    }).map(function (item) {
+      return item.amount.amount;
+    }).reduce(function (previous, current) {
+      return previous + current;
+    }, 0);
+  }).reduce(function (previous, current) {
+    return previous + current;
+  }, 0);
+  return apTotal - arTotal
+}
+/*详情页还款记录状态
+* */
+export const instalmentStatusFromBorrower=function (status) {
+  var statusDisplay = {
+    PENDING:         '未付',
+    COUNTERACT:      '取消',
+    PARTIAL_SETTLED: '平台垫付',
+    SETTLED:         '已付'
+  };
+  return statusDisplay[status];
+}
 
 
 
