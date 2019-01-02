@@ -33,7 +33,7 @@
 					<a v-if="scope.row.currentStockTable <= 0" @click="open()">创建标的</a>
 					<router-link  v-else :to="{path:'/admin/allassetslist/newsubject',query:{userId:scope.row.userId,assetId:scope.row.id}}">创建标的</router-link>
 					<router-link :to="{path: '/admin/allassetslist/subjectinfo', query:{userId:scope.row.userId,assetId:scope.row.id}}">标的信息</router-link>
-					<router-link :to="{path: '/admin/allassetslist/assetspersonedit', query:{userId:scope.row.userId,assetId:scope.row.id}}">编辑</router-link>
+					<router-link :to="{path: '/admin/allassetslist/assetsedit', query:{userId:scope.row.userId,assetId:scope.row.id}}">编辑</router-link>
 					<br>
 					<a @click="editStock(scope.row.id)">修改库存</a>
 					<a>删除</a>

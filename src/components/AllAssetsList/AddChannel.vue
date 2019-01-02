@@ -30,7 +30,7 @@
             <el-form-item label="费率设置：">
               <el-button type="danger" @click="addProperty">新增＋</el-button>
             </el-form-item>
-            <div class="property-set" v-for="(val,index) in ruleForm.alldata">
+            <div class="property-set" v-for="(val,index) in ruleForm.alldata" :key="val.name">
               <el-form-item label="资产期数"
                             :prop="'alldata.' + index + '.decimal'"
                             :rules="rules.decimalRule">

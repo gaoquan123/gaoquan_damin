@@ -23,9 +23,9 @@
                             <span slot="title">用户管理</span>
                         </el-menu-item>
 
-                        <el-menu-item index="4">
+                        <el-menu-item index="4"  route="/admin/poweradmin">
                             <i class="el-icon-menu"></i>
-                            <span slot="title">导航二</span>
+                            <span slot="title">权限管理</span>
                         </el-menu-item>
                         
                         <el-menu-item index="5">
@@ -60,6 +60,9 @@
                     break;
                 case "/admin/usermanage":
                     this.activeIndex = "3";
+                    break;
+                   case "/admin/poweradmin":
+                    this.activeIndex = "4";
                     break;
                 default:
                     break;

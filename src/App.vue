@@ -135,8 +135,12 @@ export default {
 .front-24{font-size: 24px;}
 .front-26{font-size: 26px;}
 .color{color:#409EFF}
-
-
+.p20{
+    padding: 20px;
+}
+.p10{
+    padding: 10px;
+}
 
 
 .w33{width: 33%;}
@@ -155,5 +159,8 @@ export default {
     border-radius: 4px 0px 0px 4px;
     padding: 11px 10px;
     margin-right: -6px;
+}
+.border{
+    border: 1px solid #eee;
 }
 </style>

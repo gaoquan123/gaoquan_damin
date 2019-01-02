@@ -11,10 +11,6 @@ const mutations = {
         state.token = token.token
         sessionStorage.token = token.token
     },
-    del_token(state) {
-        state.token = ''
-        sessionStorage.removeItem('token')
-     }
   
 }
 const actions = {

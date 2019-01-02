@@ -6,7 +6,7 @@
             </el-input>
          <el-button class="m-l-10" type="primary" icon="el-icon-search" @click="SearchBtn()">查询</el-button>
          <router-link  to="/admin/allassetslist/addhannel">
-         <el-button class="" type="success" icon="el-icon-plus">添加渠道</el-button>
+            <el-button class="" type="success" icon="el-icon-plus">添加渠道</el-button>
          </router-link>
         </div>
          <div class="cl p-t-50">

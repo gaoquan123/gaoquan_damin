@@ -6,10 +6,14 @@ import AllAssetsList from '@/components/AllAssetsList/Allassetslist'
 import NewSubject from '@/components/AllAssetsList/NewSubject'
 import SubjectInfo from '@/components/AllAssetsList/SubjectInfo'
 import AddChannel from '@/components/AllAssetsList/AddChannel'
-import AssetsBIZEdit from '@/components/AllAssetsList/asset/AssetsBIZEdit'
-import AssetsPERSONEdit from '@/components/AllAssetsList/asset/AssetsPERSONEdit'
+import AssetsCreate from '@/components/AllAssetsList/asset/AssetsCreate'
+import AssetsEdit from '@/components/AllAssetsList/asset/Assetsdit'
 import Subjects from '@/components/Subjects/Subjects'
 import Usermanage from '@/components/Usermanage/Usermanage'
+import PowerAdmin from '@/components/PowerAdmin/PowerAdmin'
+import SuperAdmin from '@/components/PowerAdmin/SuperAdmin/SuperAdmin'
+
+
 
 
 // 二级路由
@@ -35,14 +39,14 @@ const router = new Router({
             component: AllAssetsList,
           },
           {
-            path: '/admin/allassetslist/assetsbizedit',
-            name: 'AssetsBIZEdit',
-            component: AssetsBIZEdit
+            path: '/admin/allassetslist/assetscreate',
+            name: 'AssetsCreate',
+            component: AssetsCreate
           },
           {
-            path: '/admin/allassetslist/assetspersonedit',
-            name: 'AssetsPERSONEdit',
-            component: AssetsPERSONEdit
+            path: '/admin/allassetslist/assetsedit',
+            name: 'AssetsEdit',
+            component: AssetsEdit
           },
           {
             path: '/admin/allassetslist/newsubject',
@@ -75,11 +79,20 @@ const router = new Router({
             name: 'Usermanage',
             component: Usermanage
           },
-
+          {
+            path: '/admin/poweradmin',
+            name: 'PowerAdmin',
+            component: PowerAdmin
+          },
+          {
+            path: '/admin/poweradmin/superadmin',
+            name: 'SuperAdmin',
+            component: SuperAdmin
+          },
       ]
 })
 router.beforeEach((to, from, next) => {
-    var userInfo = sessionStorage.getItem('token');//获取浏览器缓存的用户信息
+    var userInfo = Cookies.get('_csrf');//获取浏览器缓存的用户信息
     if(userInfo){ //如果有就直接到首页
         next();
     } else {
