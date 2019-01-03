@@ -1,5 +1,11 @@
 <template>
   <div>
+    <el-breadcrumb separator="/">
+      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/admin/allassetslist' }">资产管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/admin/allassetslist/subjectinfo',query: {assetId:subject.loanAssetId }}">标的信息</el-breadcrumb-item>
+      <el-breadcrumb-item>{{subject.catalog|catalogText}}-{{subject.title}}</el-breadcrumb-item>
+    </el-breadcrumb>
     <h3 class="front-20 title p-b-10">{{subject.catalog|catalogText}}-{{subject.title}}<span class="badge">{{subject.status|detailsStatus}}</span>
     </h3>
     <div class="details-info m-t-20">
@@ -129,7 +135,7 @@
         </el-col>
         <el-col :span="6">
           <div class="grid-content"><strong>出借限额(元):</strong>
-            {{subject.investmentPolicy.maximumInvestmentAmount.amount|fmoney}}
+            {{subject.investmentPolicy.maximumInvestmentAmount&&subject.investmentPolicy.maximumInvestmentAmount.amount|fmoney}}
           </div>
         </el-col>
         <el-col :span="6">
