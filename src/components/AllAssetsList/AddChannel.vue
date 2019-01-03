@@ -1,5 +1,10 @@
 <template>
   <div>
+    <el-breadcrumb separator="/">
+      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/admin/allassetslist' }">渠道管理</el-breadcrumb-item>
+      <el-breadcrumb-item>{{msg}}</el-breadcrumb-item>
+    </el-breadcrumb>
     <h3 class="front-20"> {{msg}}</h3>
     <div class="basic_area">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="125px" class="demo-ruleForm">
@@ -501,6 +506,11 @@
              this.ruleForm.alldata[i].assetRate=res.data.rateList[i].ASSET_RATE*100;
              this.ruleForm.alldata[i].serviceRate=res.data.rateList[i].SERVICE_RATE*100;
              this.ruleForm.alldata[i].subjectRate=res.data.rateList[i].SUBJECT_RATE*100;
+             if(res.data.rateList.length>this.ruleForm.alldata.length){
+               this.ruleForm.alldata.push({
+                 decimal:'',assetRate:'',serviceRate:'',subjectRate:''
+               });
+             }
            }
            const self=this
            setTimeout(()=>{

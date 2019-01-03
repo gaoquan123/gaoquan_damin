@@ -78,7 +78,7 @@ import {catalogText,formatDate,payWay,ModelType,dealElement} from '../../../Publ
                   type: 'success',
                   message: '上架成功!'
                 });
-                this.$store.state.subjects.GetSubjectInfoItem.totalCount
+                this.$store.dispatch("GetSubjectAllTab",{'type':{status: 'NEW',orderByFlag:-1,queryFlag:1,page:1}})
               }).catch( (error)=> {
                 this.$message.error('上架失败');
               });
@@ -102,7 +102,7 @@ import {catalogText,formatDate,payWay,ModelType,dealElement} from '../../../Publ
                   type: 'success',
                   message: '撤销成功!'
                 });
-                this.$store.state.subjects.GetSubjectInfoItem.totalCount
+                this.$store.dispatch("GetSubjectAllTab",{'type':{status: 'NEW',orderByFlag:-1,queryFlag:1,page:1}})
               }).catch( (error)=> {
                 this.$message.error('撤销失败');
               });
