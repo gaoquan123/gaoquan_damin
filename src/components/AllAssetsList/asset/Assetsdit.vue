@@ -1,5 +1,10 @@
 <template>
     <div class="newsubject">
+        <el-breadcrumb separator="/">
+            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/admin/allassetslist' }">资产管理</el-breadcrumb-item>
+            <el-breadcrumb-item>编辑资产</el-breadcrumb-item>
+        </el-breadcrumb>
         <h1 class="front-22 m-t-30 color">编辑资产</h1>
         <div class="Newform m-t-50">
             <el-form ref="ruleForm" :rules="rules" :model="ruleForm" label-width="150px">
@@ -254,7 +259,7 @@
 
                 <el-form-item>
                     <el-button type="primary" @click="onSubmit('ruleForm')">保存</el-button>
-                    <el-button>取消</el-button>
+                    <el-button @click="onCancel">取消</el-button>
                 </el-form-item>
             </el-form>
            
