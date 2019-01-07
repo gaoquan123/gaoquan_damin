@@ -1,7 +1,7 @@
 <template>
     <div class="m-t-40">
         <!-- 募集中 -->
-         <el-table  fit  
+         <el-table  fit
          :data = "listItem"
          :row-class-name="tableRowClassName"
           border style="width: 100%" >
@@ -19,21 +19,23 @@
 
 			<el-table-column label="pc精选" >
                 <template slot-scope="scope">
-                     <el-button type="success" plain round  size="mini">设为置顶</el-button>
+                     <el-button type="primary" plain round  size="mini" v-if="scope.row.isChoiceness=='N'||scope.row.isChoiceness=='A'" @click="setPreferredSubjectPC(scope.row)">置为精选</el-button>
+                     <el-button type="primary" plain round  size="mini" v-else-if="scope.row.isChoiceness=='Y'||scope.row.isChoiceness=='B'" @click="cancelPreferredSubjectPC(scope.row)">取消精选</el-button>
 				</template>
              </el-table-column>
 
 			<el-table-column  label="移动精选" >
                   <template slot-scope="scope">
-                     <el-button type="primary" plain round  size="mini">设为置顶</el-button>
-				  </template>    
+                    <el-button type="primary" plain round  size="mini" v-if="scope.row.isChoiceness=='N'||scope.row.isChoiceness=='Y'" @click="setPreferredSubjectMobile(scope.row)">置为精选</el-button>
+                    <el-button type="primary" plain round  size="mini" v-else-if="scope.row.isChoiceness=='A'||scope.row.isChoiceness=='B'" @click="cancelPreferredSubjectMobile(scope.row)">取消精选</el-button>
+				  </template>
              </el-table-column>
 			<el-table-column  label="操作" >
                   <template slot-scope="scope">
                      <el-button type="danger" plain round  size="mini">下架</el-button>
 				</template>
             </el-table-column>
-            
+
         </el-table>
     </div>
 </template>
@@ -57,7 +59,7 @@ import {catalogText,formatDate,payWay,ModelType,dealElement} from '../../../Publ
                     })
                   return result
               }
-          }  
+          }
         },
          methods: {
           	tableRowClassName({ row, rowIndex }) {
@@ -66,9 +68,93 @@ import {catalogText,formatDate,payWay,ModelType,dealElement} from '../../../Publ
                 }
                 return "";
             },
+           setPreferredSubjectPC(row){
+             this.$confirm('确定将所选标的置为PC精选?', '提示', {
+               confirmButtonText: '确定',
+               cancelButtonText: '取消',
+               type: 'warning'
+             }).then(() => {
+               if (row.isChoiceness == 'A') {
+                 this.setPreferredSubject( row.id, "B");
+               } else if (row.isChoiceness == 'N') {
+                 this.setPreferredSubject( row.id, "Y");
+               }
+             }).catch(() => {
+               this.$message({
+                 type: 'info',
+                 message: '已取消'
+               });
+             });
+           },
+           setPreferredSubjectMobile(row){
+             this.$confirm('确定将所选标的置为移动精选?', '提示', {
+               confirmButtonText: '确定',
+               cancelButtonText: '取消',
+               type: 'warning'
+             }).then(() => {
+               if (row.isChoiceness == 'Y') {
+                 this.setPreferredSubject( row.id, "B");
+               } else if (row.isChoiceness == 'N') {
+                 this.setPreferredSubject( row.id, "A");
+               }
+             }).catch(() => {
+               this.$message({
+                 type: 'info',
+                 message: '已取消'
+               });
+             });
+           },
+           cancelPreferredSubjectMobile(row){
+             this.$confirm('确定将所选标的取消移动精选?', '提示', {
+               confirmButtonText: '确定',
+               cancelButtonText: '取消',
+               type: 'warning'
+             }).then(() => {
+               if (row.isChoiceness == 'B') {
+                 this.setPreferredSubject( row.id, "Y");
+               } else if (row.isChoiceness == 'A') {
+                 this.setPreferredSubject( row.id, "N");
+               }
+             }).catch(() => {
+               this.$message({
+                 type: 'info',
+                 message: '已取消'
+               });
+             });
+           },
+           cancelPreferredSubjectPC(row){
+             this.$confirm('确定将所选标的取消PC精选?', '提示', {
+               confirmButtonText: '确定',
+               cancelButtonText: '取消',
+               type: 'warning'
+             }).then(() => {
+               if (row.isChoiceness == 'B') {
+                 this.setPreferredSubject( row.id, "A");
+               } else if (row.isChoiceness == 'Y') {
+                 this.setPreferredSubject( row.id, "N");
+               }
+             }).catch(() => {
+               this.$message({
+                 type: 'info',
+                 message: '已取消'
+               });
+             });
+           },
+           setPreferredSubject(id,choice){
+              this.$axios({
+                method: 'put',
+                url: '/admin/api/subjects/choiceness',
+                data: {ids: [id], isChoiceness: choice}
+              }).then(()=>{
+                this.$store.dispatch("GetSubjectAllTab",{'type':{status: 'FUNDING',orderByFlag:-1,queryFlag:1,page:1}})
+              }).catch(()=>{
+
+              })
+           }
+
         },
         components: {
-            
+
         },
     }
 </script>

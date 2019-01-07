@@ -6,7 +6,7 @@
       <el-breadcrumb-item :to="{ path: '/admin/allassetslist/subjectinfo',query: {assetId:subject.loanAssetId }}">标的信息</el-breadcrumb-item>
       <el-breadcrumb-item>{{subject.catalog|catalogText}}-{{subject.title}}</el-breadcrumb-item>
     </el-breadcrumb>
-    <h3 class="front-20 title p-b-10">{{subject.catalog|catalogText}}-{{subject.title}}<span class="badge">{{subject.status|detailsStatus}}</span>
+    <h3 class="front-20 title p-b-10  m-t-30">{{subject.catalog|catalogText}}-{{subject.title}}<span class="badge">{{subject.status|detailsStatus}}</span>
     </h3>
     <div class="details-info m-t-20">
       <h4 class="front-18">标的基本信息（ID:{{subject.id}}）</h4>
