@@ -216,7 +216,7 @@ export default {
 			if(item.operation == 'edit') {
 				this.$router.push({ name: 'AssetsEdit', query: { userId: item.userId, assetId: item.id }})
 			}else {
-				this.$router.push({ name: 'NewSubject', query: { userId: item.userId, assetId: item.id }})
+				this.$router.push({ name: 'NewSubjectLoan', query: { userId: item.userId, assetId: item.id }})
 			}
 			// 下面这个接口不知道做什么用的
 			/* this.$axios.post('/api/users/userInformatization', {

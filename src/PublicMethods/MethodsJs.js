@@ -7,6 +7,20 @@ export let formatDate  =  function(time){
     };
   return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate());
 }
+// 添加时间
+export let addDays = function(days) {
+  let currentTime = new Date()
+  currentTime.setHours(currentTime.getHours() + days * 24)
+  return currentTime
+}
+// 添加时间2
+export let addNewDays = function(time, days) {
+  let currentTime = new Date(time)
+  currentTime.setHours(currentTime.getHours() + days * 24)
+  return currentTime
+}
+
+
 // 时间转换到秒
 export const formatToSec  =  function(time){
   if(!time) return
