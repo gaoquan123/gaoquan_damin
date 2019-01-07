@@ -6,10 +6,7 @@ const Validator = {
     },
     /*获取校验器*/
     getPhoneValidator(){
-      var validPhone=(rule, value,callback)=>{
-        //   if (!value){
-        //       callback(new Error('请输入手机号码'))
-        //   }else 
+       let validPhone=(rule, value, callback)=>{
            if (!Validator.isPhone(value)){
             callback(new Error('请输入正确的11位手机号码'))
           }else {
@@ -17,7 +14,21 @@ const Validator = {
           }
       }
       return validPhone
-    }
+	},
+	/* 年化利率校验 */
+	getRateValidator(rule, value, callback) {
+		// let annualRateValidate = (rule, value, callback) => {
+			let reg = /^\d+(?:\.\d{1,2})?$/
+			if(!reg.test(value)) {
+				callback(new Error('年化利率输入在误'))
+			} else if(value <= 0) { 
+				callback(new Error('资产年化利率必须大于0'))
+			} else {
+				callback()
+			}
+		// }
+		// return annualRateValidate
+	}
   }
    
   // 对Validator的实例重新封装成一个plugin ,方便 Vue.use(xxxx)

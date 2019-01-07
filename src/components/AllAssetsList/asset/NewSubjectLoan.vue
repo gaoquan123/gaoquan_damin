@@ -1,6 +1,11 @@
 <template>
     <div class="newsubject">
-        <h1 class="front-22 m-t-30 color">创建个人借款标的</h1>
+        <el-breadcrumb separator="/">
+            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/admin/subjects' }">标的管理</el-breadcrumb-item>
+            <el-breadcrumb-item>创建标的</el-breadcrumb-item>
+        </el-breadcrumb>
+        <h1 class="front-22 m-t-30 color">创建标的</h1>
         <div class="Newform m-t-50">
 
             <el-form ref="form" :model="ruleForm" label-width="150px">
@@ -9,7 +14,10 @@
                 </el-form-item>
 
                 <el-form-item label="标的项目类别" prop="region">
-                    <el-input disabled v-model="ruleForm.payWay"></el-input>
+                    <el-select placeholder="请选择项目类别" v-model="ruleForm.payWay">
+                        <el-option label="JIASHI_V8" value="7">个人借款</el-option>
+                        <el-option label="JIASHI_V3" value="2">新手标</el-option>
+                    </el-select>
                 </el-form-item>
 
                 <el-form-item label="借款金额">
