@@ -5,7 +5,7 @@
       <el-breadcrumb-item :to="{ path: '/admin/allassetslist' }">渠道管理</el-breadcrumb-item>
       <el-breadcrumb-item>{{msg}}</el-breadcrumb-item>
     </el-breadcrumb>
-    <h3 class="front-20"> {{msg}}</h3>
+    <h3 class="front-20 m-t-30"> {{msg}}</h3>
     <div class="basic_area">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="125px" class="demo-ruleForm">
         <el-form-item label="渠道编码" prop="channelCode">

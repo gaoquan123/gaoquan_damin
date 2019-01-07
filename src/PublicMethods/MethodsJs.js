@@ -339,6 +339,31 @@ export const instalmentStatusFromBorrower=function (status) {
   };
   return statusDisplay[status];
 }
+/*还款状态
+ * */
+export const repaymentStatus=function (status) {
+  if(status == 'PENDING'){
+    return '待还款'
+  }else if(status == 'ADV_SETTLED'){
+    return '提前还款'
+  }else if(status == 'OVE_SETTLED'){
+    return '逾期还款'
+  }else if(status == 'REQUESTING'){
+    return '申请中'
+  }else if(status == 'PRE_REPAYMENT'){
+    return '已预约还款'
+  }else if(status == 'OVERDUE'){
+    return '逾期'
+  }else if(status == 'SETTLED'){
+    return '已还款'
+  }else if(status == 'INDIRECT_COMPENSATORY'){
+    return '主动代偿还款'
+  }else if(status == 'COMPENSATORY'){
+    return '非主动代偿还款'
+  }else{
+    return '待还款'
+  }
+}
 
 
 

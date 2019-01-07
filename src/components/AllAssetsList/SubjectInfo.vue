@@ -5,7 +5,7 @@
       <el-breadcrumb-item :to="{ path: '/admin/allassetslist' }">资产管理</el-breadcrumb-item>
       <el-breadcrumb-item>标的信息</el-breadcrumb-item>
     </el-breadcrumb>
-    <h3 class="front-20">标的信息</h3>
+    <h3 class="front-20  m-t-30">标的信息</h3>
     <p class="front-16 p-t-30 asset-title">所属资产概况</p>
     <p class="asset-info">
       <span><strong>资产名称：</strong>{{title}}</span>

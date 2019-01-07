@@ -10,7 +10,7 @@
             <el-button type="primary">驳回申请</el-button>
             <el-button type="danger">驳回提前还款申请</el-button>
         </el-row>
-         <el-table  fit  
+         <el-table  fit
             :data = "listItem"
             :row-class-name="tableRowClassName"
             border style="width: 100%" >
@@ -28,19 +28,55 @@
 			<el-table-column prop="transferable" label="转让标" > </el-table-column>
             <el-table-column  label="操作" width="200px;" >
                 <template slot-scope="scope">
-                    <a>查看合同</a>
-                    <a>详情</a>
-                    <a>编辑</a>
+                  <a target="_blank" :href="scope.row.uri+'?view=pdf&param=Y'">查看合同</a>
+                  <router-link :to="{path:'/admin/allassetslist/details', query: {id: scope.row.subjectId, userId: scope.row.userId}}">详情</router-link>
+                    <a @click="edit(scope.row)">编辑</a>
                     <br>
-                    <a>还款计划</a>
+                    <a @click="showPlan(scope.row.subjectId)">还款计划</a>
                     <a>预约还款</a>
                 </template>
             </el-table-column>
         </el-table>
+      <el-dialog :visible.sync="isShowPlan" width="80%">
+        <h3 slot="title">
+          <div class="front-18">回款计划：{{repaymentTitle}}</div>
+          <div class="front-18">到期还款总额：{{totalAmount}}元</div>
+          <div class="front-18">待还款总额：{{repaymentAmount}}元</div>
+        </h3>
+        <el-table :data="subjectRepaymentPlan">
+          <el-table-column property="instalmentNum" label="期次" ></el-table-column>
+          <el-table-column property="time1" label="应还日期" ></el-table-column>
+          <el-table-column property="monthRepaymentTotalAmount" label="月还款总额"></el-table-column>
+          <el-table-column property="monthRepaymentPrincipalAmount" label="月还款本金"></el-table-column>
+          <el-table-column property="monthRepaymentInterestAmount" label="月还款利息"></el-table-column>
+          <el-table-column property="lenderPrincipalAmount" label="出借人本金"></el-table-column>
+          <el-table-column property="lenderInterestAmount" label="出借人利息"></el-table-column>
+          <el-table-column property="instalmentEndBalance" label="期末余额"></el-table-column>
+          <el-table-column property="interestDifferentialAmount" label="账号管理费"></el-table-column>
+          <el-table-column  label="提前还款服务费">
+            <template slot-scope="scope">
+              <span v-if="scope.row.prepaymentServiceFee == null">--</span>
+              <span v-else>{{scope.row.prepaymentServiceFee}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column  label="还款状态aaa">
+            <template slot-scope="scope">
+              {{scope.row.repaymentStatus|repaymentStatus}}
+            </template>
+          </el-table-column>
+          <el-table-column  label="提前还款服务费">
+            <template slot-scope="scope">
+              <span v-if="scope.row.repaymentDate == null">--</span>
+              <span v-else>{{scope.row.time2}}</span>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-dialog>
+
     </div>
 </template>
 <script>
-import {catalogText,formatDate,payWay,ModelType,dealElement} from '../../../PublicMethods/MethodsJs'
+import {catalogText,formatDate,payWay,ModelType,dealElement,repaymentStatus} from '../../../PublicMethods/MethodsJs'
     export default {
         computed: {
           listItem(){
@@ -60,8 +96,17 @@ import {catalogText,formatDate,payWay,ModelType,dealElement} from '../../../Publ
                  })
                   return result
               }
-          }  
+          }
         },
+      data(){
+            return {
+              subjectRepaymentPlan:{},
+              isShowPlan:false,
+              repaymentTitle:'',
+              totalAmount:0,
+              repaymentAmount:0
+            }
+      },
          methods: {
           	tableRowClassName({ row, rowIndex }) {
                 if (rowIndex % 2 == 1) {
@@ -69,10 +114,44 @@ import {catalogText,formatDate,payWay,ModelType,dealElement} from '../../../Publ
                 }
                 return "";
             },
+           showPlan(subjectId){
+          	    //还款计划
+          	    this.$axios.get('/admin/api/subjects/getSubjectInstalmentMatchingByAdmin',{
+          	        params:{
+                      subjectId:subjectId
+                    }
+                }).then(res=>{
+                  this.subjectRepaymentPlan=res.data.repaymentPlan
+                  this.repaymentTitle=res.data.title
+                  this.totalAmount=res.data.totalAmount
+                  this.isShowPlan=true
+                  this.repaymentAmount=0
+                  res.data.repaymentPlan.forEach(val=>{
+                      if(val.repaymentDate == null){
+                        this.repaymentAmount+=val.monthRepaymentTotalAmount
+                      }
+                  })
+                  this.repaymentAmount=this.repaymentAmount.toFixed(2)
+                }).catch(err=>{
+
+                })
+           },
+           edit(){
+             this.$confirm('已为可转让标的，确定继续编辑?', '提示', {
+               confirmButtonText: '确定',
+               cancelButtonText: '取消',
+               type: 'warning'
+             }).then(() => {
+               this.$router.push('/')
+             })
+           }
         },
         components: {
-            
+
         },
+      filters:{
+        repaymentStatus
+      }
     }
 </script>
 <style lang="less" scoped>
