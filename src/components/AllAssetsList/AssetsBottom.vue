@@ -216,19 +216,26 @@ export default {
 			if(item.operation == 'edit') {
 				this.$router.push({ name: 'AssetsEdit', query: { userId: item.userId, assetId: item.id }})
 			}else {
-				this.$router.push({ name: 'NewSubjectLoan', query: { userId: item.userId, assetId: item.id }})
-			}
-			// 下面这个接口不知道做什么用的
-			/* this.$axios.post('/api/users/userInformatization', {
-				userId: item.userId
-			}).then(result => {
-				// if(item.userType == 'ENTERPRISE') {
+				// this.$router.push({ name: 'NewSubjectLoan', query: { userId: item.userId, assetId: item.id }})
 
-				// } else if(item.userType == 'PERSONAL_LOAN') {
-					
-				// }
-				this.$router.push({ name: '/admin/allassetslist/newsubject', query: { userId: item.userId, assetId: item.id }})
-			}) */
+				this.$axios({
+                    url: '/api/users/userInformatization',
+                    method: 'post',
+                    data: JSON.stringify({ userId: item.userId }),
+                    headers: {
+						'Content-Type': 'application/json',
+						'csrf-token': Cookies.get('_csrf')
+					}
+                }).then( (response)=> {
+                    this.$router.push({ name: 'NewSubjectLoan', query: { userId: item.userId, assetId: item.id }})
+                }).catch( (error)=> {
+					console.log(error)
+                    this.$alert(error.message, "提示", {
+						confirmButtonText: "确定",
+						callback: action => {}
+					})
+                });
+			}
 		},
 		// 修改库存
 		editStock(subjectId) {
@@ -260,8 +267,15 @@ export default {
 				if(!valid) {
 					return
 				}
-				this.$axios.put('/api/loanAssets/'+ this.relueForm.id +'/stock', {
-					remaindAmount: this.relueForm.changeRemaindAmount
+
+				this.$axios({
+					url: '/api/loanAssets/'+ this.relueForm.id +'/stock',
+					method: 'put',
+					data: JSON.stringify({ remaindAmount: this.relueForm.changeRemaindAmount }),
+					headers: {
+						'Content-Type': 'application/json',
+						'csrf-token': Cookies.get('_csrf')
+					}
 				}).then((data) => {
 					this.$message({
 						showClose: true,

@@ -7,6 +7,14 @@ export let formatDate  =  function(time){
     };
   return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate());
 }
+export let formatDateAll  =  function(time){
+  var date = new Date(time);
+  var pad = function (number) {
+  var numStr = number.toString();
+    return ('00' + numStr).substring(numStr.length);
+  };
+return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate()) + ' ' + pad(date.getHours()) + ':' + pad(date.getMinutes());
+}
 // 添加时间
 export let addDays = function(days) {
   let currentTime = new Date()
