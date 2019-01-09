@@ -149,13 +149,14 @@
                             </el-input>
                         </el-form-item>
                         <el-form-item label="使用代金券增加方式">
-                            <el-radio-group v-model="ruleForm.voucherGeometric" @change="voucherGeometricChange">
-                                <el-radio label="voucherGeometric" border>等比增加</el-radio>
-                                <el-radio label="voucherUnGeometric" border>非等比增加</el-radio>
-                            </el-radio-group>
+                            <el-checkbox-group v-model="ruleForm.voucherGeometric" @change="voucherGeometricChange">
+                                <el-checkbox label="voucherGeometric" border>等比增加</el-checkbox>
+                                <el-checkbox label="voucherUnGeometric" border>非等比增加</el-checkbox>
+                            </el-checkbox-group>
                         </el-form-item>
-                        <div class="property-block">
+                        <div class="property-block" v-if="ruleStatus.voucherGeometric == 'voucherGeometric'">
                             <div class="property-set" v-for="(item, index) in ruleForm.steps" :key="item.invest">
+                                <el-button type="danger" icon="el-icon-delete" circle  @click="deleteProperty(index)" class="proterty-del"></el-button>
                                 <el-form-item label="出借金额"
                                               :prop="'steps.' + index + '.invext'"
                                               :rules="rules.invest">
@@ -170,14 +171,13 @@
                                         <template slot="append">￥</template>
                                     </el-input>
                                 </el-form-item>
-                                 <el-button type="danger" icon="el-icon-delete" circle  @click="deleteProperty(index)" class="proterty-del"></el-button>
                             </div>
                             <el-form-item>
                                 <el-button type="danger" @click="addProperty">增加一条</el-button>
                             </el-form-item>
                         </div>
 
-                        <div class="property-block">
+                        <div class="property-block" v-if="ruleStatus.voucherGeometric == 'voucherUnGeometric'">
                             <div class="property-set">
                                 <el-form-item label="出借金额">
                                     <el-input type="number" placeholder="出借金额" v-model.number="ruleForm.steps1.investStep">
@@ -576,6 +576,8 @@ export default {
                 debtorSex: '', // 债务人性别
                 debtorAge: '', // 债务人年龄
                 debtorCity: '', // 债务人所在城市
+                voucherGeometricTemp: '', //使用代金券增加方式 临时
+                voucherGeometric: [], // 使用代金券增加方式
                 steps: [ // 非等比增加
                     { 
                         invest: '', // 出借金额
@@ -600,6 +602,7 @@ export default {
                 transferAbility: false, // 是否可转让
                 mortgageAbility: false, // 是否有抵押
                 guaranteeAbility: false, // 是否有担保
+                voucherGeometric: '', // 使用代金券增加方式
 
             },
             rules: {
@@ -1055,14 +1058,28 @@ export default {
         },
         // 活动方式 改变时
         voucherTypeChooseChange() {
-            this.ruleForm.voucherTypeChoose = this.ruleForm.voucherTypeChoose == 'voucher' ? true : false
+            this.ruleStatus.voucherTypeChoose = this.ruleForm.voucherTypeChoose == 'voucher' ? true : false
         },
         // 促销方式 改变时
         promotionStyleChange() {
             this.ruleStatus.customPromotionExplain = this.ruleForm.promotionStyle == 'custom' ? true : false
         },
+        // 使用代金券增加方式 改变时
         voucherGeometricChange() {
-
+            let voucherGeometric = this.ruleForm.voucherGeometric
+            console.log(voucherGeometric, 'voucherGeometric')
+            console.log(voucherGeometricTemp, 'voucherGeometricTemp')
+            if(voucherGeometric.length == 1) {
+                voucherGeometricTemp = voucherGeometric
+            } else if(voucherGeometric.length == 2) {
+                for(let i = 0; i < voucherGeometric.length; i++) {
+                    if(voucherGeometric[i] != voucherGeometricTemp[0]) {
+                        voucherGeometricTemp[0] = voucherGeometric[i]
+                    }
+                }
+                voucherGeometric = voucherGeometricTemp
+            }
+            // this.ruleStatus.voucherGeometric = this.ruleForm.voucherGeometric
         },
         // 使用代金券增加方式 改变时
         addProperty() {
@@ -1167,11 +1184,15 @@ export default {
         background: #f2f2f2;
         width: 620px;
         margin-bottom: 22px;
-
+        .property-set + .property-set {
+            margin-top: 22px;
+        }
         .property-set {
             position: relative;
             background: #e9e2e2;
             border-radius: 10px;
+            padding: 22px 0;
+           
             .el-form-item:last-child {
                 margin-bottom: 0;
             }
