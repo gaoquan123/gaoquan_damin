@@ -161,15 +161,15 @@ export default {
 				return false
 			}
 			item.operation = 'create'
-			this.assetsOperation(item)
+			this.assetsOperation(item, item.usertype)
 
 		},
 		assetsEdit(item) {
 			item.operation = 'edit'
-			this.assetsOperation(item)
+			this.assetsOperation(item, item.usertype)
 			// this.$router.push('/admin/allassetslist/assetsedit')
 		},
-		assetsOperation(item) {
+		assetsOperation(item, type) {
 			this.$axios.get('/api/users/findAccIdAndType?userId=' + item.userId).then(res => {
 				let data = res.data
 				if(data == '') {
@@ -204,15 +204,15 @@ export default {
 							confirmButtonText: '确定',
 							cancelButtonText: '取消'
 						}).then(() => {
-							this.checkStyle(item)
+							this.checkStyle(item, type)
 						})
 					} else {
-						this.checkStyle(item)
+						this.checkStyle(item, type)
 					}
 				})
 			})
 		},
-		checkStyle(item) {
+		checkStyle(item, type) {
 			if(item.operation == 'edit') {
 				this.$router.push({ name: 'AssetsEdit', query: { userId: item.userId, assetId: item.id }})
 			}else {
@@ -227,7 +227,13 @@ export default {
 						'csrf-token': Cookies.get('_csrf')
 					}
                 }).then( (response)=> {
-                    this.$router.push({ name: 'NewSubjectLoan', query: { userId: item.userId, assetId: item.id }})
+					console.log(type)
+					if (type == "ENTERPRISE") {
+						this.$router.push({ name: 'CreateSubject', query: { userId: item.userId, assetId: item.id }})
+					} else if (type == "PERSONAL_LOAN") {
+						this.$router.push({ name: 'CreateSubjectLoan', query: { userId: item.userId, assetId: item.id }})
+					}
+                    
                 }).catch( (error)=> {
 					console.log(error)
                     this.$alert(error.message, "提示", {

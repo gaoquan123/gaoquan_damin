@@ -15,8 +15,8 @@ import SuperAdmin from '@/components/PowerAdmin/SuperAdmin/SuperAdmin'
 
 // 二级路由
 import Details from '@/components/AllAssetsList/details/details'
-import NewSubject from '@/components/AllAssetsList/asset/NewSubject'
-import NewSubjectLoan from '@/components/AllAssetsList/asset/NewSubjectLoan'
+import CreateSubject from '@/components/AllAssetsList/asset/CreateSubject'
+import CreateSubjectLoan from '@/components/AllAssetsList/asset/CreateSubjectLoan'
 import AssetsEdit from '@/components/AllAssetsList/asset/Assetsdit'
 
 
@@ -44,14 +44,14 @@ const router = new Router({
             component: AssetsEdit
           },
           {
-            path: '/admin/allassetslist/newsubject',
-            name: 'NewSubject',
-            component: NewSubject
+            path: '/admin/allassetslist/CreateSubject',
+            name: 'CreateSubject',
+            component: CreateSubject
           },
           {
-            path: '/admin/allassetslist/newsubjectloan',
-            name: 'NewSubjectLoan',
-            component: NewSubjectLoan
+            path: '/admin/allassetslist/Createsubjectloan',
+            name: 'CreateSubjectLoan',
+            component: CreateSubjectLoan
           },
           {
             path: '/admin/allassetslist/subjectinfo',
