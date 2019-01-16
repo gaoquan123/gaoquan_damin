@@ -1,17 +1,7 @@
 import { formatDate } from 'PublicMethods/MethodsJs'
+// import { getRateValidator } from 'PublicMethods/validatorPlugin'
 export default {
     data() {
-        // 年化利率验证
-        var annualRateValidate = (rule, value, callback) => {
-            let reg = /^\d+(?:\.\d{1,2})?$/
-            if(!reg.test(this.ruleForm.annualRate)) {
-                callback(new Error('资产年化利率输入在误'))
-            } else if(value <= 0) { 
-                callback(new Error('输入资产年化利率必须大于0'))
-            } else {
-                callback()
-            }
-        }
         // 风险限额
         var assetsRiskQuotaValidate = (rule, value, callback) => {
             if(value < 0 || value > 999999999) {
@@ -137,14 +127,14 @@ export default {
                 ],
                 annualRate: [
                     { required: true, message: '资产年化利率不能为空', trigger: 'blur' },
-                    { validator: annualRateValidate, trigger: 'blur' }
+                    { validator: this.$valid.getRateValidator, trigger: 'blur' }
                 ],
                 assetsRiskLevel: [
                     { required: true, message: '请选择风险等级', trigger: 'change' }
                 ],
                 assetsRiskQuota: [
                     { required: true, message: '风险限额不能为空', trigger: 'blur' },
-                    { type: 'number', validator: assetsRiskQuotaValidate, trigger: 'blur' }
+                    // { type: 'number', validator: assetsRiskQuotaValidate, trigger: 'blur' }
                 ],
                 model: [
                     { required: true, message: '请选择资产模式', trigger: 'change' }
@@ -545,16 +535,13 @@ export default {
                 if(!valid) {
                     return false
                 }
-                console.log(this.ruleForm)
-                let submitData = this.ruleForm
-                
+                let submitData = Object.assign({}, this.ruleForm);
                 let channels = this.channels
                 for(let i = 0; i < channels.length; i++) {
                     if(channels[i].id == submitData.channelId) {
                         submitData.channelTitle = channels[i].title
                     }
                 }
-
                 submitData.accepteData = submitData.accepteData.join(',')
                 submitData.startTime = formatDate(submitData.startTime)
                 submitData.endTime = formatDate(submitData.endTime)
@@ -573,8 +560,6 @@ export default {
                             title: "错误",
                             message: data.message
                         })
-                        // this.init()
-                        console.log(this.ruleForm)
                     }
                 }).catch(err => {
                     this.$notify.error({
@@ -583,6 +568,9 @@ export default {
                     })
                 })
             })
+        },
+        onCancel() {
+            this.$router.push('/admin/allassetslist')
         },
         // 资产剩余额度查询
         findUserAssetLimit() {
@@ -601,7 +589,6 @@ export default {
             if(this.ruleForm.borrowerMainCharacter == 'natural') {
                 this.ruleStatus.borrowerWorkNature = true
                 this.ruleStatus.disposableIncome = 'PERSONNEL'
-
             } else {
                 this.ruleStatus.borrowerWorkNature = false
                 this.ruleStatus.disposableIncome = 'BIZ'

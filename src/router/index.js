@@ -3,11 +3,8 @@ import Router from 'vue-router'
 // 一级路由
 import Login from '@/components/Login/Login'
 import AllAssetsList from '@/components/AllAssetsList/Allassetslist'
-import NewSubject from '@/components/AllAssetsList/NewSubject'
 import SubjectInfo from '@/components/AllAssetsList/SubjectInfo'
 import AddChannel from '@/components/AllAssetsList/AddChannel'
-import AssetsCreate from '@/components/AllAssetsList/asset/AssetsCreate'
-import AssetsEdit from '@/components/AllAssetsList/asset/Assetsdit'
 import Subjects from '@/components/Subjects/Subjects'
 import Usermanage from '@/components/Usermanage/Usermanage'
 import PowerAdmin from '@/components/PowerAdmin/PowerAdmin'
@@ -18,6 +15,9 @@ import SuperAdmin from '@/components/PowerAdmin/SuperAdmin/SuperAdmin'
 
 // 二级路由
 import Details from '@/components/AllAssetsList/details/details'
+import CreateSubject from '@/components/AllAssetsList/asset/CreateSubject'
+import CreateSubjectLoan from '@/components/AllAssetsList/asset/CreateSubjectLoan'
+import AssetsEdit from '@/components/AllAssetsList/asset/Assetsdit'
 
 
 
@@ -39,19 +39,19 @@ const router = new Router({
             component: AllAssetsList,
           },
           {
-            path: '/admin/allassetslist/assetscreate',
-            name: 'AssetsCreate',
-            component: AssetsCreate
-          },
-          {
             path: '/admin/allassetslist/assetsedit',
             name: 'AssetsEdit',
             component: AssetsEdit
           },
           {
-            path: '/admin/allassetslist/newsubject',
-            name: 'NewSubject',
-            component: NewSubject
+            path: '/admin/allassetslist/CreateSubject',
+            name: 'CreateSubject',
+            component: CreateSubject
+          },
+          {
+            path: '/admin/allassetslist/Createsubjectloan',
+            name: 'CreateSubjectLoan',
+            component: CreateSubjectLoan
           },
           {
             path: '/admin/allassetslist/subjectinfo',

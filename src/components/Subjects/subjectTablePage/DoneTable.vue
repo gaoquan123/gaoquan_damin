@@ -4,7 +4,7 @@
         <el-row class="m-b-40" v-if="DataRoles($store.state.login.roles,'subjectsTab6btn1')" >
             <el-button type="warning">导出标的出借信息</el-button>
         </el-row>
-         <el-table  fit  
+         <el-table  fit
             :data = "listItem"
             :row-class-name="tableRowClassName"
             border style="width: 100%" >
@@ -22,9 +22,9 @@
 			<el-table-column prop="transferable" label="转让标" > </el-table-column>
             <el-table-column  label="操作" width="200px;" >
                 <template slot-scope="scope">
-                    <a  v-if="DataRoles($store.state.login.roles,'subjectsTab6btn2')">查看合同</a>
-                    <a  v-if="DataRoles($store.state.login.roles,'subjectsTab6btn3')">详情</a>
-                    <a  v-if="DataRoles($store.state.login.roles,'subjectsTab6btn4')">编辑</a>
+                    <a  v-if="DataRoles($store.state.login.roles,'subjectsTab6btn2')"  target="_blank" :href="scope.row.uri+'?view=pdf&param=Y'">查看合同</a>
+                   <router-link v-if="DataRoles($store.state.login.roles,'subjectsTab6btn3')"  :to="{path:'/admin/allassetslist/details', query: {id: scope.row.subjectId, userId: scope.row.userId}}">详情</router-link>
+                   <a  v-if="DataRoles($store.state.login.roles,'subjectsTab6btn4')" @click="edit(scope.row)">编辑</a>
                 </template>
             </el-table-column>
         </el-table>
@@ -50,7 +50,7 @@ import {catalogText,formatDate,payWay,ModelType,dealElement} from '../../../Publ
                  })
                   return result
               }
-          }  
+          }
         },
          methods: {
           	tableRowClassName({ row, rowIndex }) {
@@ -59,9 +59,18 @@ import {catalogText,formatDate,payWay,ModelType,dealElement} from '../../../Publ
                 }
                 return "";
             },
+           edit(){
+             this.$confirm('已为可转让标的，确定继续编辑?', '提示', {
+               confirmButtonText: '确定',
+               cancelButtonText: '取消',
+               type: 'warning'
+             }).then(() => {
+               this.$router.push('/')
+             })
+           }
         },
         components: {
-            
+
         },
     }
 </script>

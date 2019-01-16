@@ -6,10 +6,7 @@ const Validator = {
     },
     /*获取校验器*/
     getPhoneValidator(){
-      var validPhone=(rule, value,callback)=>{
-        //   if (!value){
-        //       callback(new Error('请输入手机号码'))
-        //   }else 
+       let validPhone=(rule, value, callback)=>{
            if (!Validator.isPhone(value)){
             callback(new Error('请输入正确的11位手机号码'))
           }else {
@@ -17,6 +14,28 @@ const Validator = {
           }
       }
       return validPhone
+	  },
+    /* 年化利率校验 */
+    getRateValidator(rule, value, callback) {
+      let reg = /^\d+(?:\.\d{1,2})?$/
+      if(!reg.test(value)) {
+        callback(new Error('利率输入在误'))
+      } else if(value < 0) { 
+        callback(new Error('利率必须大于0'))
+      } else {
+        callback()
+      }
+    },
+    /* 金额校验 */
+    getAmountValidator(rule, value, callback) {
+      let reg = /^\d+(?:\.\d{1,2})?$/
+      if(!reg.test(value)) {
+        callback(new Error('金额有误'))
+      } else if(value <= 0) { 
+        callback(new Error('金额必须大于0'))
+      } else {
+        callback()
+      }
     }
   }
    

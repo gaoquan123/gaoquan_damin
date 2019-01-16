@@ -8,6 +8,28 @@ export let formatDate  =  function(time){
     };
   return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate());
 }
+export let formatDateAll  =  function(time){
+  var date = new Date(time);
+  var pad = function (number) {
+  var numStr = number.toString();
+    return ('00' + numStr).substring(numStr.length);
+  };
+return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate()) + ' ' + pad(date.getHours()) + ':' + pad(date.getMinutes());
+}
+// 添加时间
+export let addDays = function(days) {
+  let currentTime = new Date()
+  currentTime.setHours(currentTime.getHours() + days * 24)
+  return currentTime
+}
+// 添加时间2
+export let addNewDays = function(time, days) {
+  let currentTime = new Date(time)
+  currentTime.setHours(currentTime.getHours() + days * 24)
+  return currentTime
+}
+
+
 // 时间转换到秒
 export const formatToSec  =  function(time){
   if(!time) return
@@ -240,6 +262,19 @@ export const  detailsStatus=function(status) {
   };
   return statusDisplay[status];
 }
+export const statusHistory= function (status) {
+  var statusDisplay = {
+    NEW: '创建标的',
+    PASS: '已流标',
+    FUNDING: '上架',
+    FUNDED: '满标',
+    FAILED: '流标',
+    SIGNED: '生成合同/放款',
+    UN_SHELVE: '下架',
+    ABORT: '撤销'
+  }
+    return statusDisplay[status];
+  };
 //促销方式
 export const promotionStyle=function(status) {
   if(!status){
@@ -263,3 +298,83 @@ export const loanAssetModel=function(status){
   };
   return statusDisplay[status];
 }
+/*
+截取字段开始到结束的内容
+str:原始字符
+key:开始截取的位置
+* */
+export const getUri=function(str, key){
+  var index = str.indexOf(key);
+  var result = str.substr(index,str.length);
+  return result
+}
+/*
+详情页尾差
+* */
+export const  amountForItem=function(instalment, type){
+  const arTotal = instalment['accountReceivables'].map(function (ar) {
+    return ar.items.filter(function (item) {
+      return item.type === type;
+    }).map(function (item) {
+      return item.amount.amount;
+    }).reduce(function (previous, current) {
+      return previous + current;
+    }, 0);
+  }).reduce(function (previous, current) {
+    return previous + current;
+  }, 0);
+
+  const apTotal = instalment['accountPayables'].map(function (ap) {
+    return ap.items.filter(function (item) {
+      return item.type === type;
+    }).map(function (item) {
+      return item.amount.amount;
+    }).reduce(function (previous, current) {
+      return previous + current;
+    }, 0);
+  }).reduce(function (previous, current) {
+    return previous + current;
+  }, 0);
+  return apTotal - arTotal
+}
+/*详情页还款记录状态
+* */
+export const instalmentStatusFromBorrower=function (status) {
+  var statusDisplay = {
+    PENDING:         '未付',
+    COUNTERACT:      '取消',
+    PARTIAL_SETTLED: '平台垫付',
+    SETTLED:         '已付'
+  };
+  return statusDisplay[status];
+}
+/*还款状态
+ * */
+export const repaymentStatus=function (status) {
+  if(status == 'PENDING'){
+    return '待还款'
+  }else if(status == 'ADV_SETTLED'){
+    return '提前还款'
+  }else if(status == 'OVE_SETTLED'){
+    return '逾期还款'
+  }else if(status == 'REQUESTING'){
+    return '申请中'
+  }else if(status == 'PRE_REPAYMENT'){
+    return '已预约还款'
+  }else if(status == 'OVERDUE'){
+    return '逾期'
+  }else if(status == 'SETTLED'){
+    return '已还款'
+  }else if(status == 'INDIRECT_COMPENSATORY'){
+    return '主动代偿还款'
+  }else if(status == 'COMPENSATORY'){
+    return '非主动代偿还款'
+  }else{
+    return '待还款'
+  }
+}
+
+
+
+
+
