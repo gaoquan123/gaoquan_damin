@@ -100,7 +100,7 @@
                     </el-switch>
             </el-col>
             
-            <el-col :span="8" v-if='active == "REPAYMENT_DETAILS"'>
+            <el-col style="padding-right:0px;" :span="8" v-if='active == "REPAYMENT_DETAILS"'>
                <el-button v-if="DataRoles($store.state.login.roles,'subjectsTab13btn1')" type="success">导出标的信息</el-button>
                <el-button v-if="DataRoles($store.state.login.roles,'subjectsTab13btn2')" type="info">等额本息标的还款详情</el-button>
             </el-col>

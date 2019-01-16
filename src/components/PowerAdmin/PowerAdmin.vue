@@ -2,8 +2,8 @@
     <div>
         <h3>权限管理</h3>
         <div>
-            <div class="w80" style="margin:0 auto;">
-                <el-input class="w70" placeholder="请输入内容" v-model="input1">
+            <div class="w70" style="margin:0 auto;">
+                <el-input class="w60" placeholder="请输入内容" v-model="input1">
                     <template slot="prepend">用户名查询</template>
                 </el-input>
                 <el-button class="m-l-10" type="primary" icon="el-icon-search" @click="SearchBtn()">查询</el-button>
