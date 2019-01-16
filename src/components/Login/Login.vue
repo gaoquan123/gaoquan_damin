@@ -52,9 +52,9 @@ export default {
     data() {
       return {
         ruleForm: {
-          name: 'superadmin',
-          password:'abcd1234',
-          captcha:'12345'
+          name: '',
+          password:'',
+          captcha:''
         },
         rules: {
             name: [
