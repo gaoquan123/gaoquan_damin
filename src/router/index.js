@@ -27,7 +27,7 @@ const router = new Router({
     // "*":'/admins/login',
     routes: [
            {
-            path:"/",
+            path:"/admins",
             redirect: "/admins/login",
            },
           {
