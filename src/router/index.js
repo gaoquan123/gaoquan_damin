@@ -24,7 +24,12 @@ import AssetsEdit from '@/components/AllAssetsList/asset/Assetsdit'
 
 Vue.use(Router)
 const router = new Router({
+    // "*":'/admins/login',
     routes: [
+           {
+            path:"/",
+            redirect: "/admins/login",
+           },
           {
             path: '/admins/login',
             name: 'Login',
