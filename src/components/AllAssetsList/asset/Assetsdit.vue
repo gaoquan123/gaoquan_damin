@@ -2,7 +2,7 @@
     <div class="newsubject">
         <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item :to="{ path: '/admin/allassetslist' }">资产管理</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/admins/allassetslist' }">资产管理</el-breadcrumb-item>
             <el-breadcrumb-item>编辑资产</el-breadcrumb-item>
         </el-breadcrumb>
         <h1 class="front-22 m-t-30 color">编辑资产</h1>

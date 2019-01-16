@@ -27,7 +27,7 @@ export default {
                     this.$router.go(0)
                     Cookies.remove('_csrf');
                     Cookies.remove('token');
-                    this.$router.push({path:'/admin/login'})
+                    this.$router.push({path:'/admins/login'})
                 }).catch(() => {
                     this.$message({
                         type: 'info',

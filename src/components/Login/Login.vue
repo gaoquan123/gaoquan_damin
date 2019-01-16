@@ -83,7 +83,7 @@ export default {
                         this.$store.commit({type:'set_token',token:Cookies.set('_csrf')})
                         this.$store.commit({type:'setId',id:res.data.id})
                         this.$store.commit({type:'setroles',roles:res.data.roles})
-                        this.$router.push({path:'/admin/allassetslist'})
+                        this.$router.push({path:'/admins/allassetslist'})
                     }) .catch((err,msg,s)=>{
                         this.$alert(err.message , '提示', {
                             confirmButtonText: '确定',

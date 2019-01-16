@@ -2,7 +2,7 @@
     <div class="newsubject">
         <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item :to="{ path: '/admin/subjects' }">标的管理</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/admins/subjects' }">标的管理</el-breadcrumb-item>
             <el-breadcrumb-item>创建标的</el-breadcrumb-item>
         </el-breadcrumb>
         <h1 class="front-22 m-t-30 color">创建标的</h1>
@@ -691,7 +691,7 @@ export default {
                         message: '创建标的成功',
                         type: 'success'
                     });
-                    this.$router.push('/admin/allassetslist/subjectinfo?userId='+ this.userId +'&assetId='+ this.assetId)
+                    this.$router.push('/admins/allassetslist/subjectinfo?userId='+ this.userId +'&assetId='+ this.assetId)
                 }).catch( (error)=> {
                     this.$message.error('创建标的失败')
                 }) */

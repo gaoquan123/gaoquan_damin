@@ -12,23 +12,23 @@
                         active-text-color="#4f9dff">
                             <el-menu-item 
                                 v-if="DataRoles($store.state.login.roles,'allassetslist')"
-                                index="1" route="/admin/allassetslist">
+                                index="1" route="/admins/allassetslist">
                                 <i class="el-icon-menu"></i>
                                 <span slot="title">资产管理</span>
                             </el-menu-item>
                             <el-menu-item 
                             v-if="DataRoles($store.state.login.roles,'subjects')"
-                            index="2" route="/admin/subjects">
+                            index="2" route="/admins/subjects">
                                 <i class="el-icon-menu"></i>
                                 <span slot="title">标的管理</span>
                             </el-menu-item>
                       
-                        <el-menu-item index="3" route="/admin/usermanage">
+                        <el-menu-item index="3" route="/admins/usermanage">
                             <i class="el-icon-menu"></i>
                             <span slot="title">用户管理</span>
                         </el-menu-item>
 
-                        <el-menu-item index="4"  route="/admin/poweradmin">
+                        <el-menu-item index="4"  route="/admins/poweradmin">
                             <i class="el-icon-menu"></i>
                             <span slot="title">权限管理</span>
                         </el-menu-item>
@@ -57,16 +57,16 @@
      beforeMount () {
             let path = this.$route.path;
             switch (path) {
-                case "/admin/allassetslist":
+                case "/admins/allassetslist":
                     this.activeIndex = "1";
                     break;
-                case "/admin/subjects":
+                case "/admins/subjects":
                     this.activeIndex = "2";
                     break;
-                case "/admin/usermanage":
+                case "/admins/usermanage":
                     this.activeIndex = "3";
                     break;
-                   case "/admin/poweradmin":
+                   case "/admins/poweradmin":
                     this.activeIndex = "4";
                     break;
                 default:

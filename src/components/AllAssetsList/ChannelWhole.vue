@@ -5,7 +5,7 @@
                 <template slot="prepend">渠道名称</template>
             </el-input>
          <el-button class="m-l-10" type="primary" icon="el-icon-search" @click="SearchBtn()">查询</el-button>
-         <router-link v-if="this.DataRoles(this.$store.state.login.roles,'allassetslistTab2btn3')"  to="/admin/allassetslist/addhannel" >
+         <router-link v-if="this.DataRoles(this.$store.state.login.roles,'allassetslistTab2btn3')"  to="/admins/allassetslist/addhannel" >
             <el-button  type="success" icon="el-icon-plus">添加渠道</el-button>
          </router-link>
         </div>

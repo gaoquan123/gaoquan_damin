@@ -554,7 +554,7 @@ export default {
                             message: '修改资产成功',
                             type: 'success'
                         })
-                        this.$router.push('/admin/allassetslist')
+                        this.$router.push('/admins/allassetslist')
                     } else if(data.status == 'error') {
                         this.$notify.error({
                             title: "错误",
@@ -570,7 +570,7 @@ export default {
             })
         },
         onCancel() {
-            this.$router.push('/admin/allassetslist')
+            this.$router.push('/admins/allassetslist')
         },
         // 资产剩余额度查询
         findUserAssetLimit() {

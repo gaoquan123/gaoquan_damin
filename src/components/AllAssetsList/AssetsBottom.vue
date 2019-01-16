@@ -31,7 +31,7 @@
 			<el-table-column label="操作" width="250">
 				<template slot-scope="scope">
                     <a v-if="DataRoles($store.state.login.roles,'allassetslistTab1btn5')"  @click="assetsCreate(scope.row)">创建标的</a>
-					<router-link  v-if="DataRoles($store.state.login.roles,'allassetslistTab1btn7')" :to="{path: '/admin/allassetslist/subjectinfo', query:{userId:scope.row.userId,assetId:scope.row.id}}">标的信息</router-link>
+					<router-link  v-if="DataRoles($store.state.login.roles,'allassetslistTab1btn7')" :to="{path: '/admins/allassetslist/subjectinfo', query:{userId:scope.row.userId,assetId:scope.row.id}}">标的信息</router-link>
                     <a v-if="DataRoles($store.state.login.roles,'allassetslistTab1btn9')" @click="assetsEdit(scope.row)">编辑</a>
 					<br>
 					<a  v-if="DataRoles($store.state.login.roles,'allassetslistTab1btn8')" @click="editStock(scope.row.id)">修改库存</a>
@@ -165,7 +165,7 @@ export default {
 		assetsEdit(item) {
 			item.operation = 'edit'
 			this.assetsOperation(item, item.usertype)
-			// this.$router.push('/admin/allassetslist/assetsedit')
+			// this.$router.push('/admins/allassetslist/assetsedit')
 		},
 		assetsOperation(item, type) {
 			this.$axios.get('/api/users/findAccIdAndType?userId=' + item.userId).then(res => {

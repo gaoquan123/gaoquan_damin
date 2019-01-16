@@ -2,7 +2,7 @@
   <div>
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ path: '/admin/allassetslist' }">渠道管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/admins/allassetslist' }">渠道管理</el-breadcrumb-item>
       <el-breadcrumb-item>{{msg}}</el-breadcrumb-item>
     </el-breadcrumb>
     <h3 class="front-20 m-t-30"> {{msg}}</h3>
@@ -396,7 +396,7 @@
                     message: '创建渠道成功',
                     type: 'success'
                   });
-                  this.$router.push('/admin/allassetslist')
+                  this.$router.push('/admins/allassetslist')
                 }).catch( (error)=> {
                   this.$message.error('创建渠道失败');
                   alert("创建渠道失败");
@@ -411,7 +411,7 @@
                   }
                 }).then( (response)=> {
                   alert("创建渠道成功");
-                  this.$router.push('/admin/allassetslist')
+                  this.$router.push('/admins/allassetslist')
                 }).catch( (error)=> {
                   alert("创建渠道失败");
                   console.log(error);

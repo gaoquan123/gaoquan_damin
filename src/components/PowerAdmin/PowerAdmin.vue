@@ -101,7 +101,7 @@ export default {
                                 type: 'success'
                             });
                             this.dialogFormVisible = false;
-                            this.$router.push({'path':"/admin/poweradmin/superadmin?id="+strId})
+                            this.$router.push({'path':"/admins/poweradmin/superadmin?id="+strId})
                         }).catch((req)=>{
                             this.$message({
                                 showClose: true,
@@ -128,7 +128,7 @@ export default {
             },
             // 修改权限
             editBtn(id){
-               this.$router.push({path:'/admin/poweradmin/superadmin?id='+id})
+               this.$router.push({path:'/admins/poweradmin/superadmin?id='+id})
             },
             // 查询
             SearchBtn(){

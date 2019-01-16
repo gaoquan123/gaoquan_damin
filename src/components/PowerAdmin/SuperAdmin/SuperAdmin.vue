@@ -480,7 +480,7 @@ export default {
                 message: '更新成功',
                 type: 'success'
             });
-             this.$router.push({path:'/admin/poweradmin'})
+             this.$router.push({path:'/admins/poweradmin'})
             })
            
         },

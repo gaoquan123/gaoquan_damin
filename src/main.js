@@ -100,7 +100,7 @@ axios.interceptors.response.use(
         if (error.response) {
             if(error.response.status ==401 ){
                 alert("您的登录已过期，请重新登录")
-                router.replace({path: '/admin/login'})
+                router.replace({path: '/admins/login'})
             }
             tryHideFullScreenLoading();
         }
