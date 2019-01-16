@@ -1,13 +1,22 @@
 <template>
         <div class="allassetslist_card_box">
             <div class="allassetslist_card">
-                <el-tabs v-model="activeName" @tab-click="handleClick">
-                    <el-tab-pane label="资产管理" name="first" class="w100 labelfirst">
-                           <AssetsHeader></AssetsHeader>
-                    </el-tab-pane>
-                    <el-tab-pane label="渠道管理" name="second">
-                           <ChannelWhole></ChannelWhole>
-                   </el-tab-pane>
+                <el-tabs v-model="activeName" @tab-click="handleClick" >
+                      <!-- v-if="this.DataRoles(this.$store.state.login.roles,'allassetslistTab1')" -->
+                        <el-tab-pane 
+                            data-type='first'
+                            v-if="DataRoles($store.state.login.roles,'allassetslistTab1')"
+                            label="资产管理" name="first" class="w100 labelfirst tabsBox">
+                            <AssetsHeader></AssetsHeader>
+                        </el-tab-pane>
+                        <el-tab-pane
+                                data-type='second'
+                                class="tabsBox"
+                                v-if="DataRoles($store.state.login.roles,'allassetslistTab2')"
+                                label="渠道管理" name="second">
+                                <ChannelWhole></ChannelWhole>
+                        </el-tab-pane>
+                   
                 </el-tabs>
             </div>
         </div>
@@ -21,17 +30,29 @@ import ChannelWhole from './ChannelWhole'
     data() {
       return {
          // tab切换
-        activeName: 'first',
+         activeName: ''
       };
     },
     methods: {
       handleClick(tab, event) {
-
+        
       },
     },
     components:{
          AssetsHeader,ChannelWhole
-    }
+    },
+    computed: {
+    
+    },
+    mounted: function () {
+        const self = this;
+        self.activeName =  $(".tabsBox")[0].getAttribute("data-type") 
+    },
+    created() {
+    },
+      
+       
+       
   };
 </script>
 <style lang="less" scoped>

@@ -68,7 +68,7 @@
             </el-col>
 
             <el-col :span="8" v-if='active =="COMPENSATORY_REQUESTING"'>
-               <el-button  type="primary">自动代偿记录导出</el-button>
+               <el-button  v-if="DataRoles($store.state.login.roles,'subjectsTab10btn1')" type="primary">自动代偿记录导出</el-button>
             </el-col>
         </el-row>
 
@@ -101,8 +101,8 @@
             </el-col>
             
             <el-col :span="8" v-if='active == "REPAYMENT_DETAILS"'>
-               <el-button  type="success">导出标的信息</el-button>
-               <el-button  type="info">等额本息标的还款详情</el-button>
+               <el-button v-if="DataRoles($store.state.login.roles,'subjectsTab13btn1')" type="success">导出标的信息</el-button>
+               <el-button v-if="DataRoles($store.state.login.roles,'subjectsTab13btn2')" type="info">等额本息标的还款详情</el-button>
             </el-col>
 
         </el-row>

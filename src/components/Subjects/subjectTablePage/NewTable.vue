@@ -15,9 +15,9 @@
 			<el-table-column prop="laModel" label="代收付信息"  > </el-table-column>
             	<el-table-column label="操作" width="250">
 				<template slot-scope="scope">
-                     <el-button type="primary" plain round  size="mini" @click="subjectConfirm(scope.row)">上架</el-button>
-                     <el-button type="success" plain round  size="mini">修改</el-button>
-                     <el-button type="danger" plain round  size="mini" @click="subjectCancel(scope.row)">撤销</el-button>
+                     <el-button  v-if="DataRoles($store.state.login.roles,'subjectsTab1btn1')" type="primary" plain round  size="mini" @click="subjectConfirm(scope.row)">上架</el-button>
+                     <el-button  v-if="DataRoles($store.state.login.roles,'subjectsTab1btn2')" type="success" plain round  size="mini">修改</el-button>
+                     <el-button  v-if="DataRoles($store.state.login.roles,'subjectsTab1btn3')" type="danger" plain round  size="mini" @click="subjectCancel(scope.row)">撤销</el-button>
 				</template>
 			</el-table-column>
         </el-table>

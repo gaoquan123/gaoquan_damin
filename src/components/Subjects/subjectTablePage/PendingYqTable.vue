@@ -20,9 +20,9 @@
 			<el-table-column prop="transferable" label="转让标" > </el-table-column>
             <el-table-column  label="操作" width="200px;" >
                 <template slot-scope="scope">
-                    <a>查看合同</a>
-                    <a>详情</a>
-                    <a>编辑</a>
+                    <a  v-if="DataRoles($store.state.login.roles,'subjectsTab9btn1')">查看合同</a>
+                    <a  v-if="DataRoles($store.state.login.roles,'subjectsTab9btn2')">详情</a>
+                    <a  v-if="DataRoles($store.state.login.roles,'subjectsTab9btn3')">编辑</a>
                   
                 </template>
             </el-table-column>

@@ -159,14 +159,14 @@
                 </div>
             </div>
             <!-- 按钮筛选与导出 -->
-            <div class="cl sumInput fl">
-                    <el-button type="primary">个金资产报表导出<i class="el-icon-download el-icon--right"></i></el-button>
-                    <el-button type="success">对公资产报表导出<i class="el-icon-download el-icon--right"></i></el-button>
-                    <el-button type="primary">标的报表到出<i class="el-icon-download el-icon--right"></i></el-button>
-                    <el-button type="info">历史数据处理<i class="el-icon-printer el-icon--right"></i></el-button>
-                    <el-button @click="clearBtn()" type="danger">清空<i class="el-icon-delete el-icon--right"></i></el-button>
-                    <el-button @click="QueryBtn()" type="primary">搜索<i class="el-icon-search el-icon--right"></i></el-button>
-                    <el-button type="warning">新增资产<i class="el-icon-plus el-icon--right"></i></el-button>
+             <div class="cl sumInput fl">
+                    <el-button  v-if="DataRoles($store.state.login.roles,'allassetslistTab1btn1')" type="primary">个金资产报表导出<i class="el-icon-download el-icon--right"></i></el-button>
+                    <el-button  v-if="DataRoles($store.state.login.roles,'allassetslistTab1btn2')" type="success">对公资产报表导出<i class="el-icon-download el-icon--right"></i></el-button>
+                    <el-button  v-if="DataRoles($store.state.login.roles,'allassetslistTab1btn3')" type="primary">标的报表到出<i class="el-icon-download el-icon--right"></i></el-button>
+                    <el-button  v-if="DataRoles($store.state.login.roles,'allassetslistTab1btn4')" type="info">历史数据处理<i class="el-icon-printer el-icon--right"></i></el-button>
+                    <el-button  @click="clearBtn()" type="danger">清空<i class="el-icon-delete el-icon--right"></i></el-button>
+                    <el-button  @click="QueryBtn()" type="primary">搜索<i class="el-icon-search el-icon--right"></i></el-button>
+                    <el-button  v-if="DataRoles($store.state.login.roles,'allassetslistTab1btn6')" type="warning">新增资产<i class="el-icon-plus el-icon--right"></i></el-button>
             </div>
             <!-- 分页条 -->
             <div class="pages w100 h100 p-t-40 p-b-40 cl">

@@ -127,13 +127,6 @@ export default {
 .p-r-30{padding-right: 30px;}
 .p-r-40{padding-right: 40px;}
 .p-r-50{padding-right: 50px;}
-.front-16{font-size: 16px;}
-.front-18{font-size: 18px;}
-.front-20{font-size: 20px;}
-.front-22{font-size: 22px;}
-.front-14{font-size: 14px;}
-.front-24{font-size: 24px;}
-.front-26{font-size: 26px;}
 .color{color:#409EFF}
 .p20{
     padding: 20px;
@@ -148,6 +141,8 @@ export default {
 .fl{float: left;}
 .fr{float: right;}
 .front14{font-size: 14px}
+.front13{font-size: 13px}
+.front12{font-size: 12px}
 .front16{font-size: 16px}
 .front18{font-size: 18px}
 .front20{font-size: 20px}

@@ -375,6 +375,7 @@ export default {
                 allassetslistTab2btn2:'',
                 allassetslistTab2btn3:'',
                 allassetslistTab2btn4:'',
+                SUPER_ADMIN:true
             },
             // 标的管理
             arrObj:{ 
@@ -453,7 +454,15 @@ export default {
     methods: {
         userInfo(){
           this.$axios.get('/admin/ums/admins/'+this.userId).then((res)=>{
-              this.resulte = res.data;
+              this.resulte = res.data.roles;
+              this.resulte.map((item)=>{
+                    if(this.arrObj0.hasOwnProperty(item)){
+                      this.arrObj0[item] = true;
+                    }
+                     if(this.arrObj.hasOwnProperty(item)){
+                      this.arrObj[item] = true;
+                    }
+              })
           })
         },
         // 权限更新按钮
@@ -466,11 +475,14 @@ export default {
                 arr.push(i);
             }
             this.$axios.post('/admin/ums/admins/'+this.$route.query.id+'/roles',{roles:arr}).then((res)=>{
-                console.log(res,"11")
+            this.$message({
+                showClose: true,
+                message: '更新成功',
+                type: 'success'
+            });
+             this.$router.push({path:'/admin/poweradmin'})
             })
-            .catch((err)=>{
-                console.log(err,"22")
-            })
+           
         },
         // 资产管理模块全选
         checkedAllassetslist(){
@@ -717,7 +729,6 @@ export default {
     },
     created() {
         this.userInfo();
-        console.log(this.$store)
     },
    
 }

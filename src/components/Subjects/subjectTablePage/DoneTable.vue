@@ -1,7 +1,7 @@
 <template>
     <div class="m-t-40">
         <!-- 回款中 -->
-        <el-row class="m-b-40">
+        <el-row class="m-b-40" v-if="DataRoles($store.state.login.roles,'subjectsTab6btn1')" >
             <el-button type="warning">导出标的出借信息</el-button>
         </el-row>
          <el-table  fit  
@@ -22,9 +22,9 @@
 			<el-table-column prop="transferable" label="转让标" > </el-table-column>
             <el-table-column  label="操作" width="200px;" >
                 <template slot-scope="scope">
-                    <a>查看合同</a>
-                    <a>详情</a>
-                    <a>编辑</a>
+                    <a  v-if="DataRoles($store.state.login.roles,'subjectsTab6btn2')">查看合同</a>
+                    <a  v-if="DataRoles($store.state.login.roles,'subjectsTab6btn3')">详情</a>
+                    <a  v-if="DataRoles($store.state.login.roles,'subjectsTab6btn4')">编辑</a>
                 </template>
             </el-table-column>
         </el-table>

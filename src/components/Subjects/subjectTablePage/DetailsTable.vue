@@ -22,7 +22,7 @@
 			<el-table-column prop="createdAt" label="满标日期" > </el-table-column>
 			<el-table-column prop="annualRate" label="出借详情" >
                  <template slot-scope="scope">
-                    <a>查看</a>
+                    <a  v-if="DataRoles($store.state.login.roles,'subjectsTab13btn3')">查看</a>
                 </template>
              </el-table-column>
         </el-table>

@@ -30,13 +30,15 @@
 			<el-table-column prop="state" label="状态" > </el-table-column>
 			<el-table-column label="操作" width="250">
 				<template slot-scope="scope">
-					<a v-if="scope.row.currentStockTable <= 0" @click="open()">创建标的</a>
-					<router-link  v-else :to="{path:'/admin/allassetslist/newsubject',query:{userId:scope.row.userId,assetId:scope.row.id}}">创建标的</router-link>
-					<router-link :to="{path: '/admin/allassetslist/subjectinfo', query:{userId:scope.row.userId,assetId:scope.row.id}}">标的信息</router-link>
-					<router-link :to="{path: '/admin/allassetslist/assetsedit', query:{userId:scope.row.userId,assetId:scope.row.id}}">编辑</router-link>
+                    <span  v-if="DataRoles($store.state.login.roles,'allassetslistTab1btn5')">
+					        <a v-if="scope.row.currentStockTable <= 0" @click="open()">创建标的</a>
+				        	<router-link  v-else :to="{path:'/admin/allassetslist/newsubject',query:{userId:scope.row.userId,assetId:scope.row.id}}">创建标的</router-link>
+                    </span>
+					<router-link  v-if="DataRoles($store.state.login.roles,'allassetslistTab1btn7')" :to="{path: '/admin/allassetslist/subjectinfo', query:{userId:scope.row.userId,assetId:scope.row.id}}">标的信息</router-link>
+					<router-link  v-if="DataRoles($store.state.login.roles,'allassetslistTab1btn9')" :to="{path: '/admin/allassetslist/assetsedit', query:{userId:scope.row.userId,assetId:scope.row.id}}">编辑</router-link>
 					<br>
-					<a @click="editStock(scope.row.id)">修改库存</a>
-					<a>删除</a>
+					<a  v-if="DataRoles($store.state.login.roles,'allassetslistTab1btn8')" @click="editStock(scope.row.id)">修改库存</a>
+					<a  v-if="DataRoles($store.state.login.roles,'allassetslistTab1btn10')" >删除</a>
 					<a v-if="scope.row.state == 'PARTIAL_MATURITY'">提前到期</a>
 				</template>
 			</el-table-column>
@@ -140,7 +142,8 @@ export default {
 	computed: {
 		FilterList() {
 		return this.$store.state.allassetslist.getLoanAssetList;
-		}
+        },
+       
 	},
 	methods: {
 		tableRowClassName({ row, rowIndex }) {

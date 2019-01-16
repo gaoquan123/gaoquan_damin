@@ -2,12 +2,12 @@
     <div class="m-t-40">
         <!-- 代偿中 -->
             <el-row class="m-b-40">
-            <el-button>开启自动回款</el-button>
-            <el-button type="success">同意代偿回款</el-button>
-            <el-button type="info">驳回代偿申请</el-button>
-            <el-button type="warning">借款人代偿款申请</el-button>
-            <el-button type="danger">同意借款人还代偿款申请</el-button>
-            <el-button type="primary">驳回借款人还款申请</el-button>
+            <el-button v-if="DataRoles($store.state.login.roles,'subjectsTab10btn2')" >开启自动回款</el-button>
+            <el-button v-if="DataRoles($store.state.login.roles,'subjectsTab10btn3')" type="success">同意代偿回款</el-button>
+            <el-button v-if="DataRoles($store.state.login.roles,'subjectsTab10btn4')" type="info">驳回代偿申请</el-button>
+            <el-button v-if="DataRoles($store.state.login.roles,'subjectsTab10btn5')" type="warning">借款人代偿款申请</el-button>
+            <el-button v-if="DataRoles($store.state.login.roles,'subjectsTab10btn6')" type="danger">同意借款人还代偿款申请</el-button>
+            <el-button v-if="DataRoles($store.state.login.roles,'subjectsTab10btn7')" type="primary">驳回借款人还款申请</el-button>
         </el-row>
          <el-table  fit  
             :data = "listItem"
@@ -26,9 +26,9 @@
 			<el-table-column prop="transferable" label="转让标" > </el-table-column>
             <el-table-column  label="操作" width="200px;" >
                 <template slot-scope="scope">
-                    <a>查看合同</a>
-                    <a>详情</a>
-                    <a>编辑</a>
+                    <a  v-if="DataRoles($store.state.login.roles,'subjectsTab10btn8')">查看合同</a>
+                    <a  v-if="DataRoles($store.state.login.roles,'subjectsTab10btn9')">详情</a>
+                    <a  v-if="DataRoles($store.state.login.roles,'subjectsTab10btn10')">编辑</a>
                 </template>
             </el-table-column>
         </el-table>

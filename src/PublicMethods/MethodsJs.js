@@ -1,3 +1,4 @@
+
 // 时间转换
 export let formatDate  =  function(time){
     var date = new Date(time);
@@ -262,9 +263,3 @@ export const loanAssetModel=function(status){
   };
   return statusDisplay[status];
 }
-
-
-
-
-
-

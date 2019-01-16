@@ -10,14 +10,19 @@
                         background-color="#fff"
                         text-color="#000"
                         active-text-color="#4f9dff">
-                        <el-menu-item index="1" route="/admin/allassetslist">
-                            <i class="el-icon-menu"></i>
-                            <span slot="title">资产管理</span>
-                        </el-menu-item>
-                        <el-menu-item index="2" route="/admin/subjects">
-                            <i class="el-icon-menu"></i>
-                            <span slot="title">标的管理</span>
-                        </el-menu-item>
+                            <el-menu-item 
+                                v-if="DataRoles($store.state.login.roles,'allassetslist')"
+                                index="1" route="/admin/allassetslist">
+                                <i class="el-icon-menu"></i>
+                                <span slot="title">资产管理</span>
+                            </el-menu-item>
+                            <el-menu-item 
+                            v-if="DataRoles($store.state.login.roles,'subjects')"
+                            index="2" route="/admin/subjects">
+                                <i class="el-icon-menu"></i>
+                                <span slot="title">标的管理</span>
+                            </el-menu-item>
+                      
                         <el-menu-item index="3" route="/admin/usermanage">
                             <i class="el-icon-menu"></i>
                             <span slot="title">用户管理</span>

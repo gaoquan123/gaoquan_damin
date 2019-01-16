@@ -19,18 +19,18 @@
 
 			<el-table-column label="pc精选" >
                 <template slot-scope="scope">
-                     <el-button type="success" plain round  size="mini">设为置顶</el-button>
+                     <el-button v-if="DataRoles($store.state.login.roles,'subjectsTab2btn1')"   type="success" plain round  size="mini">设为置顶</el-button>
 				</template>
              </el-table-column>
 
 			<el-table-column  label="移动精选" >
                   <template slot-scope="scope">
-                     <el-button type="primary" plain round  size="mini">设为置顶</el-button>
+                     <el-button type="primary"  v-if="DataRoles($store.state.login.roles,'subjectsTab2btn2')"   plain round  size="mini">设为置顶</el-button>
 				  </template>    
              </el-table-column>
 			<el-table-column  label="操作" >
                   <template slot-scope="scope">
-                     <el-button type="danger" plain round  size="mini">下架</el-button>
+                     <el-button type="danger"  v-if="DataRoles($store.state.login.roles,'subjectsTab2btn3')"  plain round  size="mini">下架</el-button>
 				</template>
             </el-table-column>
             
