@@ -1,7 +1,7 @@
 <template>
     <div class="m-t-40">
         <!-- 还款详情 -->
-         <el-table  fit  
+         <el-table  fit
             :data = "listItem"
             :row-class-name="tableRowClassName"
             border style="width: 100%" >
@@ -22,7 +22,7 @@
 			<el-table-column prop="createdAt" label="满标日期" > </el-table-column>
 			<el-table-column prop="annualRate" label="出借详情" >
                  <template slot-scope="scope">
-                    <a>查看</a>
+                    <router-link :to="{path:'/admin/subjects/lenderDetails',query:{subjectId:scope.row.subjectId}}">详情</router-link>
                 </template>
              </el-table-column>
         </el-table>
@@ -59,7 +59,7 @@ import {catalogText,formatDate,payWay,ModelType,dealElement} from '../../../Publ
                  })
                   return result
               }
-          }  
+          }
         },
          methods: {
           	tableRowClassName({ row, rowIndex }) {
@@ -70,7 +70,7 @@ import {catalogText,formatDate,payWay,ModelType,dealElement} from '../../../Publ
             },
         },
         components: {
-            
+
         },
     }
 </script>

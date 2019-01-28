@@ -59,7 +59,7 @@
               <span v-else>{{scope.row.prepaymentServiceFee}}</span>
             </template>
           </el-table-column>
-          <el-table-column  label="还款状态aaa">
+          <el-table-column  label="还款状态">
             <template slot-scope="scope">
               {{scope.row.repaymentStatus|repaymentStatus}}
             </template>

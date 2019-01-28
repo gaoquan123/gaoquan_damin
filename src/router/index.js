@@ -9,7 +9,7 @@ import Subjects from '@/components/Subjects/Subjects'
 import Usermanage from '@/components/Usermanage/Usermanage'
 import PowerAdmin from '@/components/PowerAdmin/PowerAdmin'
 import SuperAdmin from '@/components/PowerAdmin/SuperAdmin/SuperAdmin'
-
+import LenderDetails from '@/components/Subjects/LenderDetails'
 
 
 
@@ -18,6 +18,7 @@ import Details from '@/components/AllAssetsList/details/details'
 import NewSubject from '@/components/AllAssetsList/asset/NewSubject'
 import NewSubjectLoan from '@/components/AllAssetsList/asset/NewSubjectLoan'
 import AssetsEdit from '@/components/AllAssetsList/asset/Assetsdit'
+import CreateEnterpriseUser from '@/components/Usermanage/CreateEnterpriseUser'
 
 
 
@@ -75,6 +76,11 @@ const router = new Router({
             component: Subjects,
           },
           {
+            path: '/admin/subjects/lenderDetails',
+            name: 'LenderDetails',
+            component: LenderDetails,
+          },
+          {
             path: '/admin/usermanage',
             name: 'Usermanage',
             component: Usermanage
@@ -89,6 +95,11 @@ const router = new Router({
             name: 'SuperAdmin',
             component: SuperAdmin
           },
+         {
+           path: '/admin/usermanage/createEnterpriseUser',
+           name: 'CreateEnterpriseUser',
+           component: CreateEnterpriseUser
+         },
       ]
 })
 router.beforeEach((to, from, next) => {

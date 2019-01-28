@@ -65,7 +65,7 @@
                     <el-input class="w30" v-model="input" placeholder="请输入数字"></el-input>
             </div>
             <el-button  class="w20 m-t-40" type="primary">搜索<i class="el-icon-search el-icon--right"></i></el-button>
-            <el-button>创建企业用户</el-button>
+            <el-button> <router-link to="/admin/usermanage/createEnterpriseUser">创建企业用户</router-link></el-button>
             <el-button type="success">创建个人借款用户</el-button>
             <el-button type="info">批量导入企业用户</el-button>
             <el-button type="warning">批量导入个人借款用户</el-button>

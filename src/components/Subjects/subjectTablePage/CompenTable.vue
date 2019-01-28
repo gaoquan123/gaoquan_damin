@@ -9,7 +9,7 @@
             <el-button type="danger">同意借款人还代偿款申请</el-button>
             <el-button type="primary">驳回借款人还款申请</el-button>
         </el-row>
-         <el-table  fit  
+         <el-table  fit
             :data = "listItem"
             :row-class-name="tableRowClassName"
             border style="width: 100%" >
@@ -26,9 +26,9 @@
 			<el-table-column prop="transferable" label="转让标" > </el-table-column>
             <el-table-column  label="操作" width="200px;" >
                 <template slot-scope="scope">
-                    <a>查看合同</a>
-                    <a>详情</a>
-                    <a>编辑</a>
+                  <a target="_blank" :href="scope.row.uri+'?view=pdf'">查看合同</a>
+                  <router-link :to="{path:'/admin/allassetslist/details', query: {id: scope.row.subjectId, userId: scope.row.userId}}">详情</router-link>
+                  <a @click="edit(scope.row)">编辑</a>
                 </template>
             </el-table-column>
         </el-table>
@@ -54,7 +54,7 @@ import {catalogText,formatDate,payWay,ModelType,dealElement} from '../../../Publ
                  })
                   return result
               }
-          }  
+          }
         },
          methods: {
           	tableRowClassName({ row, rowIndex }) {
@@ -63,9 +63,12 @@ import {catalogText,formatDate,payWay,ModelType,dealElement} from '../../../Publ
                 }
                 return "";
             },
+           edit(){
+               this.$router.push('/')
+           }
         },
         components: {
-            
+
         },
     }
 </script>

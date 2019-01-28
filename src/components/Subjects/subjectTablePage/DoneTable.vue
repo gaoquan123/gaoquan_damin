@@ -22,9 +22,9 @@
 			<el-table-column prop="transferable" label="转让标" > </el-table-column>
             <el-table-column  label="操作" width="200px;" >
                 <template slot-scope="scope">
-                  <a target="_blank" :href="scope.row.uri+'?view=pdf&param=Y'">查看合同</a>
+                  <a target="_blank" :href="scope.row.uri+'?view=pdf'">查看合同</a>
                   <router-link :to="{path:'/admin/allassetslist/details', query: {id: scope.row.subjectId, userId: scope.row.userId}}">详情</router-link>
-                    <a @click="edit(scope.row)">编辑</a>
+                    <a v-if="scope.row.catalog!='新手标'" @click="edit(scope.row)">编辑</a>
                 </template>
             </el-table-column>
         </el-table>

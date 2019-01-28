@@ -1,11 +1,11 @@
 <template>
     <div class="m-t-40">
         <!-- 中间状态 -->
-         <el-table  fit  
+         <el-table  fit
             :data = "listItem"
             :row-class-name="tableRowClassName"
             border style="width: 100%" >
-			<el-table-column  prop="title" label="项目名称"  width="180px;"> </el-table-column>
+			<el-table-column prop="title" label="项目名称"  width="180px;"> </el-table-column>
 			<el-table-column prop="catalog" label="产品类型"  > </el-table-column>
 			<el-table-column prop="annualRate" label="年化利率"  > </el-table-column>
 			<el-table-column prop="amount" label="借款金额"  > </el-table-column>
@@ -30,7 +30,7 @@ import {catalogText,formatDate,payWay,ModelType,dealElement} from '../../../Publ
                  })
                   return result
               }
-          }  
+          }
         },
          methods: {
           	tableRowClassName({ row, rowIndex }) {
@@ -41,7 +41,7 @@ import {catalogText,formatDate,payWay,ModelType,dealElement} from '../../../Publ
             },
         },
         components: {
-            
+
         },
     }
 </script>
