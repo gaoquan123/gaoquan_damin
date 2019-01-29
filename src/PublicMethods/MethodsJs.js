@@ -1,3 +1,4 @@
+
 // 时间转换
 export let formatDate  =  function(time){
     var date = new Date(time);
@@ -7,6 +8,28 @@ export let formatDate  =  function(time){
     };
   return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate());
 }
+export let formatDateAll  =  function(time){
+  var date = new Date(time);
+  var pad = function (number) {
+  var numStr = number.toString();
+    return ('00' + numStr).substring(numStr.length);
+  };
+return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate()) + ' ' + pad(date.getHours()) + ':' + pad(date.getMinutes());
+}
+// 添加时间
+export let addDays = function(days) {
+  let currentTime = new Date()
+  currentTime.setHours(currentTime.getHours() + days * 24)
+  return currentTime
+}
+// 添加时间2
+export let addNewDays = function(time, days) {
+  let currentTime = new Date(time)
+  currentTime.setHours(currentTime.getHours() + days * 24)
+  return currentTime
+}
+
+
 // 时间转换到秒
 export const formatToSec  =  function(time){
   if(!time) return

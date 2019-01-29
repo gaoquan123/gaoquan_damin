@@ -19,20 +19,24 @@
 
 			<el-table-column label="pc精选" >
                 <template slot-scope="scope">
-                     <el-button type="primary" plain round  size="mini" v-if="scope.row.isChoiceness=='N'||scope.row.isChoiceness=='A'" @click="setPreferredSubjectPC(scope.row)">置为精选</el-button>
-                     <el-button type="primary" plain round  size="mini" v-else-if="scope.row.isChoiceness=='Y'||scope.row.isChoiceness=='B'" @click="cancelPreferredSubjectPC(scope.row)">取消精选</el-button>
+                     <span  v-if="DataRoles($store.state.login.roles,'subjectsTab2btn1')">
+                        <el-button type="primary" plain round  size="mini" v-if="scope.row.isChoiceness=='N'||scope.row.isChoiceness=='A'" @click="setPreferredSubjectPC(scope.row)">置为精选</el-button>
+                        <el-button type="primary" plain round  size="mini" v-else-if="scope.row.isChoiceness=='Y'||scope.row.isChoiceness=='B'" @click="cancelPreferredSubjectPC(scope.row)">取消精选</el-button>
+                    </span>
 				</template>
              </el-table-column>
 
 			<el-table-column  label="移动精选" >
                   <template slot-scope="scope">
-                    <el-button type="primary" plain round  size="mini" v-if="scope.row.isChoiceness=='N'||scope.row.isChoiceness=='Y'" @click="setPreferredSubjectMobile(scope.row)">置为精选</el-button>
-                    <el-button type="primary" plain round  size="mini" v-else-if="scope.row.isChoiceness=='A'||scope.row.isChoiceness=='B'" @click="cancelPreferredSubjectMobile(scope.row)">取消精选</el-button>
+                      <span  v-if="DataRoles($store.state.login.roles,'subjectsTab2btn2')" >
+                            <el-button type="primary" plain round  size="mini" v-if="scope.row.isChoiceness=='N'||scope.row.isChoiceness=='Y'" @click="setPreferredSubjectMobile(scope.row)">置为精选</el-button>
+                            <el-button type="primary" plain round  size="mini" v-else-if="scope.row.isChoiceness=='A'||scope.row.isChoiceness=='B'" @click="cancelPreferredSubjectMobile(scope.row)">取消精选</el-button>
+                      </span>
 				  </template>
              </el-table-column>
 			<el-table-column  label="操作" >
                   <template slot-scope="scope">
-                     <el-button type="danger" plain round  size="mini">下架</el-button>
+                     <el-button type="danger"  v-if="DataRoles($store.state.login.roles,'subjectsTab2btn3')"  plain round  size="mini">下架</el-button>
 				</template>
             </el-table-column>
 

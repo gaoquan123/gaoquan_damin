@@ -8,6 +8,8 @@ import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 import validatorPlugin from "./PublicMethods/validatorPlugin"
 import VueParticles from 'vue-particles'
+import base from './assets/base_roles'
+
 
 
 import Vuex from 'vuex'
@@ -16,6 +18,23 @@ import $ from 'jquery'
 // 超时时间
 import store from './store/index'
 axios.defaults.headers.common['csrf-token'] = Cookies.get('_csrf');
+
+// Vue.directive('has', {
+//     bind: function (el, binding) {
+//         console.log(this,"220")
+//     let roles = binding.value.roles;
+//     let val = binding.value.val;
+//       if(roles.indexOf(val) < 0){
+//           el.parentNode.removeChild(el);
+//           return false;
+//       }
+//     }
+//   });
+  
+
+
+
+
 
 let loading;
 function startLoading() {    //使用Element loading-start 方法
@@ -34,6 +53,7 @@ Vue.use(ElementUI)
 Vue.use(validatorPlugin)
 Vue.use(Vuex)
 Vue.use(VueParticles)
+Vue.use(base)
 
 Vue.prototype.$axios = axios
 
@@ -80,7 +100,7 @@ axios.interceptors.response.use(
         if (error.response) {
             if(error.response.status ==401 ){
                 alert("您的登录已过期，请重新登录")
-                router.replace({path: '/admin/login'})
+                router.replace({path: '/admins/login'})
             }
             tryHideFullScreenLoading();
         }
@@ -93,8 +113,5 @@ new Vue({
   el: '#app',
   router,store,validatorPlugin,
   components: { App },
-//   created() {
-
-//   },
   template: '<App/>'
 })

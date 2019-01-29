@@ -75,23 +75,48 @@
                         </el-form-item>
 
                         <el-form-item label="金融资产持有起始日" prop="fundKeepStartDate">
-                            <el-input v-model="ruleForm.fundKeepStartDate" placeholder="日期格式为: 年-月-日"></el-input>
+                            <!-- <el-input v-model="ruleForm.fundKeepStartDate" placeholder="日期格式为: 年-月-日"></el-input> -->
+                            <el-date-picker
+                            disabled
+                            v-model="ruleForm.fundKeepStartDate"
+                            type="date"
+                            placeholder="金融资产持有起始日">
+                            </el-date-picker>
                         </el-form-item>
 
                         <el-form-item label="金融资产持有终止日" prop="fundKeepEndDate">
-                            <el-input v-model="ruleForm.fundKeepEndDate" placeholder="日期格式为: 年-月-日"></el-input>
+                            <!-- <el-input v-model="ruleForm.fundKeepEndDate" placeholder="日期格式为: 年-月-日"></el-input> -->
+                            <el-date-picker
+                            v-model="ruleForm.fundKeepEndDate"
+                            disabled
+                            type="date"
+                            placeholder="金融资产持有终止日">
+                            </el-date-picker>
                         </el-form-item>
                     </div>
 
                     <div v-if="this.ruleStatus.type == 'JIASHI_V13'">
+                        
                         <el-form-item label="借款起始日" prop="predicateValueDate">
-                            <el-input disabled placeholder="日期格式为: 年-月-日" v-model="ruleForm.predicateValueDate">
+                            <el-date-picker
+                            v-model="ruleForm.predicateValueDate"
+                            disabled
+                            type="date"
+                            placeholder="借款起始日">
+                            </el-date-picker>
+                            <!-- <el-input disabled placeholder="日期格式为: 年-月-日" v-model="ruleForm.predicateValueDate">
                                 <template slot="append">(预计)</template>
-                            </el-input>
+                            </el-input> -->
                         </el-form-item>
 
                         <el-form-item label="借款到期日" prop="expiryDate">
-                            <el-input v-model="ruleForm.expiryDate" placeholder="日期格式为: 年-月-日"></el-input>
+                            <el-date-picker
+                            v-model="ruleForm.expiryDate"
+                            disabled
+                            type="date"
+                            placeholder="借款到期日">
+                            </el-date-picker>
+                            <!-- <el-input disabled v-model="ruleForm.expiryDate" placeholder="日期格式为: 年-月-日"></el-input> -->
                         </el-form-item>
                     </div>
 
@@ -146,46 +171,48 @@
                         </el-select>
                     </el-form-item>
 
-                    <div v-if="ruleStatus.contractType == 'oldContract'">
-                        <el-form-item label="是否可转让">
-                            <el-select @change="yesOrNo('transferAbility')" v-model="ruleForm.transferAbility" placeholder="请选择项目类型">
-                                <el-option label="否" value="0"></el-option>
-                                <el-option label="是" value="1"></el-option>
-                            </el-select>
-                        </el-form-item>
+                    <div v-if="this.ruleStatus.type == 'JIASHI_V2'">
+                        <div v-if="ruleStatus.contractType == 'oldContract'">
+                            <el-form-item label="是否可转让">
+                                <el-select @change="yesOrNo('transferAbility')" v-model="ruleForm.transferAbility" placeholder="请选择项目类型">
+                                    <el-option label="否" value="0"></el-option>
+                                    <el-option label="是" value="1"></el-option>
+                                </el-select>
+                            </el-form-item>
 
-                        <el-form-item label="可转让起始时间" v-if="ruleStatus.transferAbility">
-                            <el-input @keyup.native="transferableDaysKeyup('start')" type="number" placeholder="请输入内容" v-model="ruleForm.transferableStartDays">
-                                <template slot="append">天</template>
-                            </el-input>
-                            <span>{{ ruleForm.transferableStartText }}</span>
-                        </el-form-item>
-                        <el-form-item label="可转让终止时间" v-if="ruleStatus.transferAbility">
-                            <el-input @keyup.native="transferableDaysKeyup('end')" type="number" placeholder="请输入内容" v-model="ruleForm.transferableEndDays">
-                                <template slot="append">天</template>
-                            </el-input>
-                                <span>{{ ruleForm.transferableEndText }}</span>
-                        </el-form-item>
-                    </div>
+                            <el-form-item label="可转让起始时间" v-if="ruleStatus.transferAbility">
+                                <el-input @keyup.native="transferableDaysKeyup('start')" type="number" placeholder="请输入内容" v-model="ruleForm.transferableStartDays">
+                                    <template slot="append">天</template>
+                                </el-input>
+                                <span>{{ ruleForm.transferableStartText }}</span>
+                            </el-form-item>
+                            <el-form-item label="可转让终止时间" v-if="ruleStatus.transferAbility">
+                                <el-input @keyup.native="transferableDaysKeyup('end')" type="number" placeholder="请输入内容" v-model="ruleForm.transferableEndDays">
+                                    <template slot="append">天</template>
+                                </el-input>
+                                    <span>{{ ruleForm.transferableEndText }}</span>
+                            </el-form-item>
+                        </div>
 
-                    <div v-if="ruleStatus.contractType == 'newContract'">
-                        <el-form-item label="提前转出日">
-                            <el-input placeholder="日期格式为: 年-月-日" v-model="ruleForm.aheadTransferDate"></el-input>
-                        </el-form-item>
-                        <el-form-item label="项目简介">
-                            <el-input type="textarea" v-model="ruleForm.projectProfile" ></el-input>
-                        </el-form-item>
-                        <el-form-item label="退出时间">
-                            <el-input type="textarea" v-model="ruleForm.endTime" ></el-input>
-                        </el-form-item>
-                        <el-form-item label="提前退出">
-                            <el-input type="textarea" v-model="ruleForm.aheadOut" ></el-input>
-                        </el-form-item>
+                        <div v-if="ruleStatus.contractType == 'newContract'">
+                            <el-form-item label="提前转出日">
+                                <el-input placeholder="日期格式为: 年-月-日" v-model="ruleForm.aheadTransferDate"></el-input>
+                            </el-form-item>
+                            <el-form-item label="项目简介">
+                                <el-input type="textarea" v-model="ruleForm.projectProfile" ></el-input>
+                            </el-form-item>
+                            <el-form-item label="退出时间">
+                                <el-input type="textarea" v-model="ruleForm.endTime" ></el-input>
+                            </el-form-item>
+                            <el-form-item label="提前退出">
+                                <el-input type="textarea" v-model="ruleForm.aheadOut" ></el-input>
+                            </el-form-item>
+                        </div>
                     </div>
 
                     <div v-if="this.ruleStatus.type != 'JIASHI_V2'">
                         <el-form-item label="是否可转让">
-                            <el-select disabled @change="yesOrNo('transferAbility')" v-model="ruleForm.transferAbility" placeholder="请选择项目类型">
+                            <el-select :disabled="ruleStatus.transfer" @change="yesOrNo('transferAbility')" v-model="ruleForm.transferAbility" placeholder="请选择项目类型">
                                 <el-option label="否" value="0"></el-option>
                                 <el-option label="是" value="1"></el-option>
                             </el-select>
@@ -468,6 +495,21 @@ import { formatDate, formatDateAll, addDays, addNewDays } from 'PublicMethods/Me
 import { callbackify } from 'util';
 export default {
     data() {
+        const getRateValidator = (rule, value, callback) => {
+            let reg = /^\d+(?:\.\d{1,2})?$/
+            if(!value) {
+                callback()
+                return
+            }
+
+            if(!reg.test(value)) {
+                callback(new Error('利率输入在误'))
+            } else if(value < 0) { 
+                callback(new Error('利率必须大于0'))
+            } else {
+                callback()
+            }
+        }
         return {
             enterpriseUesrInfo:{},
             assetId:this.$route.query.assetId,
@@ -553,6 +595,7 @@ export default {
                 contractType: 'oldContract', // 合同类型
                 limitAmountLs: false, // 投资限额
                 type: 'JIASHI_V2', // 标的项目类别
+                transfer: true
 
             },
             rules: {
@@ -591,8 +634,7 @@ export default {
                     { validator: this.$valid.getRateValidator, trigger: 'blur' }
                 ],
                 predicateChangeDate: [
-                    { required: true, message: '预计转让生效日不能为空', trigger: 'blur' },
-                    { type: 'date', message: '时间格式不正确', trigger: 'blur' }
+                    { required: true, message: '预计转让生效日不能为空', trigger: 'blur' }
                 ],
                 fundKeepStartDate: [
                     { required: true, message: '金融资产持有起始日不能为空', trigger: 'blur' },
@@ -611,7 +653,7 @@ export default {
                     { type: 'date', message: '时间格式不正确', trigger: 'blur' }
                 ],
                 portionAmount: [
-                    { type: 'number', validator: this.$valid.getAmountValidator, trigger: 'blur' }
+                    { type: 'number', validator: getRateValidator, trigger: 'blur' }
                 ],
                 customPromotionExplain: [
                     { required: true, message: '自定义促销方式不能为空', trigger: 'blur' }
@@ -664,7 +706,7 @@ export default {
                 ],
                 redDays: [
                     { required: true, message: '列为坏账的最长逾期天数不能为空', trigger: 'blur' },
-                    { min: 0, message: '列为坏账的最长逾期天数输入有误', trigger: 'blur' }
+                    { min: 0, type: 'number', message: '列为坏账的最长逾期天数输入有误', trigger: 'blur' }
                 ]
             }
        }
@@ -676,8 +718,7 @@ export default {
                     return false
                 }
                 console.log(this.initSubjectForm(this.ruleForm))
-                return
-                /* this.$axios({
+                this.$axios({
                     url: '/admin/api/users/' + this.userId + '/subjects',
                     method: 'post',
                     data: JSON.stringify(this.initSubjectForm(this.ruleForm)),
@@ -693,8 +734,9 @@ export default {
                     });
                     this.$router.push('/admins/allassetslist/subjectinfo?userId='+ this.userId +'&assetId='+ this.assetId)
                 }).catch( (error)=> {
-                    this.$message.error('创建标的失败')
-                }) */
+                    console.log(error)
+                    this.$message.error(error.message)
+                })
             })
         },
         // 初始化数据
@@ -720,7 +762,7 @@ export default {
             }
 
             if(subjectType == 'JIASHI_V2') {
-                params.type = 'BEGINNER_SUBJECT'
+                params.type = 'P2P_LOAN'
             }
 
             if(subjectType == 'JIASHI_V3') {
@@ -728,7 +770,7 @@ export default {
                     amount: form.investmentLimitMoney,
                     currency: 'CNY'
                 }
-                params.type = 'P2P_LOAN'
+                params.type = 'BEGINNER_SUBJECT'
             }
 
             if(subjectType == 'JIASHI_V13') {
@@ -748,19 +790,8 @@ export default {
             }
 
             params.loaneeInformation = this.retrieveLoaneeInformation(form)
-            
-            if(form.type == 'JIASHI_V8') {
-                params.type = 'PERSONAL_LOAN'
-                params.config = this.retrieveConfigForJIASHI_V8(form)
-                params.subjectInvestLimit = {
-                    siLimit: 0,
-                    subjectLimitAmount: 0
-                }
-            } else if(form.type == 'JIASHI_V3') {
-                params.type = 'BEGINNER_SUBJECT'
-                params.config = this.retrieveConfigJIASHI_V3(form)
-            }
 
+            params.config = this.retrieveConfig(form)
             params.autoShelfAt = form.autoShelfAt ? formatDateAll(form.autoShelfAt) : ''
 
             params.portionAmount = {
@@ -768,38 +799,48 @@ export default {
                 currency: 'CNY'
             }
 
-            params.voucherPolicy = this.voucherPolicyForJIASHI_V6(form)
+            params.voucherPolicy = this.voucherPolicy(form)
 
             params.loanAssetId = this.assetId
 
+            if(subjectType != 'JIASHI_V3') {
+                params.subjectInvestLimit = this.subjectInvestLimit(form)
+            }
+
             return params
         },
-        retrieveConfigForJIASHI_V8(form) {
-            let commonConfig = this.retrieveConfig(form)
-            commonConfig.commissionRate = parseFloat(form.commissionRate / 100)
-            commonConfig.transferableStartDays = parseInt(form.transferableStartDays)
-            commonConfig.transferableEndDays = parseInt(form.transferableEndDays)
-            commonConfig.contractType = form.contractType
-		    return commonConfig;
-        },
-        retrieveConfigJIASHI_V3(form) {
-            let commonConfig = retrieveConfig(form);
-            commonConfig.financialAssetsHeldTerminationDate = form.expiryDate;
-            commonConfig.financialAssetsHeldInceptionDate = form.predicateValueDate
-            commonConfig.commissionRate = parseFloat(form.commissionRate / 100);
-		    return commonConfig;
+        subjectInvestLimit(form) {
+            let isLimit = form.limitAmountLs
+            if(isLimit == "0" || parseFloat(form.subjectLimitAmount) <= 0) {
+                return {
+                    isLimit: 0,
+                    subjectLimitAmount: 0
+                }
+            } else {
+                // if(parseFloat(form.subjectLimitAmount) <= 0) {
+                //     alert("限制金额需要大于0");
+                //     return {
+                //         isLimit: 0,
+                //         subjectLimitAmount:0
+                //     }
+                // }
+                return {
+                    isLimit: 1,
+                    subjectLimitAmount: parseFloat(form.subjectLimitAmount)
+                }
+            }
         },
         retrieveConfig(form) {
             let config = {
                 investProfitFeeRate: form.investProfitFeeRate / 100,
                 investProfitFeeBeneficiaryParty: "p2p-investor-profit",
-                prepaymentPenaltyDays: 0,
+                prepaymentPenaltyDays: '',
                 overduePenaltyRate: parseFloat(form.overduePenaltyRate) / 100,
-                overdueAdvanceDays: 0,
+                overdueAdvanceDays: '',
                 overdueAdvanceParty: "risk",
-                payOffDaysLimit: 0,
-                prepaySettledInstalmentsCount: 0,
-                prepayPendingInstalmentsCount: 0,
+                payOffDaysLimit: '',
+                prepaySettledInstalmentsCount: '',
+                prepayPendingInstalmentsCount: '',
                 graceDays: 5,
                 redDays: parseInt(form.redDays, 10),
                 passDays: parseInt(form.subjectPassDays, 10),
@@ -810,25 +851,40 @@ export default {
                 useCoupon: form.voucherTypeChoose ? form.voucherTypeChoose : 'nothing',
                 commissionRate: form.p2pCommissionRate
             }
+            const subjectType = form.type
             if(subjectType == 'JIASHI_V2') {
-                config.transferableStartDays = form.transferableStartDays
-                config.transferableEndDays = form.transferableEndDays
-                config.financialAssetsHeldTerminationDate = form.financialAssetsHeldTerminationDate
-                config.financialAssetsHeldInceptionDate = form.financialAssetsHeldInceptionDate
                 config.contractType = form.contractType
-                // config.maxPomegranate = 
-                
-            }
-
-            if(subjectType == 'JIASHI_V3') {
-                
             }
 
             if(subjectType == 'JIASHI_V13') {
-                
+                config.expiryDate = formatDate(form.expiryDate)
             }
+
+
+            if(subjectType != 'JIASHI_V2') {
+                config.commissionRate = parseFloat(form.commissionRate / 100)   
+                config.mortgageDescription = form.mortgageDescription
+                config.guaranteeDescription = form.guaranteeDescription
+                config.morAble = form.mortgageAbility
+                config.guaAble = form.guaranteeAbility
+            }
+            if(subjectType != 'JIASHI_V3') { 
+                config.transferableStartDays = form.transferableStartDays
+                config.transferableEndDays = form.transferableEndDays
+            }
+            if(subjectType != 'JIASHI_V13') {
+                config.expiryDate = formatDate(form.fundKeepEndDate)
+                config.financialAssetsHeldTerminationDate = formatDate(form.fundKeepEndDate)
+                config.financialAssetsHeldInceptionDate = formatDate(form.fundKeepStartDate)
+            }
+
+            config.promotionStyle = form.promotionStyle
+            config.promotionStyleExplain = form.promotionStyleExplain
+            config.customPromotionExplain = form.customPromotionExplain
+
+            return config
         },
-        voucherPolicyForJIASHI_V6(form) {
+        voucherPolicy(form) {
             let voucherGeometric = this.ruleForm.voucherGeometric // 使用代金券增加方式
             let investStartAmount = this.ruleForm.investStartAmount // 使用代金券最小出借金额
             let voucherQuota = this.ruleForm.voucherQuota // 代金券使用限额
@@ -951,7 +1007,7 @@ export default {
                 organizationAddress: this.enterpriseUesrInfo.organizationAddress,
                 _customizedFields: [] // 自定义标题
             }
-            const subjectType = form.ruleForm.type
+            const subjectType = form.type
 
             loanee.addTrustMeasures = form.addTrustMeasures // 增信措施
             loanee.repaymentEnsure = form.repaymentEnsure // 还款保障
@@ -985,7 +1041,7 @@ export default {
                 loanee.usage = form.enterpriseLoanUsage
             }
             
-            return loaneeinformation
+            return loanee
         },
         reloadsUserInfo(){
             // 右边个人信息菜单显示
@@ -1025,8 +1081,8 @@ export default {
                     ruleForm.planningPurposes = data.planningPurposes // 规划用途
                     ruleForm.evaluationValue = data.evaluationValue // 评估价值
 
-                    ruleForm.fundKeepStartDate = data.startTime.substr(0, 10) // 金融资产持有起始日
-                    ruleForm.fundKeepEndDate = data.endTime.substr(0, 10)
+                    ruleForm.fundKeepStartDate = ruleForm.predicateValueDate = new Date(data.startTime.substr(0, 10)) // 金融资产持有起始日
+                    ruleForm.fundKeepEndDate = ruleForm.expiryDate = new Date(data.endTime.substr(0, 10))
                     ruleForm.subjectDesc = data.description // 项目描述
                     ruleForm.amount = data.remaindAmount.amount // 借款项目金额
                     ruleForm.loanPurpose = data.loanPurpose // 借款用途
@@ -1037,6 +1093,10 @@ export default {
                     ruleForm.addTrustMeasures = data.addTrustMeasures // 增信措施
 
                     ruleForm.predicateChangeDate = formatDate(addDays(ruleForm.subjectPassDays))
+
+                    
+                    ruleForm.instalmentInterval = (new Date(ruleForm.fundKeepEndDate).getTime() - new Date(ruleForm.predicateChangeDate).getTime()) / (1000 * 60 * 60 * 24)
+                    // instalmentInterval
                     // // 资产代收利率
                     // ruleForm.collectorRate = parseFloat(data.collectorRate == 'null' || data.collectorRate == null ? 0 : data.collectorRate) * 100
                     // ruleForm.subjectDesc = data.description == "null" ? "" : data.description // 项目描述
@@ -1048,11 +1108,12 @@ export default {
         },
         // 自动上架时间 & 募集期天数 改变时
         autoAndPassDaysChange() {
-                let autoShelfAt = this.ruleForm.autoShelfAt ? this.ruleForm.autoShelfAt : new Date()
-                let subjectPassDays = this.ruleForm.subjectPassDays ? this.ruleForm.subjectPassDays : 0
-                this.ruleForm.predicateChangeDate = formatDate(addNewDays(autoShelfAt, subjectPassDays))
-                this.ruleForm.predicateValueDate = formatDate(addNewDays(autoShelfAt, subjectPassDays))
-                this.ruleForm.expiryDate = formatDate(addNewDays(autoShelfAt, parseInt(subjectPassDays) + parseInt(this.ruleForm.instalmentInterval)))
+            let autoShelfAt = this.ruleForm.autoShelfAt ? this.ruleForm.autoShelfAt : new Date()
+            let subjectPassDays = this.ruleForm.subjectPassDays ? this.ruleForm.subjectPassDays : 0
+            this.ruleForm.instalmentInterval = (new Date(this.ruleForm.fundKeepEndDate).getTime() - new Date(formatDate(addNewDays(autoShelfAt, subjectPassDays))).getTime()) / (1000 * 60 * 60 * 24)
+            this.ruleForm.predicateChangeDate = formatDate(addNewDays(autoShelfAt, subjectPassDays))
+            this.ruleForm.predicateValueDate = formatDate(addNewDays(autoShelfAt, subjectPassDays))
+            // this.ruleForm.expiryDate = formatDate(addNewDays(autoShelfAt, parseInt(subjectPassDays) + parseInt(this.ruleForm.instalmentInterval)))
         },
         // 促销方式 改变时
         promotionStyleChange() {
@@ -1083,13 +1144,24 @@ export default {
         },
         // 标的项目类别 改变时
         typeChange() {
-            this.ruleStatus.type = this.ruleForm.type
-
+            let type = this.ruleForm.type
+            this.ruleStatus.type = type
             // 转让也会变
-            if(this.ruleForm.type != 'JIASHI_V2') {
-                this.ruleForm.transferAbility = "1"
-                this.ruleStatus.transferAbility = 1
+            if(this.ruleForm.type == 'JIASHI_V3') {
+                this.ruleStatus.transfer = true
+            } else {
+                this.ruleStatus.transfer = false
             }
+            this.ruleForm.transferAbility = "0"
+            this.ruleStatus.transferAbility = 0
+
+            let currentSelectdDate = new Date()
+            this.ruleForm.autoShelfAt = ''
+            this.ruleForm.predicateChangeDate = formatDate(addNewDays(currentSelectdDate, this.ruleForm.subjectPassDays))
+
+            this.ruleForm.limitAmountLs = '0'
+            this.ruleForm.subjectLimitAmount = 0
+
         },
         // 合同类型 改变时
         contractTypeChange() {

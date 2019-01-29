@@ -2,8 +2,8 @@
   <div>
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ path: '/admin/allassetslist' }">资产管理</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ path: '/admin/allassetslist/subjectinfo',query: {assetId:subject.loanAssetId }}">标的信息</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/admins/allassetslist' }">资产管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/admins/allassetslist/subjectinfo',query: {assetId:subject.loanAssetId }}">标的信息</el-breadcrumb-item>
       <el-breadcrumb-item>{{subject.catalog|catalogText}}-{{subject.title}}</el-breadcrumb-item>
     </el-breadcrumb>
     <h3 class="front-20 title p-b-10  m-t-30">{{subject.catalog|catalogText}}-{{subject.title}}<span class="badge">{{subject.status|detailsStatus}}</span>

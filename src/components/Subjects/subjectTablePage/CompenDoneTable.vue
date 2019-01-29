@@ -2,14 +2,14 @@
     <div class="m-t-40">
         <!-- 已还款代偿 -->
             <el-row class="m-b-40">
-            <el-button>开启自动回款</el-button>
-            <el-button type="success">同意代偿回款</el-button>
-            <el-button type="info">驳回代偿申请</el-button>
-            <el-button type="warning">借款人代偿款申请</el-button>
-            <el-button type="danger">同意借款人还代偿款申请</el-button>
-            <el-button type="primary">驳回借款人还款申请</el-button>
+            <el-button v-if="DataRoles($store.state.login.roles,'subjectsTab11btn1')" >开启自动回款</el-button>
+            <el-button v-if="DataRoles($store.state.login.roles,'subjectsTab11btn2')" type="success">同意代偿回款</el-button>
+            <el-button v-if="DataRoles($store.state.login.roles,'subjectsTab11btn3')" type="info">驳回代偿申请</el-button>
+            <el-button v-if="DataRoles($store.state.login.roles,'subjectsTab11btn4')" type="warning">借款人代偿款申请</el-button>
+            <el-button v-if="DataRoles($store.state.login.roles,'subjectsTab11btn5')" type="danger">同意借款人还代偿款申请</el-button>
+            <el-button v-if="DataRoles($store.state.login.roles,'subjectsTab11btn6')" type="primary">驳回借款人还款申请</el-button>
         </el-row>
-         <el-table  fit
+         <el-table  fit  
             :data = "listItem"
             :row-class-name="tableRowClassName"
             border style="width: 100%" >
@@ -25,11 +25,11 @@
 			<el-table-column prop="nextStatusText" label="回款状态" > </el-table-column>
 			<el-table-column prop="transferable" label="转让标" > </el-table-column>
             <el-table-column  label="操作" width="200px;" >
-              <template slot-scope="scope">
-                <a target="_blank" :href="scope.row.uri+'?view=pdf'">查看合同</a>
-                <router-link :to="{path:'/admin/allassetslist/details', query: {id: scope.row.subjectId, userId: scope.row.userId}}">详情</router-link>
-                <a @click="edit(scope.row)">编辑</a>
-              </template>
+                <template slot-scope="scope">
+                    <a v-if="DataRoles($store.state.login.roles,'subjectsTab11btn7')" >查看合同</a>
+                    <a v-if="DataRoles($store.state.login.roles,'subjectsTab11btn8')" >详情</a>
+                    <a v-if="DataRoles($store.state.login.roles,'subjectsTab11btn9')" >编辑</a>
+                </template>
             </el-table-column>
         </el-table>
     </div>
@@ -54,7 +54,7 @@ import {catalogText,formatDate,payWay,ModelType,dealElement} from '../../../Publ
                  })
                   return result
               }
-          }
+          }  
         },
          methods: {
           	tableRowClassName({ row, rowIndex }) {
@@ -63,13 +63,9 @@ import {catalogText,formatDate,payWay,ModelType,dealElement} from '../../../Publ
                 }
                 return "";
             },
-           edit(){
-             this.$router.push('/')
-           }
         },
-
         components: {
-
+            
         },
     }
 </script>

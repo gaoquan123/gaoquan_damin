@@ -2,13 +2,13 @@
     <div class="m-t-40">
         <!-- 回款中 -->
         <el-row class="m-b-40">
-              <el-button>开启自动回款</el-button>
-            <el-button type="success">申请回款</el-button>
-            <el-button type="info">申请代偿</el-button>
-            <el-button type="warning">申请提前还款</el-button>
-            <el-button type="danger">同意申请</el-button>
-            <el-button type="primary">驳回申请</el-button>
-            <el-button type="danger">驳回提前还款申请</el-button>
+            <el-button v-if="DataRoles($store.state.login.roles,'subjectsTab5btn1')" >开启自动回款</el-button>
+            <el-button v-if="DataRoles($store.state.login.roles,'subjectsTab5btn2')" type="success">申请回款</el-button>
+            <el-button v-if="DataRoles($store.state.login.roles,'subjectsTab5btn3')" type="info">申请代偿</el-button>
+            <el-button v-if="DataRoles($store.state.login.roles,'subjectsTab5btn4')"  type="warning">申请提前还款</el-button>
+            <el-button v-if="DataRoles($store.state.login.roles,'subjectsTab5btn5')"  type="danger">同意申请</el-button>
+            <el-button v-if="DataRoles($store.state.login.roles,'subjectsTab5btn6')"  type="primary">驳回申请</el-button>
+            <el-button v-if="DataRoles($store.state.login.roles,'subjectsTab5btn7')"  type="danger">驳回提前还款申请</el-button>
         </el-row>
          <el-table  fit
             :data = "listItem"
@@ -28,12 +28,12 @@
 			<el-table-column prop="transferable" label="转让标" > </el-table-column>
             <el-table-column  label="操作" width="200px;" >
                 <template slot-scope="scope">
-                  <a target="_blank" :href="scope.row.uri+'?view=pdf&param=Y'">查看合同</a>
-                  <router-link :to="{path:'/admin/allassetslist/details', query: {id: scope.row.subjectId, userId: scope.row.userId}}">详情</router-link>
-                    <a @click="edit(scope.row)">编辑</a>
+                    <a v-if="DataRoles($store.state.login.roles,'subjectsTab5btn8')"  target="_blank" :href="scope.row.uri+'?view=pdf&param=Y'">查看合同</a>
+                    <router-link v-if="DataRoles($store.state.login.roles,'subjectsTab5btn9')"   :to="{path:'/admins/allassetslist/details', query: {id: scope.row.subjectId, userId: scope.row.userId}}">详情</router-link>
+                    <a  v-if="DataRoles($store.state.login.roles,'subjectsTab5btn10')"  @click="edit(scope.row)">编辑</a>
                     <br>
-                    <a @click="showPlan(scope.row.subjectId)">还款计划</a>
-                    <a>预约还款</a>
+                    <a v-if="DataRoles($store.state.login.roles,'subjectsTab5btn11')" @click="showPlan(scope.row.subjectId)">还款计划</a>
+                    <a v-if="DataRoles($store.state.login.roles,'subjectsTab5btn12')">预约还款</a>
                 </template>
             </el-table-column>
         </el-table>

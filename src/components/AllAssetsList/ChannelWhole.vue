@@ -5,8 +5,8 @@
                 <template slot="prepend">渠道名称</template>
             </el-input>
          <el-button class="m-l-10" type="primary" icon="el-icon-search" @click="SearchBtn()">查询</el-button>
-         <router-link  to="/admin/allassetslist/addhannel">
-            <el-button class="" type="success" icon="el-icon-plus">添加渠道</el-button>
+         <router-link v-if="this.DataRoles(this.$store.state.login.roles,'allassetslistTab2btn3')"  to="/admins/allassetslist/addhannel" >
+            <el-button  type="success" icon="el-icon-plus">添加渠道</el-button>
          </router-link>
         </div>
          <div class="cl p-t-50">
@@ -37,10 +37,12 @@
                 </el-table-column>
                  <el-table-column label="操作" width="150">
                     <template slot-scope="scope">
-                        <a @click="editBtn(scope.row.id)">编辑</a>
-                        <a @click="ruleBtn(scope.row.id)">进件规则</a>
-                        <a @click="blockUpBtn(scope.row.id,scope.row.status)" v-if="scope.row.status==0">停用</a>
-                        <a @click="blockUpBtn(scope.row.id,scope.row.status)" v-else-if="scope.row.status==1">启用</a>
+                        <a v-if="DataRoles($store.state.login.roles,'allassetslistTab2btn1')"  @click="editBtn(scope.row.id)">编辑</a>
+                        <a v-if="DataRoles($store.state.login.roles,'allassetslistTab2btn2')"  @click="ruleBtn(scope.row.id)">进件规则</a>
+                        <span v-if="DataRoles($store.state.login.roles,'allassetslistTab2btn4')" >
+                            <a @click="blockUpBtn(scope.row.id,scope.row.status)" v-if="scope.row.status==0">停用</a>
+                            <a @click="blockUpBtn(scope.row.id,scope.row.status)" v-else-if="scope.row.status==1">启用</a>
+                        </span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -273,7 +275,10 @@
         computed: {
             ChannelWholeList(){
                 return this.$store.state.allassetslist.channelList.items;
-            }
+            },
+            //  storeRoles(){
+            //         return this.$store.state.login.roles
+            //     }
         },
         created(){
                this.$store.dispatch('SearchChannel',this.GetData)

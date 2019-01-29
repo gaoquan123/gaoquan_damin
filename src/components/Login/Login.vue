@@ -52,9 +52,9 @@ export default {
     data() {
       return {
         ruleForm: {
-          name: 'superadmin',
-          password:'abcd1234',
-          captcha:'12345'
+          name: '',
+          password:'',
+          captcha:''
         },
         rules: {
             name: [
@@ -81,7 +81,9 @@ export default {
                     }).then((res)=>{
                         Cookies.set('username',res.data.name, { expires: 7 });
                         this.$store.commit({type:'set_token',token:Cookies.set('_csrf')})
-                        this.$router.push({path:'/admin/allassetslist'})
+                        this.$store.commit({type:'setId',id:res.data.id})
+                        this.$store.commit({type:'setroles',roles:res.data.roles})
+                        this.$router.push({path:'/admins/allassetslist'})
                     }) .catch((err,msg,s)=>{
                         this.$alert(err.message , '提示', {
                             confirmButtonText: '确定',

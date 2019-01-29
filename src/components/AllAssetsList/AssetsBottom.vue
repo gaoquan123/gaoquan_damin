@@ -30,14 +30,12 @@
 			<el-table-column prop="state" label="状态" > </el-table-column>
 			<el-table-column label="操作" width="250">
 				<template slot-scope="scope">
-					<a @click="assetsCreate(scope.row)">创建标的</a>
-					<!-- <router-link  v-else :to="{path:'/admin/allassetslist/newsubject',query:{userId:scope.row.userId,assetId:scope.row.id}}">创建标的</router-link> -->
-					<router-link :to="{path: '/admin/allassetslist/subjectinfo', query:{userId:scope.row.userId,assetId:scope.row.id}}">标的信息</router-link>
-					<!-- <router-link :to="{path: '/admin/allassetslist/assetsedit', query:{userId:scope.row.userId,assetId:scope.row.id}}">编辑</router-link> -->
-					<a @click="assetsEdit(scope.row)">编辑</a>
+                    <a v-if="DataRoles($store.state.login.roles,'allassetslistTab1btn5')"  @click="assetsCreate(scope.row)">创建标的</a>
+					<router-link  v-if="DataRoles($store.state.login.roles,'allassetslistTab1btn7')" :to="{path: '/admins/allassetslist/subjectinfo', query:{userId:scope.row.userId,assetId:scope.row.id}}">标的信息</router-link>
+                    <a v-if="DataRoles($store.state.login.roles,'allassetslistTab1btn9')" @click="assetsEdit(scope.row)">编辑</a>
 					<br>
-					<a @click="editStock(scope.row.id)">修改库存</a>
-					<a>删除</a>
+					<a  v-if="DataRoles($store.state.login.roles,'allassetslistTab1btn8')" @click="editStock(scope.row.id)">修改库存</a>
+					<a  v-if="DataRoles($store.state.login.roles,'allassetslistTab1btn10')" >删除</a>
 					<a v-if="scope.row.state == 'PARTIAL_MATURITY'">提前到期</a>
 				</template>
 			</el-table-column>
@@ -161,15 +159,15 @@ export default {
 				return false
 			}
 			item.operation = 'create'
-			this.assetsOperation(item)
+			this.assetsOperation(item, item.usertype)
 
 		},
 		assetsEdit(item) {
 			item.operation = 'edit'
-			this.assetsOperation(item)
-			// this.$router.push('/admin/allassetslist/assetsedit')
+			this.assetsOperation(item, item.usertype)
+			// this.$router.push('/admins/allassetslist/assetsedit')
 		},
-		assetsOperation(item) {
+		assetsOperation(item, type) {
 			this.$axios.get('/api/users/findAccIdAndType?userId=' + item.userId).then(res => {
 				let data = res.data
 				if(data == '') {
@@ -204,31 +202,44 @@ export default {
 							confirmButtonText: '确定',
 							cancelButtonText: '取消'
 						}).then(() => {
-							this.checkStyle(item)
+							this.checkStyle(item, type)
 						})
 					} else {
-						this.checkStyle(item)
+						this.checkStyle(item, type)
 					}
 				})
 			})
 		},
-		checkStyle(item) {
+		checkStyle(item, type) {
 			if(item.operation == 'edit') {
 				this.$router.push({ name: 'AssetsEdit', query: { userId: item.userId, assetId: item.id }})
 			}else {
-				this.$router.push({ name: 'NewSubject', query: { userId: item.userId, assetId: item.id }})
-			}
-			// 下面这个接口不知道做什么用的
-			/* this.$axios.post('/api/users/userInformatization', {
-				userId: item.userId
-			}).then(result => {
-				// if(item.userType == 'ENTERPRISE') {
+				// this.$router.push({ name: 'NewSubjectLoan', query: { userId: item.userId, assetId: item.id }})
 
-				// } else if(item.userType == 'PERSONAL_LOAN') {
-					
-				// }
-				this.$router.push({ name: '/admin/allassetslist/newsubject', query: { userId: item.userId, assetId: item.id }})
-			}) */
+				this.$axios({
+                    url: '/api/users/userInformatization',
+                    method: 'post',
+                    data: JSON.stringify({ userId: item.userId }),
+                    headers: {
+						'Content-Type': 'application/json',
+						'csrf-token': Cookies.get('_csrf')
+					}
+                }).then( (response)=> {
+					console.log(type)
+					if (type == "ENTERPRISE") {
+						this.$router.push({ name: 'CreateSubject', query: { userId: item.userId, assetId: item.id }})
+					} else if (type == "PERSONAL_LOAN") {
+						this.$router.push({ name: 'CreateSubjectLoan', query: { userId: item.userId, assetId: item.id }})
+					}
+                    
+                }).catch( (error)=> {
+					console.log(error)
+                    this.$alert(error.message, "提示", {
+						confirmButtonText: "确定",
+						callback: action => {}
+					})
+                });
+			}
 		},
 		// 修改库存
 		editStock(subjectId) {
@@ -260,8 +271,15 @@ export default {
 				if(!valid) {
 					return
 				}
-				this.$axios.put('/api/loanAssets/'+ this.relueForm.id +'/stock', {
-					remaindAmount: this.relueForm.changeRemaindAmount
+
+				this.$axios({
+					url: '/api/loanAssets/'+ this.relueForm.id +'/stock',
+					method: 'put',
+					data: JSON.stringify({ remaindAmount: this.relueForm.changeRemaindAmount }),
+					headers: {
+						'Content-Type': 'application/json',
+						'csrf-token': Cookies.get('_csrf')
+					}
 				}).then((data) => {
 					this.$message({
 						showClose: true,

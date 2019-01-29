@@ -9,25 +9,29 @@ import Subjects from '@/components/Subjects/Subjects'
 import Usermanage from '@/components/Usermanage/Usermanage'
 import PowerAdmin from '@/components/PowerAdmin/PowerAdmin'
 import SuperAdmin from '@/components/PowerAdmin/SuperAdmin/SuperAdmin'
-import LenderDetails from '@/components/Subjects/LenderDetails'
+
 
 
 
 // 二级路由
 import Details from '@/components/AllAssetsList/details/details'
-import NewSubject from '@/components/AllAssetsList/asset/NewSubject'
-import NewSubjectLoan from '@/components/AllAssetsList/asset/NewSubjectLoan'
+import CreateSubject from '@/components/AllAssetsList/asset/CreateSubject'
+import CreateSubjectLoan from '@/components/AllAssetsList/asset/CreateSubjectLoan'
 import AssetsEdit from '@/components/AllAssetsList/asset/Assetsdit'
-import CreateEnterpriseUser from '@/components/Usermanage/CreateEnterpriseUser'
 
 
 
 
 Vue.use(Router)
 const router = new Router({
+    // "*":'/admins/login',
     routes: [
+           {
+            path:"/",
+            redirect: "/admins/login",
+           },
           {
-            path: '/admin/login',
+            path: '/admins/login',
             name: 'Login',
             component: Login,
             meta: {
@@ -35,71 +39,61 @@ const router = new Router({
             }
           },
           {
-            path: '/admin/allassetslist',
+            path: '/admins/allassetslist',
             name: 'AllAssetsList',
             component: AllAssetsList,
           },
           {
-            path: '/admin/allassetslist/assetsedit',
+            path: '/admins/allassetslist/assetsedit',
             name: 'AssetsEdit',
             component: AssetsEdit
           },
           {
-            path: '/admin/allassetslist/newsubject',
-            name: 'NewSubject',
-            component: NewSubject
+            path: '/admins/allassetslist/CreateSubject',
+            name: 'CreateSubject',
+            component: CreateSubject
           },
           {
-            path: '/admin/allassetslist/newsubjectloan',
-            name: 'NewSubjectLoan',
-            component: NewSubjectLoan
+            path: '/admins/allassetslist/Createsubjectloan',
+            name: 'CreateSubjectLoan',
+            component: CreateSubjectLoan
           },
           {
-            path: '/admin/allassetslist/subjectinfo',
+            path: '/admins/allassetslist/subjectinfo',
             name: 'SubjectInfo',
             component: SubjectInfo
           },
           {
-            path: '/admin/allassetslist/details',
+            path: '/admins/allassetslist/details',
             name: 'details',
             component: Details
           },
           {
-            path: '/admin/allassetslist/addhannel',
+            path: '/admins/allassetslist/addhannel',
             name: 'AddChannel',
             component: AddChannel
           },
 
           {
-            path: '/admin/subjects',
+            path: '/admins/subjects',
             name: 'Subjects',
             component: Subjects,
           },
           {
-            path: '/admin/subjects/lenderDetails',
-            name: 'LenderDetails',
-            component: LenderDetails,
-          },
-          {
-            path: '/admin/usermanage',
+            path: '/admins/usermanage',
             name: 'Usermanage',
             component: Usermanage
           },
           {
-            path: '/admin/poweradmin',
+            path: '/admins/poweradmin',
             name: 'PowerAdmin',
             component: PowerAdmin
           },
           {
-            path: '/admin/poweradmin/superadmin',
+            path: '/admins/poweradmin/superadmin',
             name: 'SuperAdmin',
             component: SuperAdmin
           },
-         {
-           path: '/admin/usermanage/createEnterpriseUser',
-           name: 'CreateEnterpriseUser',
-           component: CreateEnterpriseUser
-         },
       ]
 })
 router.beforeEach((to, from, next) => {
@@ -107,10 +101,10 @@ router.beforeEach((to, from, next) => {
     if(userInfo){ //如果有就直接到首页
         next();
     } else {
-        if(to.path=='/admin/login'){ //如果是登录页面路径，就直接next()
+        if(to.path=='/admins/login'){ //如果是登录页面路径，就直接next()
             next();
         } else { //不然就跳转到登录；
-            next('/admin/login');
+            next('/admins/login');
         }
 
     }

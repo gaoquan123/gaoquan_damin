@@ -2,7 +2,7 @@
   <div>
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ path: '/admin/allassetslist' }">资产管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/admins/allassetslist' }">资产管理</el-breadcrumb-item>
       <el-breadcrumb-item>标的信息</el-breadcrumb-item>
     </el-breadcrumb>
     <h3 class="front-20  m-t-30">标的信息</h3>
@@ -133,7 +133,7 @@
         this.getSubjectList()
       },
       toDetails(row){
-        this.$router.push({path: '/admin/allassetslist/details', query: {id: row.id, userId: row.userId}})
+        this.$router.push({path: '/admins/allassetslist/details', query: {id: row.id, userId: row.userId}})
       },
       copySubject(row, type){
         let version = 2
@@ -228,11 +228,11 @@
           }).then(() => {
             if (version == '1') {
               //编辑页面，暂无地址
-              window.location.href = "/admin/modify-subject?userId=" + userId + "&subjectId=" + subjectId;
+              window.location.href = "/admins/modify-subject?userId=" + userId + "&subjectId=" + subjectId;
             }
             if (version == '0') {
               //编辑页面，暂无地址
-              window.location.href = "/admin/modify-personal-loan-subject?userId=" + userId + "&subjectId=" + subjectId;
+              window.location.href = "/admins/modify-personal-loan-subject?userId=" + userId + "&subjectId=" + subjectId;
             }
             if (version == '2') {
               this.copySubjectForEnd(userId, subjectId, assetId);
@@ -243,11 +243,11 @@
         } else {
           if (version == '1') {
             //编辑页面，暂无地址
-            window.location.href = "/admin/modify-subject?userId=" + userId + "&subjectId=" + subjectId;
+            window.location.href = "/admins/modify-subject?userId=" + userId + "&subjectId=" + subjectId;
           }
           if (version == '0') {
             //编辑页面，暂无地址
-            window.location.href = "/admin/modify-personal-loan-subject?userId=" + userId + "&subjectId=" + subjectId;
+            window.location.href = "/admins/modify-personal-loan-subject?userId=" + userId + "&subjectId=" + subjectId;
           }
           if (version == '2') {
             this.copySubjectForEnd(userId, subjectId, assetId);
