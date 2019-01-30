@@ -227,12 +227,10 @@
             type: 'warning'
           }).then(() => {
             if (version == '1') {
-              //编辑页面，暂无地址
-              window.location.href = "/admins/modify-subject?userId=" + userId + "&subjectId=" + subjectId;
+              this.$router.push({ name: 'modifySubject', query: { userId: userId, subjectId: subjectId } });
             }
             if (version == '0') {
-              //编辑页面，暂无地址
-              window.location.href = "/admins/modify-personal-loan-subject?userId=" + userId + "&subjectId=" + subjectId;
+              this.$router.push({ name: 'modifyPersionLoanSubject', query: { userId: userId, subjectId: subjectId } });
             }
             if (version == '2') {
               this.copySubjectForEnd(userId, subjectId, assetId);
@@ -242,12 +240,10 @@
           });
         } else {
           if (version == '1') {
-            //编辑页面，暂无地址
-            window.location.href = "/admins/modify-subject?userId=" + userId + "&subjectId=" + subjectId;
+           this.$router.push({ name: 'modifySubject', query: { userId: userId, subjectId: subjectId } });
           }
           if (version == '0') {
-            //编辑页面，暂无地址
-            window.location.href = "/admins/modify-personal-loan-subject?userId=" + userId + "&subjectId=" + subjectId;
+            this.$router.push({ name: 'modifyPersionLoanSubject', query: { userId: userId, subjectId: subjectId } });
           }
           if (version == '2') {
             this.copySubjectForEnd(userId, subjectId, assetId);
