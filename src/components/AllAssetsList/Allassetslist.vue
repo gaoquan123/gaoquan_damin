@@ -5,7 +5,7 @@
                       <!-- v-if="this.DataRoles(this.$store.state.login.roles,'allassetslistTab1')" -->
                         <el-tab-pane 
                             data-type='first'
-                            v-if="DataRoles($store.state.login.roles,'allassetslistTab1')"
+                           
                             label="资产管理" name="first" class="w100 labelfirst tabsBox">
                             <AssetsHeader></AssetsHeader>
                         </el-tab-pane>

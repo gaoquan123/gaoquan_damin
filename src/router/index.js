@@ -17,7 +17,9 @@ import LenderDetails from '@/components/Subjects/LenderDetails'
 // 二级路由
 import Details from '@/components/AllAssetsList/details/details'
 import CreateSubject from '@/components/AllAssetsList/asset/CreateSubject'
+import modifySubject from '@/components/AllAssetsList/asset/modify-subject'
 import CreateSubjectLoan from '@/components/AllAssetsList/asset/CreateSubjectLoan'
+import modifyPersionLoanSubject from '@/components/AllAssetsList/asset/modify-personal-loan-subject'
 import AssetsEdit from '@/components/AllAssetsList/asset/Assetsdit'
 import CreateEnterpriseUser from '@/components/Usermanage/CreateEnterpriseUser'
 import RiskAmount from '@/components/Usermanage/RiskAmount'
@@ -56,9 +58,19 @@ const router = new Router({
             component: CreateSubject
           },
           {
+            path: '/admins/allassetslist/modifySubject',
+            name: 'modifySubject',
+            component: modifySubject
+          },
+          {
             path: '/admins/allassetslist/Createsubjectloan',
             name: 'CreateSubjectLoan',
             component: CreateSubjectLoan
+          },
+          {
+            path: '/admins/allassetslist/modifyPersionLoanSubject',
+            name:'modifyPersionLoanSubject',
+            component: modifyPersionLoanSubject
           },
           {
             path: '/admins/allassetslist/subjectinfo',
