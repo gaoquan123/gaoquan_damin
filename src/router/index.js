@@ -20,8 +20,8 @@ import CreateSubject from '@/components/AllAssetsList/asset/CreateSubject'
 import CreateSubjectLoan from '@/components/AllAssetsList/asset/CreateSubjectLoan'
 import AssetsEdit from '@/components/AllAssetsList/asset/Assetsdit'
 import CreateEnterpriseUser from '@/components/Usermanage/CreateEnterpriseUser'
-
-
+import RiskAmount from '@/components/Usermanage/RiskAmount'
+import UnBind from '@/components/Usermanage/UnBind'
 
 
 Vue.use(Router)
@@ -105,6 +105,16 @@ const router = new Router({
             path: '/admins/usermanage/createEnterpriseUser',
             name: 'CreateEnterpriseUser',
             component: CreateEnterpriseUser
+          },
+          {
+            path: '/admins/usermanage/riskAmount',
+            name: 'RiskAmount',
+            component: RiskAmount
+          },
+          {
+            path: '/admins/usermanage/unBind',
+            name: 'UnBind',
+            component: UnBind
           },
       ]
 })

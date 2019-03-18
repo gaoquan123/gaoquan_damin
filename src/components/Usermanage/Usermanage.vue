@@ -71,8 +71,8 @@
             <el-button type="warning">批量导入个人借款用户</el-button>
             <div class="m-t-30">
                   <el-button type="danger">资金解冻</el-button>
-            <el-button type="primary">解绑银行卡申请</el-button>
-            <el-button type="info">出借人风险金额设置</el-button>
+            <el-button type="primary"><router-link to="/admins/usermanage/unBind">出借人风险金额设置</router-link></el-button>
+            <el-button type="info"><router-link to="/admins/usermanage/riskAmount">出借人风险金额设置</router-link></el-button>
             </div>
 
         </div>
