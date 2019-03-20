@@ -28,7 +28,17 @@ export let addNewDays = function(time, days) {
   currentTime.setHours(currentTime.getHours() + days * 24)
   return currentTime
 }
-
+// 时间差（相差多少天）
+export let calcDay = function(month) {
+  let temp1 = new Date();
+  let temp2 = new Date();
+  temp2.setMonth(temp2.getMonth() + month)
+  // 这里把时间归为零时算，不然会有误差
+  let timeA = temp1.getFullYear() + '/' + (temp1.getMonth() + 1) + '/' + temp1.getDate();
+  let tempB = temp2.getFullYear() + '/' + (temp2.getMonth() + 1) + '/' + temp2.getDate();
+  let day = (new Date(tempB).getTime() - new Date(timeA).getTime()) / (24 * 60 * 60 * 1000);
+  return Number(day.toFixed(0));
+}
 
 // 时间转换到秒
 export const formatToSec  =  function(time){

@@ -5,7 +5,6 @@
             <el-breadcrumb-item :to="{ path: '/admins/subjects' }">标的管理</el-breadcrumb-item>
             <el-breadcrumb-item>编辑标的</el-breadcrumb-item>
         </el-breadcrumb>
-        <h1 class="front-22 m-t-30 color">编辑标的</h1>
         <div class="Newform m-t-50">
 
             <el-form ref="ruleForm" :rules="rules" :model="ruleForm" label-width="180px">
@@ -18,9 +17,9 @@
 
                     <el-form-item label="标的项目类别" prop="type">
                         <el-select disabled placeholder="请选择项目类别" v-model="ruleForm.type">
-                            <el-option label="个人借款" value="JIASHI_V8">个人借款</el-option>
-                            <el-option label="个人借款" value="JIASHI_V9">个人理财质押</el-option>
+                            <el-option label="利息赢" value="JIASHI_V2">利息赢</el-option>
                             <el-option label="新手标" value="JIASHI_V3">新手标</el-option>
+                            <el-option label="企业借款标" value="JIASHI_V13">企业借款标</el-option>
                         </el-select>
                     </el-form-item>
 
@@ -321,7 +320,7 @@
                 </fieldset>
 
                 <el-form-item>
-                    <el-button type="primary" @click="onSubmit('ruleForm')">创建</el-button>
+                    <el-button type="primary" @click="onSubmit('ruleForm')">保存</el-button>
                 </el-form-item>
             </el-form>
             <!-- 右边卡片个人借款用户信息 -->

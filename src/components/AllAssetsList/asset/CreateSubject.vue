@@ -24,7 +24,6 @@
                             
                         </el-select>
                     </el-form-item>
-
                     <el-form-item prop="amount" :label="this.ruleStatus.type == 'JIASHI_V2' ? '转让金额' : '借款项目金额'" >
                         <el-input placeholder="请输入内容" v-model="ruleForm.amount">
                             <template slot="append">¥</template>
@@ -33,8 +32,16 @@
 
                     <el-form-item label="分期方式" prop="payWay">
                         <el-select disabled placeholder="请选择分期方式" v-model="ruleForm.payWay">
-                            <el-option :label="this.ruleStatus.type == 'JIASHI_V2' ? '到期一次性支付本金及利息' : '到期还本付息'" value="ONCE_PRINCIPAL_AND_INTEREST"></el-option>
+                            <el-option label="到期一次性支付本金及利息" value="ONCE_PRINCIPAL_AND_INTEREST">到期一次性支付本金及利息</el-option>
+                            <el-option label="等额本息" v-if="this.ruleStatus.type == 'JIASHI_V13'" value="MATCHING_PRINCIPAL_AND_INTEREST"> 等额本息</el-option>
+                            <el-option label="到期还本付息" v-else value="MATCHING_PRINCIPAL_AND_INTEREST"> 到期还本付息</el-option>
                         </el-select>
+                    </el-form-item>
+
+                    <el-form-item prop="instalmentIntervalFPN" label="借款期数" v-if="this.ruleStatus.type == 'JIASHI_V13' && ruleForm.payWay == 'MATCHING_PRINCIPAL_AND_INTEREST'">
+                        <el-input disabled placeholder="请输入内容" v-model="ruleForm.instalmentIntervalFPN">
+                            <template slot="append">个月</template>
+                        </el-input>
                     </el-form-item>
 
                     <el-form-item prop="instalmentInterval" :label="this.ruleStatus.type == 'JIASHI_V2' ? '转让期限（天）' : '借款期限'" >
@@ -77,7 +84,6 @@
                         <el-form-item label="金融资产持有起始日" prop="fundKeepStartDate">
                             <!-- <el-input v-model="ruleForm.fundKeepStartDate" placeholder="日期格式为: 年-月-日"></el-input> -->
                             <el-date-picker
-                            disabled
                             v-model="ruleForm.fundKeepStartDate"
                             type="date"
                             placeholder="金融资产持有起始日">
@@ -88,7 +94,6 @@
                             <!-- <el-input v-model="ruleForm.fundKeepEndDate" placeholder="日期格式为: 年-月-日"></el-input> -->
                             <el-date-picker
                             v-model="ruleForm.fundKeepEndDate"
-                            disabled
                             type="date"
                             placeholder="金融资产持有终止日">
                             </el-date-picker>
@@ -491,7 +496,7 @@
     </div>
 </template>
 <script>
-import { formatDate, formatDateAll, addDays, addNewDays } from 'PublicMethods/MethodsJs.js'
+import { formatDate, formatDateAll, addDays, addNewDays, calcDay } from 'PublicMethods/MethodsJs.js'
 import { callbackify } from 'util';
 export default {
     data() {
@@ -575,7 +580,7 @@ export default {
                 investProfitFeeRate: 0, // 出借利息手续费率
                 overduePenaltyRate: 0, // 逾期罚息日利率
                 redDays: 999, // 列为坏账的最长逾期天数
-
+                instalmentIntervalFPN: '', // 借款期数
                 useCoupon: '',
                 loan_type: '',
                 loan_type_fpn: '',
@@ -612,6 +617,10 @@ export default {
                 ],
                 payWay: [
                     { required: true, message: '请选择分期方式', trigger: 'change' }
+                ],
+                instalmentIntervalFPN: [
+                    { required: true, message: '借款期数不能为空', trigger: 'blur' },
+                    { type: 'number', min: 1, max: 9999, message: '输入有误', trigger: 'blur' }
                 ],
                 instalmentInterval: [
                     { required: true, message: '期限不能为空', trigger: 'blur' },
@@ -1054,7 +1063,7 @@ export default {
         displayBtn(){
             $(".box-card").hide();
         },
-        //标的默认星系
+        //标的默认接口
         reloadsApiInfo(){
             this.$axios.get(`/api/loanAssets/${this.assetId}`)
             .then((res)=>{
@@ -1063,7 +1072,7 @@ export default {
 
                     ruleForm.loan_type = data.timeLimitType
                     ruleForm.loan_type_fpn = data.limitDays
-
+                    ruleForm.instalmentIntervalFPN = data.limitDays
                     
                     ruleForm.title = data.title // 标题
                     ruleForm.payWay = data.payWay // 分期方式
@@ -1094,8 +1103,10 @@ export default {
 
                     ruleForm.predicateChangeDate = formatDate(addDays(ruleForm.subjectPassDays))
 
+                    let tempDate = (new Date(ruleForm.fundKeepEndDate).getTime() - new Date(ruleForm.predicateChangeDate).getTime()) / (1000 * 60 * 60 * 24)
+                    ruleForm.instalmentInterval = tempDate ? tempDate : 0
+
                     
-                    ruleForm.instalmentInterval = (new Date(ruleForm.fundKeepEndDate).getTime() - new Date(ruleForm.predicateChangeDate).getTime()) / (1000 * 60 * 60 * 24)
                     // instalmentInterval
                     // // 资产代收利率
                     // ruleForm.collectorRate = parseFloat(data.collectorRate == 'null' || data.collectorRate == null ? 0 : data.collectorRate) * 100
@@ -1108,11 +1119,30 @@ export default {
         },
         // 自动上架时间 & 募集期天数 改变时
         autoAndPassDaysChange() {
+            // 自动上架时间
             let autoShelfAt = this.ruleForm.autoShelfAt ? this.ruleForm.autoShelfAt : new Date()
+            // 募集期天数
             let subjectPassDays = this.ruleForm.subjectPassDays ? this.ruleForm.subjectPassDays : 0
-            this.ruleForm.instalmentInterval = (new Date(this.ruleForm.fundKeepEndDate).getTime() - new Date(formatDate(addNewDays(autoShelfAt, subjectPassDays))).getTime()) / (1000 * 60 * 60 * 24)
-            this.ruleForm.predicateChangeDate = formatDate(addNewDays(autoShelfAt, subjectPassDays))
-            this.ruleForm.predicateValueDate = formatDate(addNewDays(autoShelfAt, subjectPassDays))
+            // 金融资产持有起始日
+            let fundKeepStartDate =  this.ruleForm.fundKeepStartDate ? this.ruleForm.fundKeepStartDate : new Date()
+
+            if(this.ruleForm.type == 'JIASHI_V13') {
+                let subjectPeriods = this.ruleForm.instalmentIntervalFPN * 30
+                // 借款期限
+                this.ruleForm.instalmentInterval = formatDate(addNewDays(autoShelfAt, subjectPassDays + subjectPeriods))
+                // 借款起始日
+                this.ruleForm.predicateValueDate = formatDate(addNewDays(autoShelfAt, subjectPassDays))
+            } else {
+
+                // 预计转让生效日 &  金融资产持有起始日
+                this.ruleForm.predicateChangeDate =  this.ruleForm.fundKeepStartDate = formatDate(addNewDays(autoShelfAt, subjectPassDays))
+                // 借款期限
+                let instalmentIntervalTemp = (new Date(this.ruleForm.fundKeepEndDate).getTime() - new Date(formatDate(addNewDays(autoShelfAt, subjectPassDays))).getTime()) / (1000 * 60 * 60 * 24)
+                this.ruleForm.instalmentInterval = instalmentIntervalTemp ? instalmentIntervalTemp : 0
+                
+                // 预计转让生效日
+                this.ruleForm.predicateChangeDate = formatDate(addNewDays(autoShelfAt, subjectPassDays))
+            }
             // this.ruleForm.expiryDate = formatDate(addNewDays(autoShelfAt, parseInt(subjectPassDays) + parseInt(this.ruleForm.instalmentInterval)))
         },
         // 促销方式 改变时
@@ -1151,6 +1181,11 @@ export default {
                 this.ruleStatus.transfer = true
             } else {
                 this.ruleStatus.transfer = false
+            }
+
+            // 企业借款标
+            if(this.ruleForm.type == 'JIASHI_V13') {
+                this.ruleForm.instalmentInterval = calcDay(this.ruleForm.instalmentIntervalFPN)
             }
             this.ruleForm.transferAbility = "0"
             this.ruleStatus.transferAbility = 0
