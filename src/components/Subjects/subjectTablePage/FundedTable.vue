@@ -1,7 +1,7 @@
 <template>
     <div class="m-t-40">
         <!-- 满标待放款 -->
-         <el-table  fit  
+         <el-table  fit
          :data = "listItem"
          :row-class-name="tableRowClassName"
           border style="width: 100%" >
@@ -14,6 +14,12 @@
 			<el-table-column prop="valueDate" label="起息日" > </el-table-column>
 			<el-table-column prop="status" label="状态" > </el-table-column>
 			<el-table-column prop="instalType" label="还款方式" > </el-table-column>
+           <el-table-column  label="操作" width="200">
+             <template slot-scope="scope">
+               <el-button type="danger"  plain round  size="mini" @click="offShelf(scope.row)">下架</el-button>
+               <el-button type="danger"  plain round  size="mini" @click="signContract(scope.row)">确认交割</el-button>
+             </template>
+           </el-table-column>
         </el-table>
     </div>
 </template>
@@ -37,7 +43,7 @@ import {catalogText,formatDate,payWay,ModelType,dealElement} from '../../../Publ
                  })
                   return result
               }
-          }  
+          }
         },
          methods: {
           	tableRowClassName({ row, rowIndex }) {
@@ -46,9 +52,61 @@ import {catalogText,formatDate,payWay,ModelType,dealElement} from '../../../Publ
                 }
                 return "";
             },
+           //下架
+           offShelf(row){
+             this.$confirm('标的正在募集中，确认马上满标?', '提示', {
+               confirmButtonText: '确定',
+               cancelButtonText: '取消',
+               type: 'warning'
+             }).then(() => {
+               this.$axios({
+                 method: 'POST',
+                 url: `/api/users/${row.userId}/subjects/${row.id}/unshelf`,
+                 headers: {
+                   'Content-Type': 'application/json;charset=UTF-8'
+                 },
+                 data:{}
+               }).then(()=>{
+                 this.$store.dispatch("GetSubjectAllTab",{'type':{status: 'FUNDING',orderByFlag:-1,queryFlag:1,page:1}})
+               }).catch(()=>{
+
+               })
+             }).catch(() => {
+               this.$message({
+                 type: 'info',
+                 message: '已取消'
+               });
+             });
+           },
+           //确认交割
+           signContract(row){
+             this.$confirm('标的正在募集中，确认马上满标?', '提示', {
+               confirmButtonText: '确定',
+               cancelButtonText: '取消',
+               type: 'warning'
+             }).then(() => {
+               this.$axios({
+                 method: 'POST',
+                 url: `/api/users/${row.userId}/subjects/${row.id}/contract`,
+                 headers: {
+                   'Content-Type': 'application/json;charset=UTF-8'
+                 },
+                 data:{}
+               }).then(()=>{
+                 this.$store.dispatch("GetSubjectAllTab",{'type':{status: 'FUNDED',orderByFlag:-1,queryFlag:1,page:1}})
+               }).catch(()=>{
+
+               })
+             }).catch(() => {
+               this.$message({
+                 type: 'info',
+                 message: '已取消'
+               });
+             });
+           },
         },
         components: {
-            
+
         },
     }
 </script>

@@ -34,9 +34,10 @@
                       </span>
 				  </template>
              </el-table-column>
-			<el-table-column  label="操作" >
+			<el-table-column  label="操作" width="200">
                   <template slot-scope="scope">
-                     <el-button type="danger"  v-if="DataRoles($store.state.login.roles,'subjectsTab2btn3')"  plain round  size="mini">下架</el-button>
+                     <el-button type="danger"  v-if="DataRoles($store.state.login.roles,'subjectsTab2btn3')"  plain round  size="mini" @click="offShelf(scope.row)">下架</el-button>
+                     <el-button type="danger"  plain round  size="mini"   @click="confirmFunded(scope.row)">手动满标</el-button>
 				</template>
             </el-table-column>
 
@@ -154,7 +155,59 @@ import {catalogText,formatDate,payWay,ModelType,dealElement} from '../../../Publ
               }).catch(()=>{
 
               })
-           }
+           },
+           //下架
+           offShelf(row){
+             this.$confirm('标的正在募集中，确认马上满标?', '提示', {
+               confirmButtonText: '确定',
+               cancelButtonText: '取消',
+               type: 'warning'
+             }).then(() => {
+               this.$axios({
+                 method: 'POST',
+                 url: `/api/users/${row.userId}/subjects/${row.id}/unshelf`,
+                 headers: {
+                   'Content-Type': 'application/json;charset=UTF-8'
+                 },
+                 data:{}
+               }).then(()=>{
+                 this.$store.dispatch("GetSubjectAllTab",{'type':{status: 'FUNDING',orderByFlag:-1,queryFlag:1,page:1}})
+               }).catch(()=>{
+
+               })
+             }).catch(() => {
+               this.$message({
+                 type: 'info',
+                 message: '已取消'
+               });
+             });
+           },
+           //手动满标
+           confirmFunded(row){
+             this.$confirm('标的正在募集中，确认马上满标?', '提示', {
+               confirmButtonText: '确定',
+               cancelButtonText: '取消',
+               type: 'warning'
+             }).then(() => {
+               this.$axios({
+                 method: 'POST',
+                 url: `/api/users/${row.userId}/subjects/${row.id}/manualFunded`,
+                 headers: {
+                   'Content-Type': 'application/json;charset=UTF-8'
+                 },
+                 data:{}
+               }).then(()=>{
+                 this.$store.dispatch("GetSubjectAllTab",{'type':{status: 'FUNDING',orderByFlag:-1,queryFlag:1,page:1}})
+               }).catch(()=>{
+
+               })
+             }).catch(() => {
+               this.$message({
+                 type: 'info',
+                 message: '已取消'
+               });
+             });
+           },
 
         },
         components: {
