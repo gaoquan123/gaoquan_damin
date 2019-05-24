@@ -42,7 +42,7 @@
                         </el-input>
                     </el-form-item>
 
-                    <el-form-item :label="[ ruleForm.type == 'JIASHI_V2' ? '转让期限（天）' : '借款期限' ]" prop="instalmentInterval">
+                    <el-form-item :label="ruleForm.type == 'JIASHI_V2' ? '转让期限（天）' : '借款期限'" prop="instalmentInterval">
                         <el-input disabled placeholder="请输入内容" v-model="ruleForm.instalmentInterval">
                             <template slot="append">天</template>
                         </el-input>
@@ -72,24 +72,50 @@
                         </el-input>
                     </el-form-item> -->
 
-                    <!-- <el-form-item v-show="false" label="资产代收利率">
+                    <el-form-item v-show="false" label="资产代收利率">
                         <el-input disabled placeholder="请输入内容" v-model="ruleForm.collectorRate">
                             <template slot="append">％</template>
                         </el-input>
-                    </el-form-item> -->
-
-                    <el-form-item label="借款起始日(预计)">
-                        <el-input disabled placeholder="请输入内容" v-model="ruleForm.predicateValueDate">
-                            <template slot="append">(预计)</template>
-                        </el-input>
                     </el-form-item>
 
-                    <el-form-item label="借款到期日" prop="expiryDate">
-                        <el-date-picker 
-                        v-model="ruleForm.expiryDate"
-                        type="date"
-                        placeholder="借款到期日"></el-date-picker>
-                    </el-form-item>
+                    <div v-if="ruleForm.type != 'JIASHI_V2'">
+                        <el-form-item label="借款起始日(预计)">
+                            <el-input disabled placeholder="请输入内容" v-model="ruleForm.predicateValueDate">
+                                <template slot="append">(预计)</template>
+                            </el-input>
+                        </el-form-item>
+
+                        <el-form-item label="借款到期日" prop="expiryDate">
+                            <el-date-picker 
+                            v-model="ruleForm.expiryDate"
+                            type="date"
+                            placeholder="借款到期日"></el-date-picker>
+                        </el-form-item>
+                    </div>
+
+                    <div v-if="ruleForm.type == 'JIASHI_V2'">
+                        <el-form-item label="预计转让生效日" prop="predicateChangeDate">
+                            <el-input disabled placeholder="日期格式为: 年-月-日" v-model="ruleForm.predicateChangeDate">
+                                <template slot="append">(预计)</template>
+                            </el-input>
+                        </el-form-item>
+
+                        <el-form-item label="金融资产持有起始日" prop="fundKeepStartDate">
+                            <el-date-picker
+                            v-model="ruleForm.fundKeepStartDate"
+                            type="date"
+                            placeholder="金融资产持有起始日">
+                            </el-date-picker>
+                        </el-form-item>
+
+                        <el-form-item label="金融资产持有终止日" prop="fundKeepEndDate">
+                            <el-date-picker
+                            v-model="ruleForm.fundKeepEndDate"
+                            type="date"
+                            placeholder="金融资产持有终止日">
+                            </el-date-picker>
+                        </el-form-item>
+                    </div>
 
                     <el-form-item label="自动上架时间">
                         <el-date-picker
@@ -134,7 +160,14 @@
                         <el-input type="textarea" v-model="ruleForm.promotionStyleExplain" maxlength="30"></el-input>
                     </el-form-item>
 
-                    <el-form-item label="是否可转让">
+                    <el-form-item label="是否可转让" v-if="ruleForm.type == 'JIASHI_V2'">
+                        <el-select @change="yesOrNo('transferAbility')" v-model="ruleForm.transferAbility" placeholder="请选择项目类型">
+                            <el-option label="否" value="0"></el-option>
+                            <el-option label="是" value="1"></el-option>
+                        </el-select>
+                    </el-form-item>
+
+                    <el-form-item label="是否可转让" v-if="ruleForm.type != 'JIASHI_V2'">
                         <el-select disabled @change="yesOrNo('transferAbility')" v-model="ruleForm.transferAbility" placeholder="请选择项目类型">
                             <el-option label="否" value="0"></el-option>
                             <el-option label="是" value="1"></el-option>
@@ -159,7 +192,7 @@
                         </el-form-item>
                     </div>
 
-                    <el-form-item label="是否有抵押">
+                    <el-form-item label="是否有抵押" v-if="ruleForm.type != 'JIASHI_V2'">
                         <el-select @change="yesOrNo('mortgageAbility')" v-model="ruleForm.mortgageAbility" placeholder="请选择项目类型">
                             <el-option label="否" value="0"></el-option>
                             <el-option label="是" value="1"></el-option>
@@ -170,7 +203,7 @@
                         <el-input type="textarea" placeholder="其他说明" v-model="ruleForm.mortgageDescription"></el-input>
                     </el-form-item>
 
-                    <el-form-item label="是否有担保">
+                    <el-form-item label="是否有担保" v-if="ruleForm.type != 'JIASHI_V2'">
                         <el-select @change="yesOrNo('guaranteeAbility')" v-model="ruleForm.guaranteeAbility" placeholder="请选择项目类型">
                             <el-option label="否" value="0"></el-option>
                             <el-option label="是" value="1"></el-option>
@@ -196,7 +229,7 @@
                             <template slot="append">￥</template>
                         </el-input>
                     </el-form-item>
-                    <el-form-item label="投资限额">
+                    <el-form-item label="投资限额" v-if="ruleForm.type != 'JIASHI_V3'">
                         <el-select @change="limitAmountLsChange" v-model="ruleForm.limitAmountLs" placeholder="请选择项目类型">
                             <el-option label="否" value="0"></el-option>
                             <el-option label="是" value="1"></el-option>
@@ -212,20 +245,26 @@
                 <fieldset>
                     <legend>标的介绍</legend>
 
-                    <!-- <el-form-item label="添加标签">
-                        <el-input  placeholder="添加标签" v-model="ruleForm.tagName"></el-input>
-                    </el-form-item>
+                    <div v-if="ruleForm.type == 'JIASHI_V3'">
+                        <el-form-item label="添加标签">
+                            <el-input  placeholder="添加标签" v-model="ruleForm.tagName"></el-input>
+                        </el-form-item>
 
-                    <el-form-item label="标签说明">
-                        <el-input  placeholder="标签说明" v-model="ruleForm.tagDescription"></el-input>
-                    </el-form-item>
+                        <el-form-item label="标签说明">
+                            <el-input  placeholder="标签说明" v-model="ruleForm.tagDescription"></el-input>
+                        </el-form-item>
 
-                    <el-form-item label="借款用途">
-                        <el-input type="textarea" placeholder="借款用途" v-model="ruleForm.usage"></el-input>
-                    </el-form-item>
+                        <el-form-item label="借款用途">
+                            <el-input type="textarea" placeholder="借款用途" v-model="ruleForm.usage"></el-input>
+                        </el-form-item>
 
-                    <el-form-item label="其他说明">
-                        <el-input type="textarea" placeholder="其他说明" v-model="ruleForm.highlight"></el-input>
+                        <el-form-item label="其他说明">
+                            <el-input type="textarea" placeholder="其他说明" v-model="ruleForm.highlight"></el-input>
+                        </el-form-item>
+                    </div>
+
+                    <el-form-item label="评估价值" v-show="false">
+                        <el-input type="textarea" placeholder="评估价值" v-model="ruleForm.evaluationValue"></el-input>
                     </el-form-item>
 
                     <el-form-item label="项目描述" prop="subjectDesc">
@@ -240,96 +279,95 @@
                         <el-input type="textarea" placeholder="风险提醒" v-model="ruleForm.riskAlert"></el-input>
                     </el-form-item>
 
-                    <el-form-item label="风控措施" prop="riskMeasure">
+                    <div v-if="ruleForm.type == 'JIASHI_V3'">
+                        <el-form-item label="风控措施" prop="riskMeasure">
+                            <el-input type="textarea" placeholder="风控措施" v-model="ruleForm.riskMeasure"></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="债务人姓名" prop="debtorName">
+                            <el-input type="textarea" placeholder="债务人姓名" v-model="ruleForm.debtorName"></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="债务人婚姻状况" prop="debtorMaritalStatus">
+                            <el-input type="textarea" placeholder="债务人婚姻状况" v-model="ruleForm.debtorMaritalStatus"></el-input>
+                        </el-form-item>
+                        
+                        <el-form-item label="债务人性别" prop="debtorSex">
+                            <el-input type="textarea" placeholder="债务人性别" v-model="ruleForm.debtorSex"></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="债务人年龄" prop="debtorAge">
+                            <el-input type="textarea" placeholder="债务人年龄" v-model="ruleForm.debtorAge"></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="债务人所在城市" prop="debtorCity">
+                            <el-input type="textarea" placeholder="债务人所在城市" v-model="ruleForm.debtorCity"></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="房产位置">
+                            <el-input type="textarea" placeholder="房产位置" v-model="ruleForm.housePropertyPosition"></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="建筑面积" prop="coveredArea">
+                            <el-input  placeholder="请输入内容" v-model="ruleForm.coveredArea">
+                                <template slot="append">平米</template>
+                            </el-input>
+                        </el-form-item>
+
+                        <el-form-item label="规划用途">
+                            <el-input type="textarea" placeholder="规划用途" v-model="ruleForm.planningPurposes"></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="评估价值" prop="evaluationValue">
+                            <el-input  placeholder="请输入内容" v-model="ruleForm.evaluationValue">
+                                <template slot="append">万元</template>
+                            </el-input>
+                        </el-form-item>
+                    </div>
+
+                    <div v-if="ruleForm.type != 'JIASHI_V2'">
+                        <el-form-item label="房产位置">
+                            <el-input type="textarea" placeholder="房产位置" v-model="ruleForm.housePropertyPosition"></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="建筑面积" prop="coveredArea">
+                            <el-input  placeholder="请输入内容" v-model="ruleForm.coveredArea">
+                                <template slot="append">平米</template>
+                            </el-input>
+                        </el-form-item>
+
+                        <el-form-item label="规划用途">
+                            <el-input type="textarea" placeholder="规划用途" v-model="ruleForm.planningPurposes"></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="评估价值" prop="evaluationValue">
+                            <el-input  placeholder="请输入内容" v-model="ruleForm.evaluationValue">
+                                <template slot="append">万元</template>
+                            </el-input>
+                        </el-form-item>
+                    </div>
+
+                    <el-form-item label="风控措施" prop="riskMeasure" v-if="ruleForm.type == 'JIASHI_V13'">
                         <el-input type="textarea" placeholder="风控措施" v-model="ruleForm.riskMeasure"></el-input>
                     </el-form-item>
 
-                    <el-form-item label="债务人姓名" prop="debtorName">
-                        <el-input type="textarea" placeholder="债务人姓名" v-model="ruleForm.debtorName"></el-input>
-                    </el-form-item>
+                    <div v-if="ruleForm.type != 'JIASHI_V3'">
+                        <el-form-item :label="ruleForm.type == 'JIASHI_V13' ? '企业借款用途' : '借款用途'">
+                            <el-input type="textarea" :placeholder="ruleForm.type == 'JIASHI_V13' ? '企业借款用途' : '借款用途'" v-model="ruleForm.usage"></el-input>
+                        </el-form-item>
 
-                    <el-form-item label="债务人婚姻状况" prop="debtorMaritalStatus">
-                        <el-input type="textarea" placeholder="债务人婚姻状况" v-model="ruleForm.debtorMaritalStatus"></el-input>
-                    </el-form-item>
-                    
-                    <el-form-item label="债务人性别" prop="debtorSex">
-                        <el-input type="textarea" placeholder="债务人性别" v-model="ruleForm.debtorSex"></el-input>
-                    </el-form-item>
+                        <el-form-item label="添加标签">
+                            <el-input  placeholder="添加标签" v-model="ruleForm.tagName"></el-input>
+                        </el-form-item>
 
-                    <el-form-item label="债务人年龄" prop="debtorAge">
-                        <el-input type="textarea" placeholder="债务人年龄" v-model="ruleForm.debtorAge"></el-input>
-                    </el-form-item>
+                        <el-form-item label="标签说明">
+                            <el-input  placeholder="标签说明" v-model="ruleForm.tagDescription"></el-input>
+                        </el-form-item>
 
-                    <el-form-item label="债务人所在城市" prop="debtorCity">
-                        <el-input type="textarea" placeholder="债务人所在城市" v-model="ruleForm.debtorCity"></el-input>
-                    </el-form-item>
-
-                    <el-form-item label="房产位置">
-                        <el-input type="textarea" placeholder="房产位置" v-model="ruleForm.housePropertyPosition"></el-input>
-                    </el-form-item>
-
-                    <el-form-item label="建筑面积" prop="coveredArea">
-                        <el-input  placeholder="请输入内容" v-model="ruleForm.coveredArea">
-                            <template slot="append">平米</template>
-                        </el-input>
-                    </el-form-item>
-
-                    <el-form-item label="规划用途">
-                        <el-input type="textarea" placeholder="规划用途" v-model="ruleForm.planningPurposes"></el-input>
-                    </el-form-item>
-
-                    <el-form-item label="评估价值" prop="evaluationValue">
-                        <el-input  placeholder="请输入内容" v-model="ruleForm.evaluationValue">
-                            <template slot="append">万元</template>
-                        </el-input>
-                    </el-form-item>
-
-                    <el-form-item label="合同类型" prop="contractType">
-                        <el-select placeholder="请选择合同类型" v-model="ruleForm.contractType">
-                            <el-option label="债转合同" value="oldContract"></el-option>
-                            <el-option label="个人借款合同" value="newContract"></el-option>
-                        </el-select>
-                    </el-form-item>
-
-                    <el-form-item label="原始债权金额">
-                        <el-input type="textarea" placeholder="原始债权金额" v-model="ruleForm.originalObligatoryRightAmount"></el-input>
-                    </el-form-item>
-
-                    <el-form-item label="原始债权起始日">
-                        <el-input type="textarea" placeholder="原始债权起始日" v-model="ruleForm.originalObligatoryRightStartDate"></el-input>
-                    </el-form-item>
-
-                    <el-form-item label="原始债权到期日">
-                        <el-input type="textarea" placeholder="原始债权到期日" v-model="ruleForm.originalObligatoryRightEndDate"></el-input>
-                    </el-form-item> -->
-
-                     <el-form-item label="项目描述" prop="subjectDesc">
-                        <el-input type="textarea" placeholder="项目描述" v-model="ruleForm.subjectDesc"></el-input>
-                    </el-form-item>
-                    
-                    <el-form-item label="还款保障" prop="repaymentEnsure">
-                        <el-input type="textarea" placeholder="还款保障" v-model="ruleForm.repaymentEnsure"></el-input>
-                    </el-form-item>
-
-                    <el-form-item label="风险提醒" prop="riskAlert">
-                        <el-input type="textarea" placeholder="风险提醒" v-model="ruleForm.riskAlert"></el-input>
-                    </el-form-item>
-
-                    <el-form-item label="借款用途">
-                        <el-input type="textarea" placeholder="借款用途" v-model="ruleForm.usage"></el-input>
-                    </el-form-item>
-
-                    <el-form-item label="添加标签">
-                        <el-input  placeholder="添加标签" v-model="ruleForm.tagName"></el-input>
-                    </el-form-item>
-
-                    <el-form-item label="标签说明">
-                        <el-input  placeholder="标签说明" v-model="ruleForm.tagDescription"></el-input>
-                    </el-form-item>
-
-                    <el-form-item label="债权增信措施">
-                        <el-input type="textarea" placeholder="债权增信措施" v-model="ruleForm.addTrustMeasures"></el-input>
-                    </el-form-item>
+                        <el-form-item label="增信措施">
+                            <el-input type="textarea" placeholder="增信措施" v-model="ruleForm.addTrustMeasures"></el-input>
+                        </el-form-item>
+                    </div>
                 </fieldset>
 
                 <fieldset>
@@ -504,6 +542,9 @@ export default {
                 basicsRate: 0, // 标的总利率(年化利率)
                 commissionRate: 0, // 服务费率
                 subjectPassDays: 3, // 募集期天数
+                predicateChangeDate: '', // 预计转让生效日
+                fundKeepStartDate: '', // 金融资产持有起始日
+                fundKeepEndDate: '', // 金融资产持有终止日
                 voucherTypeChoose: '', //活动方式
                 promotionStyle: '', //促销方式
                 customPromotionExplain: '', // 自定义促销方式
@@ -554,7 +595,9 @@ export default {
                 useCoupon: '',
                 loan_type: '',
                 loanAssetRate: '',
-                assertsAbleOverEndDate: ''
+                assertsAbleOverEndDate: '',
+
+                evaluationValue: '', // 评估价值
             },
             ruleStatus: {
                 limitDays: true, // 借款期数
@@ -605,6 +648,17 @@ export default {
                 commissionRate: [
                     { required: true, message: '服务费率不能为空', trigger: 'blur' },
                     { validator: this.$valid.getRateValidator, trigger: 'blur' }
+                ],
+                predicateChangeDate: [
+                    { required: true, message: '预计转让生效日不能为空', trigger: 'blur' }
+                ],
+                fundKeepStartDate: [
+                    { required: true, message: '金融资产持有起始日不能为空', trigger: 'blur' },
+                    { type: 'date', message: '时间格式不正确', trigger: 'blur' }
+                ],
+                fundKeepEndDate: [
+                    { required: true, message: '金融资产持有终止日不能为空', trigger: 'blur' },
+                    { type: 'date', message: '时间格式不正确', trigger: 'blur' }
                 ],
                 expiryDate: [
                     { required: true, message: '借款到期日不能为空', trigger: 'blur' },
@@ -704,10 +758,6 @@ export default {
             }
             params.instalmentPolicy = this.retrieveInstalmentPolicy(form)
             params.investmentPolicy = {
-                maximumInvestmentAmount: {
-                    amount: form.investmentLimitMoney,
-                    currency: 'CNY'
-                },
                 minimumInvestmentAmount: {
                     amount: form.minimumInvestmentAmount,
                     currency: 'CNY'
@@ -717,59 +767,83 @@ export default {
                     currency: 'CNY'
                 }
             }
+            if(form.type == 'JIASHI_V3') {
+                params.investmentPolicy.maximumInvestmentAmount = {
+                    amount: form.investmentLimitMoney,
+                    currency: 'CNY'
+                }
+            }
+
             params.loaneeInformation = {
                 //质押标的详情页优化
-                productDetailTitle: form.productDetailTitle,
-                productDetail: form.productDetail,
-                riskEvaluate: form.riskEvaluate,
+                // productDetailTitle: form.productDetailTitle,
+                // productDetail: form.productDetail,
+                // riskEvaluate: form.riskEvaluate,
+
                 highlight: form.highlight,
-                usage: form.usage,
-                // 华燕项目转让 添加字段
-                subjectDesc : form.subjectDesc,
-                debtorName : form.debtorName,
-                debtorMaritalStatus : form.debtorMaritalStatus,
-                debtorSex : form.debtorSex,
-                debtorAge : form.debtorAge,
-                debtorCity : form.debtorCity,
-                housePropertyPosition : form.housePropertyPosition,
-                coveredArea : form.coveredArea,
-                planningPurposes : form.planningPurposes,
-                evaluationValue : form.evaluationValue,
-                originalObligatoryRightAmount : form.originalObligatoryRightAmount,
-                originalObligatoryRightStartDate : form.originalObligatoryRightStartDate,
-                originalObligatoryRightEndDate : form.originalObligatoryRightEndDate,
-
-                //回传个人借款用户信息 midas
-                phone: this.userInfo.phone,
-                address: this.userInfo.address,
-                sex: this.userInfo.sex,
-                age: this.userInfo.age,
-                realEstateSituation: this.userInfo.realEstateSituation,
-                annualIncome: this.userInfo.annualIncome,
-                marriageStatus: this.userInfo.marriageStatus,
-                qualification: this.userInfo.qualification,
-                workIndustry: this.userInfo.workIndustry,
-                workCity: this.userInfo.workCity,
-                workYears: this.userInfo.workYears,
-                id: this.userInfo.id,
-                creditLevel: this.userInfo.creditLevel,
-                certificateName: this.userInfo.certification.certifiedName,
-                certificateIdentity: this.userInfo.certification.certifiedIdentity,
-                username: this.userInfo.username,
-
-                predicateValueDate: form.predicateValueDate,
+                subjectCapital: form.evaluationValue,
+                organizationName: enterpriseUesrInfo.organizationName,
+                organizationProfile: enterpriseUesrInfo.organizationProfile,
+                organizationAddress: enterpriseUesrInfo.organizationAddress, // 注册地址
                 //自定义标题
                 _customizedFields: [],
+                usage: form.usage,
+                predicateValueDate: form.predicateValueDate,
                 //还款保障
                 repaymentEnsure:form.repaymentEnsure,
                 //风险提醒
                 riskAlert:form.riskAlert,
-                //风控措施
-                riskMeasure:form.riskMeasure,
-                //增信措施
-                addTrustMeasures:form.addTrustMeasures,
-                //是否抵押
-                isMortgage:form.mortgageAbility
+                
+                // // 华燕项目转让 添加字段
+                // subjectDesc : form.subjectDesc,
+                // debtorName : form.debtorName,
+                // debtorMaritalStatus : form.debtorMaritalStatus,
+                // debtorSex : form.debtorSex,
+                // debtorAge : form.debtorAge,
+                // debtorCity : form.debtorCity,
+                // housePropertyPosition : form.housePropertyPosition,
+                // coveredArea : form.coveredArea,
+                // planningPurposes : form.planningPurposes,
+                // evaluationValue : form.evaluationValue,
+                // originalObligatoryRightAmount : form.originalObligatoryRightAmount,
+                // originalObligatoryRightStartDate : form.originalObligatoryRightStartDate,
+                // originalObligatoryRightEndDate : form.originalObligatoryRightEndDate,
+
+                // //回传个人借款用户信息 midas
+                // phone: this.userInfo.phone,
+                // address: this.userInfo.address,
+                // sex: this.userInfo.sex,
+                // age: this.userInfo.age,
+                // realEstateSituation: this.userInfo.realEstateSituation,
+                // annualIncome: this.userInfo.annualIncome,
+                // marriageStatus: this.userInfo.marriageStatus,
+                // qualification: this.userInfo.qualification,
+                // workIndustry: this.userInfo.workIndustry,
+                // workCity: this.userInfo.workCity,
+                // workYears: this.userInfo.workYears,
+                // id: this.userInfo.id,
+                // creditLevel: this.userInfo.creditLevel,
+                // certificateName: this.userInfo.certification.certifiedName,
+                // certificateIdentity: this.userInfo.certification.certifiedIdentity,
+                // username: this.userInfo.username,
+
+               
+                
+                // //还款保障
+                // repaymentEnsure:form.repaymentEnsure,
+                // //风险提醒
+                // riskAlert:form.riskAlert,
+                // //风控措施
+                // riskMeasure:form.riskMeasure,
+                // //增信措施
+                // addTrustMeasures:form.addTrustMeasures,
+                // //是否抵押
+                // isMortgage:form.mortgageAbility
+            }
+
+            if(form.type != 'JIASHI_V13') {
+                //风险提醒
+                form.loaneeInformation.riskAlert = form.riskAlert
             }
             
             if(form.type == 'JIASHI_V8') {
@@ -1006,6 +1080,14 @@ export default {
                     if(subject.autoShelfAt) {
                         ruleForm.autoShelfAt = new Date(subject.autoShelfAt)
                     }
+
+                    // subject.loaneeInformation.predicateValueDate
+                    // JIASHI_V2 时显示
+                    ruleForm.predicateChangeDate = formatDate(addNewDays(new Date(), subjectPassDays))
+                    ruleForm.fundKeepStartDate = config.financialAssetsHeldInceptionDate
+                    ruleForm.fundKeepEndDate = config.financialAssetsHeldTerminationDate
+
+
                     ruleForm.portionAmount = subject.portionAmount.amount
                     ruleForm.voucherTypeChoose = config.useCoupon
                     ruleForm.promotionStyle = config.promotionStyle
@@ -1070,8 +1152,14 @@ export default {
         },
         // 自动上架时间 & 募集期天数 改变时
         autoAndPassDaysChange() {
+            // console.log(true)
             let autoShelfAt = this.ruleForm.autoShelfAt ? this.ruleForm.autoShelfAt : new Date()
             let subjectPassDays = this.ruleForm.subjectPassDays ? this.ruleForm.subjectPassDays : 0
+
+            if(this.ruleForm.type == 'JIASHI_V2') {
+                this.ruleForm.predicateChangeDate = formatDate(addNewDays(autoShelfAt, subjectPassDays))
+                // this.ruleForm.instalmentInterval = 
+            }
             this.ruleForm.predicateValueDate = formatDate(addNewDays(autoShelfAt, subjectPassDays))
             this.ruleForm.expiryDate = formatDate(addNewDays(autoShelfAt, parseInt(subjectPassDays) + parseInt(this.ruleForm.instalmentInterval)))
         },
